@@ -173,6 +173,7 @@ h2 {
     .sketch,
     .pixelArt {
         width: calc((100% - 30px) / 3);
+        overflow: hidden;
     }
 
     .medium {
@@ -185,7 +186,8 @@ h2 {
 
     .medium-inner {
         max-height: 60%;
-        overflow: hidden;
+        overflow: auto;
+        padding-right: 16px;
     }
 
     /* footer */
