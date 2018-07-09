@@ -92,7 +92,8 @@ h2 {
 
 .medium,
 .sketch,
-.pixelArt {
+.pixelArt,
+.lines {
     margin-top: 15px;
     margin-bottom: 15px;
     width: 100%;
@@ -101,7 +102,8 @@ h2 {
 
 .medium img,
 .sketch img,
-.pixelArt img {
+.pixelArt img,
+.lines img {
     width: 100%;
 }
 
@@ -171,9 +173,14 @@ h2 {
 
     .medium,
     .sketch,
-    .pixelArt {
+    .pixelArt,
+    .lines {
         width: calc((100% - 30px) / 3);
         overflow: hidden;
+    }
+
+    .lines {
+        margin: 2px auto;
     }
 
     .medium {
