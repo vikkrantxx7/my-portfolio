@@ -8,4 +8,4 @@
 - [x] Redesign the share banner: tighter layout, larger text, real profile photo, coloured initials in the name.
 - [x] Recompose the social banner with a centered rising avatar and verify compact crops.
 - [x] Replace the favicon with the profile photo and verify it loads.
-- [ ] Align the banner name on one baseline and restore the avatar halo, grid, and violet background tint.
+- [x] Align the banner name on one baseline and restore the avatar halo, grid, and violet background tint.
