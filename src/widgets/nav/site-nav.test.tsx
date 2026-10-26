@@ -172,4 +172,3 @@ describe("SiteNav", () => {
     expect(within(dialog).getByRole("link", { name: "Work" })).toBeInTheDocument();
   });
 });
-

@@ -23,6 +23,7 @@ import { content } from "@/content/data";
 import { replaceHash } from "@/features/deep-link/deep-link";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import { AvatarPreview } from "./avatar-preview";
 import { useActiveSection } from "./use-active-section";
 
 export const NAV_SECTIONS = [
@@ -96,28 +97,12 @@ export function SiteNav() {
           aria-label="Primary"
           className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16"
         >
-          <a href="#top" className="flex items-center gap-3 font-semibold text-foreground">
-            <span
-              aria-hidden
-              className="relative grid size-8 place-items-center overflow-hidden rounded-md border border-primary/50 font-mono text-xs text-primary shadow-glow"
-            >
-              {profile.monogram}
-              {profile.avatarUrl && (
-                <img
-                  data-avatar
-                  src={profile.avatarUrl}
-                  alt=""
-                  width={32}
-                  height={32}
-                  className="absolute inset-0 size-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              )}
-            </span>
-            <span>{profile.name}</span>
-          </a>
+          <div className="flex items-center gap-3">
+            <AvatarPreview />
+            <a href="#top" className="font-semibold text-foreground">
+              {profile.name}
+            </a>
+          </div>
           <ul className="hidden items-center gap-8 md:flex">
             {NAV_SECTIONS.map((s) => (
               <li key={s.id}>
@@ -197,7 +182,12 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <DockLink href={profile.resumeUrl} download={profile.resumeFileName} icon={FileDown} label="CV" />
+                  <DockLink
+                    href={profile.resumeUrl}
+                    download={profile.resumeFileName}
+                    icon={FileDown}
+                    label="CV"
+                  />
                 </li>
               </ul>
             </motion.div>
