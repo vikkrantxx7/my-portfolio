@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ogBanner from "@/assets/og-banner.jpg.asset.json";
+import ogBannerUrl from "@/assets/og-banner.jpg";
 import { content } from "@/content/data";
 import { getRequestOrigin } from "@/shared/lib/origin.functions";
 import { personJsonLd } from "@/shared/lib/seo";
@@ -22,23 +22,23 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Senior software engineer portfolio: frontend architecture, case studies and AI-enabled products.",
+          "Senior software engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
       },
       { property: "og:title", content: "Vikrant Sharma — I build systems, not just screens" },
       {
         property: "og:description",
         content:
-          "Senior software engineer portfolio: frontend architecture, case studies and AI-enabled products.",
+          "Senior software engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
       ...(loaderData?.origin
         ? [
-            { property: "og:image", content: `${loaderData.origin}${ogBanner.url}` },
+            { property: "og:image", content: `${loaderData.origin}${ogBannerUrl}` },
             { property: "og:image:width", content: "1200" },
             { property: "og:image:height", content: "630" },
-            { name: "twitter:image", content: `${loaderData.origin}${ogBanner.url}` },
+            { name: "twitter:image", content: `${loaderData.origin}${ogBannerUrl}` },
           ]
         : []),
     ],

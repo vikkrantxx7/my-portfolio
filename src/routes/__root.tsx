@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Portfolio of Vikrant Sharma: frontend architecture, scalable systems and AI-enabled products.",
+          "Portfolio of Vikrant Sharma: frontend architecture, scalable systems and AI-assisted workflows.",
       },
       { name: "author", content: "Vikrant Sharma" },
       { property: "og:type", content: "website" },
