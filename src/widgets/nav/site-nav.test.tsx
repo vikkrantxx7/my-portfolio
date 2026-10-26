@@ -171,4 +171,11 @@ describe("SiteNav", () => {
     expect(dialog).toHaveClass("pointer-events-auto");
     expect(within(dialog).getByRole("link", { name: "Work" })).toBeInTheDocument();
   });
+
+  it("mounts the scroll progress ribbon at the bottom of the sticky header", () => {
+    render(<SiteNav />);
+    const header = screen.getByRole("banner");
+    const bar = within(header).getByRole("progressbar", { name: /page scroll progress/i });
+    expect(bar).toHaveClass("absolute", "bottom-0");
+  });
 });
