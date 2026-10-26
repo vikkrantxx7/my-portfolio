@@ -47,15 +47,17 @@ export function AchievementDisclosure({
   const id = `achievement-${experienceId}-${achievement.id}`;
   const hash = achievementHash(experienceId, achievement.id);
 
+  const { achievementId, experienceId: linkExperienceId } = { achievementId: achievement.id, experienceId };
+
   useEffect(() => {
     const link = resolveDeepLink(content.experiences, window.location.hash);
-    if (link && link.experienceId === experienceId && link.achievementId === achievement.id) {
+    if (link?.experienceId === linkExperienceId && link.achievementId === achievementId) {
       setOpen(true);
       scrollToSection(`${id}-trigger`);
     }
-    // Runs once on mount: a shared deep link should open and scroll to its achievement.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // Runs on mount and when this instance's identity changes: a shared deep link
+    // opens and scrolls to its achievement.
+  }, [linkExperienceId, achievementId, id]);
 
   const relatedProjects = content.projects.filter((project) =>
     achievement.projectSlugs.includes(project.slug),
