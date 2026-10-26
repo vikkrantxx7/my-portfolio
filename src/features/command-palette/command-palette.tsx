@@ -5,7 +5,11 @@ import { type ReactNode, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { content as siteContent } from "@/content/data";
 import type { Content } from "@/content/types";
-import { achievementHash, navigateToAchievement, replaceHash } from "@/features/deep-link/deep-link";
+import {
+  achievementHash,
+  navigateToAchievement,
+  replaceHash,
+} from "@/features/deep-link/deep-link";
 import { scrollToSection } from "@/shared/lib/use-prefers-reduced-motion";
 
 export type PaletteItem =

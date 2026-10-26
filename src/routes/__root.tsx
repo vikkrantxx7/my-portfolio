@@ -9,6 +9,7 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { type ReactNode, useEffect } from "react";
+import { CommandPalette } from "@/features/command-palette/command-palette";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
 
@@ -122,6 +123,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <CommandPalette />
     </QueryClientProvider>
   );
 }
