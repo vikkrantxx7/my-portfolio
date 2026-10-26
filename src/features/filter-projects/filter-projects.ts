@@ -6,9 +6,10 @@ export interface ProjectFilters {
 }
 
 export function validateProjectSearch(search: Record<string, unknown>): ProjectFilters {
+  const { tech, domain } = search;
   return {
-    ...(typeof search["tech"] === "string" && search["tech"] ? { tech: search["tech"] } : {}),
-    ...(typeof search["domain"] === "string" && search["domain"] ? { domain: search["domain"] } : {}),
+    ...(typeof tech === "string" && tech ? { tech } : {}),
+    ...(typeof domain === "string" && domain ? { domain } : {}),
   };
 }
 
