@@ -11,6 +11,8 @@ export const buttonVariants = cva(
         ghost:
           "border border-border bg-transparent text-foreground hover:border-primary hover:text-primary",
         glow: "border border-primary/60 bg-primary/10 text-primary shadow-glow hover:bg-primary/20",
+        frame:
+          "gradient-frame border border-transparent hover:-translate-y-px hover:brightness-110",
       },
       size: {
         sm: "h-9 px-4",

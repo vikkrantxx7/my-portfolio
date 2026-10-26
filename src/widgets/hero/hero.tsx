@@ -31,7 +31,7 @@ export function Hero() {
         </p>
         <p className="max-w-xl text-lg text-muted-foreground">{profile.summary}</p>
         <div className="flex flex-wrap gap-4">
-          <Button size="lg" onClick={() => scrollToSection("work")}>
+          <Button size="lg" variant="frame" onClick={() => scrollToSection("work")}>
             Explore my work ↘
           </Button>
           <a
