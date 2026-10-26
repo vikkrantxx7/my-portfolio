@@ -24,6 +24,7 @@ import { replaceHash } from "@/features/deep-link/deep-link";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { AvatarPreview } from "./avatar-preview";
+import { ScrollProgress } from "./scroll-progress";
 import { useActiveSection } from "./use-active-section";
 
 export const NAV_SECTIONS = [
@@ -127,6 +128,7 @@ export function SiteNav() {
             </li>
           </ul>
         </nav>
+        <ScrollProgress />
       </header>
       <div
         data-dock
