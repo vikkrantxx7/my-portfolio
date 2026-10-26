@@ -25,6 +25,7 @@
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
   --shadow-glow: var(--glow-primary);
   --shadow-glow-violet: var(--glow-violet);
+  --shadow-halo: var(--glow-halo);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -104,6 +105,10 @@
   --sidebar-ring: oklch(0.89 0.13 180);
   --glow-primary: 0 0 24px -4px color-mix(in oklab, var(--primary) 60%, transparent);
   --glow-violet: 0 0 32px -6px color-mix(in oklab, var(--secondary) 55%, transparent);
+  /* Tight dark separation ring + cyan bloom: lifts a small badge off photography. */
+  --glow-halo: 0 0 0 3px color-mix(in oklab, var(--background) 72%, transparent),
+    0 0 18px 2px color-mix(in oklab, var(--primary) 55%, transparent),
+    0 0 42px 10px color-mix(in oklab, var(--primary) 26%, transparent);
   --gradient-accent: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 

@@ -59,7 +59,7 @@ export function AvatarPreview() {
                 href={profile.links.github}
                 {...linkProps}
                 aria-label="Open GitHub profile in a new tab"
-                className="absolute top-3 right-3 grid size-9 place-items-center rounded-full border border-primary/40 bg-background/80 text-primary shadow-glow backdrop-blur-md transition hover:scale-110 hover:brightness-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="absolute top-3 right-3 grid size-9 place-items-center rounded-full border border-primary/40 bg-background/80 text-primary shadow-halo backdrop-blur-md transition hover:scale-110 hover:brightness-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <Github
                   aria-hidden
