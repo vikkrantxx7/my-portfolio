@@ -49,7 +49,7 @@ export function AvatarPreview() {
               {profile.avatarUrl && (
                 <img
                   src={profile.avatarUrl}
-                  alt={`Photo of ${profile.name}`}
+                  alt={profile.name}
                   width={288}
                   height={288}
                   className="aspect-square w-full object-cover"
