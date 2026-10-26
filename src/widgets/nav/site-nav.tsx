@@ -91,123 +91,125 @@ export function SiteNav() {
 
   return (
     <>
-    <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
-      <nav
-        aria-label="Primary"
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16"
-      >
-        <a href="#top" className="flex items-center gap-3 font-semibold text-foreground">
-          <span
-            aria-hidden
-            className="grid size-8 place-items-center rounded-md border border-primary/50 font-mono text-xs text-primary shadow-glow"
-          >
-            {profile.monogram}
-          </span>
-          <span>{profile.name}</span>
-        </a>
-        <ul className="hidden items-center gap-8 md:flex">
-          {NAV_SECTIONS.map((s) => (
-            <li key={s.id}>
+      <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
+        <nav
+          aria-label="Primary"
+          className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16"
+        >
+          <a href="#top" className="flex items-center gap-3 font-semibold text-foreground">
+            <span
+              aria-hidden
+              className="grid size-8 place-items-center rounded-md border border-primary/50 font-mono text-xs text-primary shadow-glow"
+            >
+              {profile.monogram}
+            </span>
+            <span>{profile.name}</span>
+          </a>
+          <ul className="hidden items-center gap-8 md:flex">
+            {NAV_SECTIONS.map((s) => (
+              <li key={s.id}>
+                <a
+                  href={`#${s.id}`}
+                  onClick={go(s.id)}
+                  aria-current={active === s.id ? "true" : undefined}
+                  className={linkCls(s.id)}
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))}
+            <li>
               <a
-                href={`#${s.id}`}
-                onClick={go(s.id)}
-                aria-current={active === s.id ? "true" : undefined}
-                className={linkCls(s.id)}
+                href={profile.resumeUrl}
+                download
+                className="rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10"
               >
-                {s.label}
+                Resume PDF
               </a>
             </li>
-          ))}
-          <li>
-            <a
-              href={profile.resumeUrl}
-              download
-              className="rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10"
-            >
-              Resume PDF
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-    <div
-      data-dock
-      className="fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
-    >
-      {open && (
-        <button
-          type="button"
-          aria-hidden
-          tabIndex={-1}
-          className="fixed inset-0 -z-10 bg-background/40 backdrop-blur-[2px]"
-          onClick={close}
-        />
-      )}
-      <div className="relative flex h-16 w-full max-w-sm items-center justify-center">
+          </ul>
+        </nav>
+      </header>
+      <div
+        data-dock
+        className="fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
+      >
         {open && (
-          <motion.div
-            id="mobile-menu"
-            ref={menuRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu"
-            onKeyDown={onMenuKey}
-            initial={reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }}
-            animate={{ clipPath: "inset(0 0% 0 0% round 999px)", opacity: 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
-          >
-            <ul data-testid="dock-left" className="flex justify-around">
-              {LEFT.map((s) => (
-                <li key={s.id}>
+          <button
+            type="button"
+            aria-hidden
+            tabIndex={-1}
+            className="fixed inset-0 -z-10 bg-background/40 backdrop-blur-[2px]"
+            onClick={close}
+          />
+        )}
+        <div className="relative flex h-16 w-full max-w-sm items-center justify-center">
+          {open && (
+            <motion.div
+              id="mobile-menu"
+              ref={menuRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
+              onKeyDown={onMenuKey}
+              initial={
+                reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }
+              }
+              animate={{ clipPath: "inset(0 0% 0 0% round 999px)", opacity: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
+            >
+              <ul data-testid="dock-left" className="flex justify-around">
+                {LEFT.map((s) => (
+                  <li key={s.id}>
+                    <DockLink
+                      href={`#${s.id}`}
+                      onClick={go(s.id)}
+                      icon={s.icon}
+                      label={s.short}
+                      active={active === s.id}
+                    />
+                  </li>
+                ))}
+              </ul>
+              <span aria-hidden />
+              <ul data-testid="dock-right" className="flex justify-around">
+                <li>
                   <DockLink
-                    href={`#${s.id}`}
-                    onClick={go(s.id)}
-                    icon={s.icon}
-                    label={s.short}
-                    active={active === s.id}
+                    href="#about"
+                    onClick={go("about")}
+                    icon={User}
+                    label="About"
+                    active={active === "about"}
                   />
                 </li>
-              ))}
-            </ul>
-            <span aria-hidden />
-            <ul data-testid="dock-right" className="flex justify-around">
-              <li>
-                <DockLink
-                  href="#about"
-                  onClick={go("about")}
-                  icon={User}
-                  label="About"
-                  active={active === "about"}
-                />
-              </li>
-              <li>
-                <DockLink href={profile.resumeUrl} download icon={FileDown} label="CV" />
-              </li>
-            </ul>
-          </motion.div>
-        )}
-        <button
-          ref={toggleRef}
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => (open ? close() : setOpen(true))}
-          className="relative z-10 flex h-12 items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
-        >
-          {open ? (
-            <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
-          ) : (
-            <>
-              <ChevronLeft className="dock-hint-left size-4" />
-              <LayoutGrid className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
-              <ChevronRight className="dock-hint-right size-4" />
-            </>
+                <li>
+                  <DockLink href={profile.resumeUrl} download icon={FileDown} label="CV" />
+                </li>
+              </ul>
+            </motion.div>
           )}
-        </button>
+          <button
+            ref={toggleRef}
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => (open ? close() : setOpen(true))}
+            className="relative z-10 flex h-12 items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
+          >
+            {open ? (
+              <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+            ) : (
+              <>
+                <ChevronLeft className="dock-hint-left size-4" />
+                <LayoutGrid className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+                <ChevronRight className="dock-hint-right size-4" />
+              </>
+            )}
+          </button>
+        </div>
       </div>
-    </div>
     </>
   );
 }

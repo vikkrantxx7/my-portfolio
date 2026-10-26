@@ -124,14 +124,16 @@ describe("SiteNav", () => {
     const dialog = screen.getByRole("dialog", { name: /menu/i });
     const left = within(dialog).getByTestId("dock-left");
     const right = within(dialog).getByTestId("dock-right");
-    expect(within(left).getAllByRole("link").map((l) => l.textContent)).toEqual([
-      "Work",
-      "Experience",
-    ]);
-    expect(within(right).getAllByRole("link").map((l) => l.textContent)).toEqual([
-      "About",
-      "CV",
-    ]);
+    expect(
+      within(left)
+        .getAllByRole("link")
+        .map((l) => l.textContent),
+    ).toEqual(["Work", "Experience"]);
+    expect(
+      within(right)
+        .getAllByRole("link")
+        .map((l) => l.textContent),
+    ).toEqual(["About", "CV"]);
     expect(within(right).getByRole("link", { name: "CV" })).toHaveAttribute("href", "/resume.pdf");
     expect(dialog.querySelectorAll("svg").length).toBeGreaterThanOrEqual(4);
   });

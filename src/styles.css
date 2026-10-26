@@ -207,3 +207,20 @@
     animation: none;
   }
 }
+
+@keyframes dock-hint-left {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(-3px); opacity: 1; }
+}
+@keyframes dock-hint-right {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(3px); opacity: 1; }
+}
+.dock-hint-left { animation: dock-hint-left 1.8s ease-in-out infinite; }
+.dock-hint-right { animation: dock-hint-right 1.8s ease-in-out infinite; }
+@media (max-width: 767px) {
+  body { padding-bottom: calc(env(safe-area-inset-bottom) + 6rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock-hint-left, .dock-hint-right { animation: none; }
+}
