@@ -31,10 +31,17 @@ export function SiteNav() {
 
   const go = (id: string) => (e: MouseEvent) => {
     e.preventDefault();
-    // Update the hash first: the router reacts to history changes with an
-    // instant hash scroll, which would cancel a smooth scroll started earlier.
-    history.replaceState(history.state, "", `#${id}`);
-    requestAnimationFrame(() => scrollToSection(id));
+    scrollToSection(id);
+    // The router reacts to history changes with an instant hash scroll, which
+    // cancels the glide — so update the address only once scrolling settles.
+    let done = false;
+    const update = () => {
+      if (done) return;
+      done = true;
+      history.replaceState(history.state, "", `#${id}`);
+    };
+    window.addEventListener("scrollend", update, { once: true });
+    window.setTimeout(update, 1200);
     if (open) close();
   };
 
