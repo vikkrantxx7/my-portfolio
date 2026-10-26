@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { content } from "@/content/data";
-import { personJsonLd } from "./seo";
+import { pageUrl, personJsonLd } from "./seo";
+
+describe("pageUrl", () => {
+  it("uses the absolute primary domain for the homepage", () => {
+    expect(pageUrl("/")).toBe("https://vikrantfullstack.in/");
+  });
+
+  it("keeps case studies self-referencing on the primary domain", () => {
+    expect(pageUrl("/projects/prepforge")).toBe("https://vikrantfullstack.in/projects/prepforge");
+  });
+});
 
 describe("personJsonLd", () => {
   it("describes the owner as a Person with email and profiles", () => {
