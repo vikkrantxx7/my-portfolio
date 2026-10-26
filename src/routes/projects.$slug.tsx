@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import { content } from "@/content/data";
 import { buttonVariants } from "@/shared/ui/button";
+import { ProjectBackLink } from "@/widgets/project-detail/project-back-link";
 import { ProjectDetail } from "@/widgets/project-detail/project-detail";
 import { ProjectDock } from "@/widgets/project-detail/project-dock";
 import { ProjectPager } from "@/widgets/project-detail/project-pager";
