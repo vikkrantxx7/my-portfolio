@@ -1,5 +1,5 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowUpRight, Github } from "lucide-react";
+import { Github } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { content } from "@/content/data";
@@ -59,9 +59,12 @@ export function AvatarPreview() {
                 href={profile.links.github}
                 {...linkProps}
                 aria-label="Open GitHub profile in a new tab"
-                className="absolute top-3 right-3 grid size-9 place-items-center rounded-full border border-primary/40 bg-background/80 text-primary backdrop-blur-md transition hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="absolute top-3 right-3 grid size-9 place-items-center rounded-full border border-primary/40 bg-background/80 text-primary shadow-glow backdrop-blur-md transition hover:scale-110 hover:brightness-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <ArrowUpRight className="size-4 drop-shadow-[0_0_6px_var(--color-primary)]" />
+                <Github
+                  aria-hidden
+                  className="size-[18px] drop-shadow-[0_0_8px_var(--color-primary)]"
+                />
               </a>
             </div>
             <div className="space-y-1 p-4">
@@ -70,14 +73,6 @@ export function AvatarPreview() {
               </DialogPrimitive.Title>
               <p className="font-mono text-xs text-primary">{handle}</p>
               <p className="text-sm text-muted-foreground">{profile.role}</p>
-              <a
-                href={profile.links.github}
-                {...linkProps}
-                aria-label="Visit GitHub profile"
-                className="mt-3 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:brightness-125"
-              >
-                <Github aria-hidden className="size-4" /> Visit GitHub profile
-              </a>
             </div>
           </motion.div>
         </DialogPrimitive.Content>
