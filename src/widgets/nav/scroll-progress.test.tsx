@@ -28,21 +28,17 @@ describe("progressPath", () => {
     expect(progressPath(0)).toBe("");
   });
 
-  it("ends with a broad head at full scroll", () => {
-    const d = progressPath(1);
-    expect(d).toMatch(/^M0 /);
-    expect(d).toContain("100 1"); // head reaches the right edge near the top
-    expect(d).toMatch(/100 8 L0 8 Z$/); // head is full ribbon height
-  });
-
-  it("keeps a tapered thin tail at the start", () => {
-    const d = progressPath(0.25);
-    expect(d).toMatch(/^M0 5\.5 /); // tail sits low: only 2.5 units thick of 8
-  });
-
-  it("reaches halfway across the ribbon at half scroll", () => {
+  it("keeps a thin, level trail that ends in a rounded head", () => {
     const d = progressPath(0.5);
-    expect(d).toContain("50 1");
+    // Trail sits low: only 1.8 of 8 units thick...
+    expect(d).toMatch(/^M0 6\.2 L38 6\.2 /);
+    // ...then swells sharply to a broad head right at the tip.
+    expect(d).toMatch(/50 2\.2 L50 8 L0 8 Z$/);
+  });
+
+  it("caps the head ramp so short ribbons stay trail-thin", () => {
+    const d = progressPath(0.05);
+    expect(d).toMatch(/^M0 6\.2 L0 6\.2 /);
   });
 });
 
@@ -65,6 +61,14 @@ describe("ScrollProgress", () => {
     expect(bar).not.toHaveClass("opacity-0");
     const path = bar.querySelector("path") as SVGPathElement;
     expect(path).toHaveAttribute("d", progressPath(0.5));
+    // A bright meteor head rides at the tip of the trail.
+    const head = bar.querySelector("circle") as SVGCircleElement;
+    expect(head).toHaveAttribute("cx", "50");
+  });
+
+  it("has no meteor head before the page scrolls", () => {
+    const { container } = render(<ScrollProgress />);
+    expect(container.querySelector("circle")).toBeNull();
   });
 
   it("spans cyan to violet across the full page, not just the drawn ribbon", () => {
