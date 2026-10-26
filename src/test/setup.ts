@@ -48,3 +48,15 @@ if (!("ResizeObserver" in globalThis)) {
     disconnect() {}
   };
 }
+
+// jsdom lacks the Pointer Capture API that Radix Select uses on its trigger.
+if (!("hasPointerCapture" in Element.prototype)) {
+  Element.prototype.hasPointerCapture = () => false;
+  Element.prototype.setPointerCapture = () => {};
+  Element.prototype.releasePointerCapture = () => {};
+}
+
+// jsdom lacks Element.scrollIntoView (Radix Select keeps items in view with it).
+if (!("scrollIntoView" in Element.prototype)) {
+  Element.prototype.scrollIntoView = () => {};
+}
