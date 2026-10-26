@@ -49,13 +49,21 @@ export function AchievementDisclosure({
 
   useEffect(() => {
     const link = resolveDeepLink(content.experiences, window.location.hash);
-    if (link?.experienceId === experienceId && link.achievementId === achievement.id) {
-      setOpen(true);
-      scrollToSection(`${id}-trigger`);
-    }
-    // Runs on mount and when this instance's identity changes: a shared deep link
-    // opens and scrolls to its achievement.
-  }, [experienceId, achievement.id, id]);
+    if (link?.experienceId !== experienceId || link.achievementId !== achievement.id) return;
+    setOpen(true);
+    const triggerId = hash.slice(1);
+    const scrollToTrigger = () => scrollToSection(triggerId);
+    scrollToTrigger();
+    // The router's scroll restoration can settle after hydration and reset the
+    // scroll; re-check once and re-scroll if the trigger is still off screen.
+    const retry = window.setTimeout(() => {
+      const trigger = document.getElementById(triggerId);
+      if (trigger && trigger.getBoundingClientRect().top > window.innerHeight * 0.75) {
+        scrollToTrigger();
+      }
+    }, 250);
+    return () => window.clearTimeout(retry);
+  }, [experienceId, achievement.id, id, hash]);
 
   const relatedProjects = content.projects.filter((project) =>
     achievement.projectSlugs.includes(project.slug),
