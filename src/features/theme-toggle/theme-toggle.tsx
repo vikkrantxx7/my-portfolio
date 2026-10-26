@@ -26,15 +26,22 @@ export function ThemeToggle() {
       }}
       className="theme-toggle relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-card/60 text-primary shadow-glow transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} custom={d}>
         <motion.span
           key={theme}
           data-icon={theme === "light" ? "sun" : "moon"}
           className="absolute inset-0 flex items-center justify-center"
           // Rises from the lower-left, sets toward the lower-right.
-          initial={reduce ? { opacity: 0 } : { x: -22 * d, y: 22, rotate: -90 * d, opacity: 0 }}
+          custom={d}
+          variants={{
+            enter: (dir: number) =>
+              reduce ? { opacity: 0 } : { x: -22 * dir, y: 22, rotate: -90 * dir, opacity: 0 },
+            leave: (dir: number) =>
+              reduce ? { opacity: 0 } : { x: 22 * dir, y: 22, rotate: 90 * dir, opacity: 0 },
+          }}
+          initial="enter"
           animate={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
-          exit={reduce ? { opacity: 0 } : { x: 22 * d, y: 22, rotate: 90 * d, opacity: 0 }}
+          exit="leave"
           transition={reduce ? { duration: 0.15 } : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <Icon aria-hidden className="size-5" />
