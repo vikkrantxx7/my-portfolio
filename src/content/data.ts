@@ -28,17 +28,24 @@ export const content: Content = {
           id: "graphql-bff",
           summary: "Designed and built a GraphQL BFF from scratch with Node.js and Fastify.",
           context: "The React frontend depended directly on several backend services.",
-          contribution: "Designed the schema and resolvers aggregating services into one frontend-optimized API.",
+          contribution:
+            "Designed the schema and resolvers aggregating services into one frontend-optimized API.",
           decisions: ["BFF pattern to decouple frontend from backends", "Fastify for performance"],
           impact: "Simpler data fetching and a frontend decoupled from backend changes.",
           projectSlugs: [],
         },
         {
           id: "micro-frontend",
-          summary: "Architected a greenfield React micro-frontend with FSD v2 and Module Federation.",
+          summary:
+            "Architected a greenfield React micro-frontend with FSD v2 and Module Federation.",
           context: "A new internal product management application needed a scalable structure.",
-          contribution: "Defined project structure, standards and guidelines; built core journeys and AG Grid data grids.",
-          decisions: ["Feature-Sliced Design v2", "Webpack Module Federation", "AG Grid for large datasets"],
+          contribution:
+            "Defined project structure, standards and guidelines; built core journeys and AG Grid data grids.",
+          decisions: [
+            "Feature-Sliced Design v2",
+            "Webpack Module Federation",
+            "AG Grid for large datasets",
+          ],
           impact: "Architecture adopted by the team; fast grids for large tabular data.",
           projectSlugs: [],
         },
@@ -55,7 +62,8 @@ export const content: Content = {
           id: "ai-adoption",
           summary: "Drove 100% team adoption of AI-assisted development.",
           context: "Development effort was high on repetitive work.",
-          contribution: "Introduced SpecKit and GitHub Copilot workflows; presented at the internal AI Hackathon.",
+          contribution:
+            "Introduced SpecKit and GitHub Copilot workflows; presented at the internal AI Hackathon.",
           decisions: ["Spec-driven development with SpecKit", "Copilot in daily workflow"],
           impact: "~40% reduction in development effort.",
           projectSlugs: [],
@@ -64,7 +72,8 @@ export const content: Content = {
           id: "quality-gates",
           summary: "Led technical direction as code owner with a 95% test-coverage gate.",
           context: "Quality needed consistent, automated enforcement.",
-          contribution: "Code reviews with OWASP Top 10 awareness, mentoring, SonarQube and GitHub Actions gates.",
+          contribution:
+            "Code reviews with OWASP Top 10 awareness, mentoring, SonarQube and GitHub Actions gates.",
           decisions: ["95% coverage threshold", "Docker + Kubernetes deploys via GitHub Actions"],
           impact: "Reliable build health and shared engineering standards.",
           projectSlugs: [],
@@ -82,7 +91,8 @@ export const content: Content = {
           id: "accessible-saas",
           summary: "Led frontend for a B2B HR, Payroll and Workforce Management platform.",
           context: "Enterprise customers required accessible, consistent interfaces.",
-          contribution: "Built React interfaces to WebAIM and WAI-ARIA standards; mentored backend engineers on React.",
+          contribution:
+            "Built React interfaces to WebAIM and WAI-ARIA standards; mentored backend engineers on React.",
           decisions: ["Accessibility-first components", "Reusable UI with stakeholders"],
           impact: "Accessible, consistent UI across the application.",
           projectSlugs: [],
@@ -118,7 +128,8 @@ export const content: Content = {
           id: "ecommerce",
           summary: "Built a responsive, mobile-first e-commerce web app.",
           context: "Shoppers used both desktop and mobile.",
-          contribution: "React, Redux, HTML5 and CSS3 with reusable components; Google Maps mini-map.",
+          contribution:
+            "React, Redux, HTML5 and CSS3 with reusable components; Google Maps mini-map.",
           decisions: ["Mobile-first layout", "Redux for state"],
           impact: "Consistent experience across devices.",
           projectSlugs: [],
@@ -141,7 +152,8 @@ export const content: Content = {
       slug: "git-contributor-stats",
       title: "git-contributor-stats",
       category: "npm Package · Developer Tooling",
-      problem: "CLI and library for Git contributor and activity analytics, with charts and reports.",
+      problem:
+        "CLI and library for Git contributor and activity analytics, with charts and reports.",
       role: "Author & Maintainer",
       tech: ["TypeScript", "Node.js", "Vite", "Vitest", "Biome"],
       domains: ["Developer Tools", "Open Source"],
@@ -149,14 +161,23 @@ export const content: Content = {
     },
   ],
   skills: [
-    ...["React", "TypeScript", "Tailwind CSS", "AG Grid"].map((name) => ({ name, group: "Frontend" })),
-    ...["Node.js", "Fastify", "GraphQL", "PostgreSQL", "Drizzle ORM"].map((name) => ({ name, group: "Backend" })),
+    ...["React", "TypeScript", "Tailwind CSS", "AG Grid"].map((name) => ({
+      name,
+      group: "Frontend",
+    })),
+    ...["Node.js", "Fastify", "GraphQL", "PostgreSQL", "Drizzle ORM"].map((name) => ({
+      name,
+      group: "Backend",
+    })),
     ...["Micro-frontends", "Module Federation", "Feature-Sliced Design", "BFF"].map((name) => ({
       name,
       group: "Architecture",
     })),
     ...["Rspack", "Webpack", "Web Vitals"].map((name) => ({ name, group: "Performance" })),
-    ...["Vitest", "React Testing Library", "MSW", "SonarQube"].map((name) => ({ name, group: "Testing" })),
+    ...["Vitest", "React Testing Library", "MSW", "SonarQube"].map((name) => ({
+      name,
+      group: "Testing",
+    })),
     ...["Docker", "Kubernetes", "GitHub Actions"].map((name) => ({ name, group: "DevOps" })),
     ...["GitHub Copilot", "SpecKit"].map((name) => ({ name, group: "AI" })),
   ],

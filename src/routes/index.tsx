@@ -3,6 +3,7 @@ import { content } from "@/content/data";
 import { Button } from "@/shared/ui/button";
 import { SectionHeading } from "@/shared/ui/section-heading";
 import { Tag } from "@/shared/ui/tag";
+import { SiteNav } from "@/widgets/nav/site-nav";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,7 +69,22 @@ function Index() {
               ))}
           </div>
         </section>
+        <section id="experience" className="min-h-[60vh] scroll-mt-20 space-y-8">
+          <SectionHeading index="04" label="Experience" title="Where I've worked." />
+          <ul className="space-y-3 text-muted-foreground">
+            {experiences.map((e) => (
+              <li key={e.id}>
+                <span className="text-foreground">{e.company}</span> — {e.role}
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section id="about" className="min-h-[60vh] scroll-mt-20 space-y-8">
+          <SectionHeading index="06" label="About" title="A bit about me." />
+          <p className="max-w-xl text-muted-foreground">{profile.summary}</p>
+        </section>
       </div>
     </main>
+    </>
   );
 }
