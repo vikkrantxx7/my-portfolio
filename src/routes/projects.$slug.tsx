@@ -48,10 +48,7 @@ function ProjectOverview() {
   const project = Route.useLoaderData();
   return (
     <main className="mx-auto max-w-4xl space-y-8 px-6 pt-16 pb-32 md:py-24">
-      <Link to="/" hash="work" className={buttonVariants({ variant: "ghost", size: "sm" })}>
-        <ArrowLeft className="size-4" aria-hidden="true" />
-        Selected work
-      </Link>
+      <ProjectBackLink />
       <ProjectDetail project={project} />
       <ProjectPager projects={content.projects} slug={project.slug} />
       <ProjectDock projects={content.projects} slug={project.slug} />
