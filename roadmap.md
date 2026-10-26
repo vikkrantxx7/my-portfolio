@@ -9,4 +9,4 @@
 - [x] Recompose the social banner with a centered rising avatar and verify compact crops.
 - [x] Replace the favicon with the profile photo and verify it loads.
 - [x] Align the banner name on one baseline and restore the avatar halo, grid, and violet background tint.
-- [ ] Reduce the grid to barely visible hairlines and render the full name as one consistently aligned line.
+- [x] Reduce the grid to barely visible hairlines and render the full name as one consistently aligned line.
