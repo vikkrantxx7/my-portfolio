@@ -30,5 +30,19 @@ export function validateContent(c: Content): string[] {
       for (const s of a.projectSlugs) if (!slugs.has(s)) errors.push(`Unknown project slug: ${s}`);
     }
   }
+  for (const entry of c.lab ?? []) {
+    if (!entry.achievementRef) continue;
+    const [expId, achId] = entry.achievementRef.split("/");
+    const exp = c.experiences.find((e) => e.id === expId);
+    if (!exp?.achievements.some((a) => a.id === achId))
+      errors.push(`Unknown lab achievement: ${entry.achievementRef}`);
+  }
+  for (const entry of c.lab ?? []) {
+    if (!entry.achievementRef) continue;
+    const [expId, achId] = entry.achievementRef.split("/");
+    const exp = c.experiences.find((e) => e.id === expId);
+    if (!exp?.achievements.some((a) => a.id === achId))
+      errors.push(`Unknown lab achievement: ${entry.achievementRef}`);
+  }
   return errors;
 }

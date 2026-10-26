@@ -196,6 +196,35 @@ export const content: Content = {
       caseStudy: gitStatsCaseStudy,
     },
   ],
+  lab: [
+    {
+      id: "rspack-migration",
+      kind: "Experiment",
+      title: "Moving a large app from Webpack to Rspack",
+      summary:
+        "Notes from migrating build tooling, splitting bundles and tightening budgets — the work behind roughly 50% smaller JS/CSS bundles.",
+      tags: ["Rspack", "Performance", "Build tooling"],
+      achievementRef: "adidas/rspack-optimization",
+    },
+    {
+      id: "ai-workflows",
+      kind: "Note",
+      title: "Rolling out AI tools across a frontend team",
+      summary:
+        "What helped a whole team adopt AI-assisted coding, and where guardrails like review and tests still matter.",
+      tags: ["AI", "Developer experience"],
+      achievementRef: "adidas/ai-adoption",
+    },
+    {
+      id: "quality-gates",
+      kind: "Note",
+      title: "Coverage gates that teams don't hate",
+      summary:
+        "Making a 95% test coverage gate part of the pipeline without slowing delivery down.",
+      tags: ["Testing", "CI"],
+      achievementRef: "adidas/quality-gates",
+    },
+  ],
   skills: [
     ...["React", "TypeScript", "Tailwind CSS", "AG Grid"].map((name) => ({
       name,

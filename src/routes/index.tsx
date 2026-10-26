@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { content } from "@/content/data";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
-import { SectionHeading } from "@/shared/ui/section-heading";
+import { Contact } from "@/widgets/contact/contact";
 import { ProjectGallery } from "@/widgets/gallery/project-gallery";
 import { Hero } from "@/widgets/hero/hero";
+import { EngineeringLab } from "@/widgets/lab/lab";
 import { SiteNav } from "@/widgets/nav/site-nav";
 import { Snapshot } from "@/widgets/snapshot/snapshot";
 import { CareerTimeline } from "@/widgets/timeline/timeline";
@@ -33,7 +33,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { profile } = content;
   const filters = Route.useSearch();
   const navigate = Route.useNavigate();
   return (
@@ -51,10 +50,8 @@ function Index() {
               }
             />
             <CareerTimeline />
-            <section id="about" className="min-h-[60vh] scroll-mt-20 space-y-8">
-              <SectionHeading index="06" label="About" title="A bit about me." />
-              <p className="max-w-xl text-muted-foreground">{profile.summary}</p>
-            </section>
+            <EngineeringLab />
+            <Contact />
           </div>
         </div>
       </main>

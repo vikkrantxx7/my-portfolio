@@ -80,7 +80,18 @@ export interface Snapshot {
   problemAreas: string[];
 }
 
+export interface LabEntry {
+  id: string;
+  kind: "Experiment" | "Note";
+  title: string;
+  summary: string;
+  tags: string[];
+  /** Optional link to a timeline achievement, as "experienceId/achievementId". */
+  achievementRef?: string;
+}
+
 export interface Content {
+  lab: LabEntry[];
   snapshot: Snapshot;
   profile: Profile;
   experiences: Experience[];
