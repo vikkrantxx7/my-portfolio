@@ -4,7 +4,7 @@ import { content } from "@/content/data";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
 import { getRequestOrigin } from "@/shared/lib/origin.functions";
-import { personJsonLd } from "@/shared/lib/seo";
+import { pageUrl, personJsonLd } from "@/shared/lib/seo";
 import { Contact } from "@/widgets/contact/contact";
 import { ProjectGallery } from "@/widgets/gallery/project-gallery";
 import { Hero } from "@/widgets/hero/hero";
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
           "Lead fullstack engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: pageUrl("/") },
       { name: "twitter:card", content: "summary_large_image" },
       ...(loaderData?.origin
         ? [
@@ -42,7 +42,7 @@ export const Route = createFileRoute("/")({
           ]
         : []),
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: pageUrl("/") }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(personJsonLd(content.profile)) },
     ],
