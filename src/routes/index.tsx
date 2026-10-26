@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { content } from "@/content/data";
-import { Snapshot } from "@/widgets/snapshot/snapshot";
-import { Hero } from "@/widgets/hero/hero";
 import { SectionHeading } from "@/shared/ui/section-heading";
 import { Tag } from "@/shared/ui/tag";
+import { Hero } from "@/widgets/hero/hero";
 import { SiteNav } from "@/widgets/nav/site-nav";
+import { Snapshot } from "@/widgets/snapshot/snapshot";
 import { CareerTimeline } from "@/widgets/timeline/timeline";
 
 export const Route = createFileRoute("/")({

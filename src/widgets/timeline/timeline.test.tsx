@@ -21,7 +21,9 @@ describe("Career timeline", () => {
   it("shows roles newest first, dates, and collapsed achievements", () => {
     render(<CareerTimeline />);
     expect(screen.getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual([
-      "adidas", "UKG", "Infosys",
+      "adidas",
+      "UKG",
+      "Infosys",
     ]);
     expect(screen.getByText("Dec 2021 — Present")).toBeInTheDocument();
     expect(screen.getByText("Jun 2019 — Nov 2021")).toBeInTheDocument();
@@ -29,7 +31,10 @@ describe("Career timeline", () => {
     for (const experience of content.experiences) {
       expect(screen.getByText(experience.role)).toBeInTheDocument();
       for (const item of experience.achievements) {
-        expect(screen.getByRole("button", { name: item.summary })).toHaveAttribute("aria-expanded", "false");
+        expect(screen.getByRole("button", { name: item.summary })).toHaveAttribute(
+          "aria-expanded",
+          "false",
+        );
       }
     }
     expect(screen.queryByRole("region")).not.toBeInTheDocument();
@@ -43,7 +48,12 @@ describe("Career timeline", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "true");
     const details = screen.getByRole("region", { name: achievement.summary });
     expect(trigger).toHaveAttribute("aria-controls", details.id);
-    for (const value of [achievement.context, achievement.contribution, achievement.impact, ...achievement.decisions]) {
+    for (const value of [
+      achievement.context,
+      achievement.contribution,
+      achievement.impact,
+      ...achievement.decisions,
+    ]) {
       expect(within(details).getByText(value)).toBeInTheDocument();
     }
     await user.click(trigger);
@@ -73,7 +83,11 @@ describe("Career timeline", () => {
 
   it("resolves related project references without inventing case-study pages", async () => {
     const user = userEvent.setup();
-    render(<CareerTimeline experiences={[{ ...role, achievements: [{ ...achievement, projectSlugs: ["prepforge"] }] }]} />);
+    render(
+      <CareerTimeline
+        experiences={[{ ...role, achievements: [{ ...achievement, projectSlugs: ["prepforge"] }] }]}
+      />,
+    );
     await user.click(screen.getByRole("button", { name: achievement.summary }));
     expect(screen.getByRole("link", { name: /PrepForge/ })).toHaveAttribute("href", "#work");
   });
