@@ -1,5 +1,10 @@
 import type { Profile } from "@/content/types";
 
+/** Stable public page identity, independent of the preview/request origin. */
+export function pageUrl(path: `/${string}`) {
+  return `https://vikrantfullstack.in${path}`;
+}
+
 /** schema.org Person data for the home page. Phone is intentionally omitted. */
 export function personJsonLd(profile: Profile) {
   return {

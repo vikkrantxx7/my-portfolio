@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { content } from "@/content/data";
+import { pageUrl } from "@/shared/lib/seo";
 import { buttonVariants } from "@/shared/ui/button";
 import { ProjectBackLink } from "@/widgets/project-detail/project-back-link";
 import { ProjectDetail } from "@/widgets/project-detail/project-detail";
@@ -28,10 +29,10 @@ export const Route = createFileRoute("/projects/$slug")({
         content: loaderData?.problem ?? "This project is not in Vikrant Sharma's portfolio.",
       },
       { property: "og:type", content: "article" },
-      { property: "og:url", content: `/projects/${params.slug}` },
+      { property: "og:url", content: pageUrl(`/projects/${params.slug}`) },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: `/projects/${params.slug}` }],
+    links: [{ rel: "canonical", href: pageUrl(`/projects/${params.slug}`) }],
   }),
   component: ProjectOverview,
   notFoundComponent: () => (

@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
 - Social banner media uses a CDN asset pointer and the favicon uses a small local public image, keeping share media lightweight and browser icon discovery reliable.
 - Section navigation replaces the hash with automatic scrolling disabled; on mobile, close the menu before measuring the scroll target and restore focus with preventScroll to avoid correction jumps.
 - Document scroll is restored by the SSR inline script; skip only the first client restoration callback to avoid overwriting early user scrolling during hydration, while retaining later navigation and Back/Forward restoration.
