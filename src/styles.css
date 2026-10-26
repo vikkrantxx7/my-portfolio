@@ -268,7 +268,7 @@
   content: "";
   position: absolute;
   inset: -8px;
-  border-radius: calc(infinity * 1px);
+  border-radius: calc(var(--radius) + 8px);
   pointer-events: none;
   background: conic-gradient(
     from var(--gf-angle),
