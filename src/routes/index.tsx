@@ -27,10 +27,12 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { profile, projects } = content;
+  const { profile, projects, experiences } = content;
   return (
-    <main className="min-h-screen bg-background px-6 py-24 md:px-16">
-      <div className="mx-auto max-w-6xl space-y-16">
+    <>
+      <SiteNav />
+    <main id="top" className="min-h-screen bg-background px-6 py-24 md:px-16">
+      <div className="mx-auto max-w-6xl space-y-32">
         <section className="space-y-8">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
             {profile.role}
@@ -43,10 +45,9 @@ function Index() {
           <div className="flex flex-wrap gap-4">
             <Button>Explore my work ↘</Button>
             <Button variant="ghost">Download resume ↗</Button>
-            <Button variant="glow">Engineering lab</Button>
           </div>
         </section>
-        <section className="space-y-8">
+        <section id="work" className="min-h-[60vh] scroll-mt-20 space-y-8">
           <SectionHeading
             index="03"
             label="Selected work"
