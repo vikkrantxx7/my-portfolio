@@ -31,8 +31,10 @@ export function SiteNav() {
 
   const go = (id: string) => (e: MouseEvent) => {
     e.preventDefault();
-    scrollToSection(id);
-    history.replaceState(null, "", `#${id}`);
+    // Update the hash first: the router reacts to history changes with an
+    // instant hash scroll, which would cancel a smooth scroll started earlier.
+    history.replaceState(history.state, "", `#${id}`);
+    requestAnimationFrame(() => scrollToSection(id));
     if (open) close();
   };
 
