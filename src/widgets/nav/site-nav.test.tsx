@@ -35,6 +35,12 @@ beforeEach(() => {
 });
 
 describe("SiteNav", () => {
+  it("shows the profile photo inside the monogram badge", () => {
+    const { container } = render(<SiteNav />);
+    const img = container.querySelector("img[data-avatar]");
+    expect(img).toHaveAttribute("src", "https://avatars.githubusercontent.com/u/37444378?v=4");
+  });
+
   it("AC1: shows name, section links and resume PDF", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
