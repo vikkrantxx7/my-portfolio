@@ -79,7 +79,10 @@ export function ScrollProgress() {
         <path
           d={progressPath(progress)}
           fill="url(#scroll-progress-gradient)"
-          style={{ filter: "drop-shadow(0 -1px 4px color-mix(in oklab, var(--color-primary) 55%, transparent))" }}
+          style={{
+            filter:
+              "drop-shadow(0 -1px 4px color-mix(in oklab, var(--color-primary) 55%, transparent))",
+          }}
         />
       </svg>
     </div>
