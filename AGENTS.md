@@ -23,3 +23,4 @@
 - Internal navigation uses TanStack `Link` (never plain `<a href>`) so pages switch in-app without a full reload; tests render such widgets with `src/test/render-with-router.tsx`.
 - Architecture diagrams are typed layer/box/connection data on each case study (checked by validateDiagram) and always list connections as text, so they read without hover or animation.
 - Lab entries are typed content that may reference a timeline achievement as "experienceId/achievementId" (checked by validateContent) and link to it via the deep-link hash.
+- Same-page lab achievement links dispatch an explicit reveal action and defer replaceState until scrolling settles; this avoids router hash scrolling cancelling smooth motion and supports repeated links to the same hash.

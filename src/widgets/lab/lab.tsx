@@ -1,5 +1,5 @@
 import { content } from "@/content/data";
-import { achievementHash } from "@/features/deep-link/deep-link";
+import { achievementHash, navigateToAchievement } from "@/features/deep-link/deep-link";
 import { SectionHeading } from "@/shared/ui/section-heading";
 import { Tag } from "@/shared/ui/tag";
 
@@ -30,6 +30,11 @@ export function EngineeringLab() {
               {expId && achId && (
                 <a
                   href={achievementHash(expId, achId)}
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    navigateToAchievement(achievementHash(expId, achId));
+                  }}
                   className="text-sm text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   See it in my career timeline

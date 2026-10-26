@@ -136,6 +136,29 @@
   color: transparent;
 }
 
+.achievement-highlight {
+  background-color: color-mix(in oklab, var(--primary) 8%, transparent);
+  box-shadow: inset 3px 0 var(--primary), var(--glow-primary);
+  animation: achievement-highlight-fade 2s ease-out forwards;
+}
+
+@keyframes achievement-highlight-fade {
+  0%, 55% {
+    background-color: color-mix(in oklab, var(--primary) 8%, transparent);
+    box-shadow: inset 3px 0 var(--primary), var(--glow-primary);
+  }
+  to {
+    background-color: transparent;
+    box-shadow: inset 3px 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .achievement-highlight {
+    animation: none !important;
+  }
+}
+
 @utility hero-grid {
   background-image:
     linear-gradient(to right, var(--color-border) 1px, transparent 1px),
