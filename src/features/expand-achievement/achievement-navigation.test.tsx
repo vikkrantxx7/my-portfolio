@@ -30,7 +30,8 @@ describe("lab achievement navigation", () => {
     const target = document.getElementById("exp-adidas-rspack-optimization");
     if (!target) throw new Error("Achievement target required");
     fireEvent.click(link);
-    expect(target).toHaveAttribute("aria-expanded", "true");
+    // Do not expand content above the note before the glide: that shifts the viewport.
+    expect(target).toHaveAttribute("aria-expanded", "false");
     await waitFor(() =>
       expect(scroll).toHaveBeenCalledWith({
         behavior: reduced ? "auto" : "smooth",
@@ -38,6 +39,7 @@ describe("lab achievement navigation", () => {
       }),
     );
     if (!reduced) fireEvent(window, new Event("scrollend"));
+    expect(target).toHaveAttribute("aria-expanded", "true");
     expect(target).toHaveAttribute("aria-current", "location");
     expect(window.location.hash).toBe("#exp-adidas-rspack-optimization");
     expect(push).not.toHaveBeenCalled();
