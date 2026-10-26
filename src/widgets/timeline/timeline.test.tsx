@@ -57,7 +57,9 @@ describe("Career timeline", () => {
       expect(within(details).getByText(value)).toBeInTheDocument();
     }
     await user.click(trigger);
-    await waitFor(() => expect(screen.queryByRole("region", { name: achievement.summary })).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.queryByRole("region", { name: achievement.summary })).not.toBeInTheDocument(),
+    );
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(trigger).toHaveFocus();
   });
@@ -75,7 +77,9 @@ describe("Career timeline", () => {
     await user.keyboard(" ");
     expect(first).toHaveAttribute("aria-expanded", "true");
     expect(second).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getAllByRole("region").filter((region) => region.id.endsWith("-details"))).toHaveLength(2);
+    expect(
+      screen.getAllByRole("region").filter((region) => region.id.endsWith("-details")),
+    ).toHaveLength(2);
     await user.keyboard(" ");
     expect(second).toHaveAttribute("aria-expanded", "false");
     expect(first).toHaveAttribute("aria-expanded", "true");
