@@ -1,4 +1,4 @@
-import { act, render, screen, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SiteNav } from "./site-nav";
@@ -99,5 +99,19 @@ describe("SiteNav", () => {
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /open menu/i })).toHaveFocus();
+  });
+
+  it("closes the mobile menu before measuring the section and restores focus without scrolling", async () => {
+    const user = userEvent.setup();
+    render(<SiteNav />);
+    await user.click(screen.getByRole("button", { name: /open menu/i }));
+    const focus = vi.spyOn(HTMLElement.prototype, "focus");
+    const scroll = vi.fn(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    Element.prototype.scrollIntoView = scroll;
+    await user.click(within(screen.getByRole("dialog")).getByRole("link", { name: "Work" }));
+    await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
+    expect(focus).toHaveBeenCalledWith({ preventScroll: true });
   });
 });
