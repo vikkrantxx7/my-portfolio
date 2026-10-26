@@ -6,3 +6,5 @@
 - [x] Run tests and verify filters, project details, links, and phone layout.- [x] Open case studies in-app (no full reload) and keep scroll stable on repeat visits.
 - [x] Story 10: ⌘K quick-search palette.
 - [x] Redesign the share banner: tighter layout, larger text, real profile photo, coloured initials in the name.
+- [ ] Recompose the social banner with a centered rising avatar and verify compact crops.
+- [ ] Replace the favicon with the profile photo and verify it loads.

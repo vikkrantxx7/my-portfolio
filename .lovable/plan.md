@@ -1,4 +1,23 @@
-# Portfolio — Story Plan (Cinematic Interactive Resume)
+# Share banner and avatar favicon
+
+## Requested changes
+- Recompose the 1200 × 630 share image around the center: your avatar rises behind your name, with the lower photo partly hidden by the name area.
+- Keep larger, readable text, cyan V and violet S, and “AI Assisted Workflow”. Keep your face and name within the central square crop so compact Teams previews retain the essentials; Teams may still crop outer details.
+- Use your profile photo as a crisp, square browser-tab icon, replacing the existing icon.
+
+## Acceptance checks
+- Inspect the full banner and simulated central square and 4:3 crops.
+- Confirm the browser loads the new favicon and the homepage still serves the banner.
+- Run existing relevant tests. No new behavior is introduced; this is an image-only update plus the favicon reference.
+- Changes reach the public site on the next publish; this task does not publish automatically.
+
+## Technical details
+- Reuse the current GitHub avatar, compose the banner deterministically with Geist fonts, and keep its existing image reference.
+- Produce a 64 × 64 favicon in public and update the root head link; remove the obsolete favicon.ico.
+
+---
+
+# Original Portfolio — Story Plan (Cinematic Interactive Resume)
 
 Based on the shared ChatGPT concept: dark cinematic look, glowing accents, motion, a resume you can scan in 30 seconds and click into for depth, plus project case-study pages. Audience: recruiters and technical leaders.
 
