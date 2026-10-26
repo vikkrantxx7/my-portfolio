@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { content } from "@/content/data";
 import { buttonVariants } from "@/shared/ui/button";
 import { ProjectDetail } from "@/widgets/project-detail/project-detail";
+import { ProjectDock } from "@/widgets/project-detail/project-dock";
 import { ProjectPager } from "@/widgets/project-detail/project-pager";
 
 export const Route = createFileRoute("/projects/$slug")({
@@ -44,13 +45,14 @@ export const Route = createFileRoute("/projects/$slug")({
 function ProjectOverview() {
   const project = Route.useLoaderData();
   return (
-    <main className="mx-auto max-w-4xl space-y-8 px-6 py-16 md:py-24">
+    <main className="mx-auto max-w-4xl space-y-8 px-6 pt-16 pb-32 md:py-24">
       <Link to="/" hash="work" className={buttonVariants({ variant: "ghost", size: "sm" })}>
         <ArrowLeft className="size-4" aria-hidden="true" />
         Selected work
       </Link>
       <ProjectDetail project={project} />
       <ProjectPager projects={content.projects} slug={project.slug} />
+      <ProjectDock projects={content.projects} slug={project.slug} />
     </main>
   );
 }
