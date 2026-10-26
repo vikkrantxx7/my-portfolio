@@ -1,14 +1,14 @@
 import type { Project } from "@/content/types";
 
 export interface ProjectFilters {
-  tech?: string;
-  domain?: string;
+  tech?: string | undefined;
+  domain?: string | undefined;
 }
 
 export function validateProjectSearch(search: Record<string, unknown>): ProjectFilters {
   return {
-    ...(typeof search.tech === "string" && search.tech ? { tech: search.tech } : {}),
-    ...(typeof search.domain === "string" && search.domain ? { domain: search.domain } : {}),
+    ...(typeof search["tech"] === "string" && search["tech"] ? { tech: search["tech"] } : {}),
+    ...(typeof search["domain"] === "string" && search["domain"] ? { domain: search["domain"] } : {}),
   };
 }
 

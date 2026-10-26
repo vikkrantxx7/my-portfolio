@@ -4,9 +4,11 @@ import { filterProjects, validateProjectSearch } from "./filter-projects";
 
 describe("Project filtering", () => {
   it("includes only featured projects by default", () => {
+    const first = content.projects[0];
+    if (!first) throw new Error("A project fixture is required");
     expect(
       filterProjects(
-        [...content.projects, { ...content.projects[0], slug: "hidden", featured: false }],
+        [...content.projects, { ...first, slug: "hidden", featured: false }],
         {},
       ).map((p) => p.slug),
     ).toEqual(["prepforge", "git-contributor-stats"]);
