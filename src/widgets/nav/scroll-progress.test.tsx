@@ -30,15 +30,15 @@ describe("progressPath", () => {
 
   it("keeps a thin, level trail that ends in a rounded head", () => {
     const d = progressPath(0.5);
-    // Trail sits low: only 1.8 of 8 units thick...
-    expect(d).toMatch(/^M0 6\.2 L38 6\.2 /);
-    // ...then swells to a slightly narrower head right at the tip.
-    expect(d).toMatch(/50 3 L50 8 L0 8 Z$/);
+    // Both edges swell equally around the shared centreline at y=4.
+    expect(d).toMatch(/^M0 3\.1 L38 3\.1 /);
+    expect(d).toContain("50 1.5 L50 6.5");
+    expect(d).toMatch(/38 4\.9 L0 4\.9 Z$/);
   });
 
   it("caps the head ramp so short ribbons stay trail-thin", () => {
     const d = progressPath(0.05);
-    expect(d).toMatch(/^M0 6\.2 L0 6\.2 /);
+    expect(d).toMatch(/^M0 3\.1 L0 3\.1 /);
   });
 });
 

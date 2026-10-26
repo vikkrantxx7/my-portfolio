@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 
 // Ribbon geometry in a 100x8 viewBox stretched across the header width.
-// Meteor trail: a thin level trail (1.8/8 tall) that swells into a rounded,
-// slightly narrower head (5/8 tall) over the last 12% of the drawn length.
+// Both ribbon edges swell symmetrically around the meteor's centreline.
+// The trail is 1.8/8 tall and the compact head is 5/8 tall.
 const RIBBON_HEIGHT = 8;
-const TRAIL_TOP = 6.2;
-const HEAD_TOP = 3;
+const HEAD_CENTER_Y = RIBBON_HEIGHT / 2;
+const TRAIL_TOP = HEAD_CENTER_Y - 0.9;
+const TRAIL_BOTTOM = HEAD_CENTER_Y + 0.9;
+const HEAD_TOP = HEAD_CENTER_Y - 2.5;
+const HEAD_BOTTOM = HEAD_CENTER_Y + 2.5;
 const HEAD_RAMP = 12;
-const HEAD_CENTER_Y = 5.5;
 
 /** Meteor-trail path: thin level trail ending in a rounded, broader head. */
 export function progressPath(progress: number): string {
   if (progress <= 0) return "";
   const p = Math.min(progress, 1) * 100;
   const rampStart = Math.max(p - HEAD_RAMP, 0);
-  return `M0 ${TRAIL_TOP} L${rampStart} ${TRAIL_TOP} C ${rampStart + (p - rampStart) * 0.55} ${TRAIL_TOP}, ${p - (p - rampStart) * 0.3} ${HEAD_TOP + 0.4}, ${p} ${HEAD_TOP} L${p} ${RIBBON_HEIGHT} L0 ${RIBBON_HEIGHT} Z`;
+  const controlStart = rampStart + (p - rampStart) * 0.55;
+  const controlEnd = p - (p - rampStart) * 0.3;
+  return `M0 ${TRAIL_TOP} L${rampStart} ${TRAIL_TOP} C ${controlStart} ${TRAIL_TOP}, ${controlEnd} ${HEAD_TOP + 0.4}, ${p} ${HEAD_TOP} L${p} ${HEAD_BOTTOM} C ${controlEnd} ${HEAD_BOTTOM - 0.4}, ${controlStart} ${TRAIL_BOTTOM}, ${rampStart} ${TRAIL_BOTTOM} L0 ${TRAIL_BOTTOM} Z`;
 }
 
 function readScrollProgress(): number {
