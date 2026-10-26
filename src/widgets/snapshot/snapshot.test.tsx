@@ -3,7 +3,10 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { content } from "@/content/data";
 import { Snapshot } from "./snapshot";
 
-let trigger: () => void = () => {};
+const observers: Array<() => void> = [];
+const trigger = () => {
+  for (const fire of observers) fire();
+};
 
 function setReducedMotion(reduce: boolean) {
   window.matchMedia = ((query: string) => ({
@@ -15,13 +18,14 @@ function setReducedMotion(reduce: boolean) {
 }
 
 beforeEach(() => {
+  observers.length = 0;
   setReducedMotion(false);
   // biome-ignore lint/suspicious/noExplicitAny: test stub
   (window as any).IntersectionObserver = class {
     cb: (e: Partial<IntersectionObserverEntry>[]) => void;
     constructor(cb: (e: Partial<IntersectionObserverEntry>[]) => void) {
       this.cb = cb;
-      trigger = () => this.cb([{ isIntersecting: true }]);
+      observers.push(() => this.cb([{ isIntersecting: true }]));
     }
     observe() {}
     disconnect() {}
