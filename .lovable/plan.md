@@ -5,6 +5,7 @@
 - Switching **to light**: the sun rises along an arc from the lower-left into the centre, while the moon sets from the centre down to the lower-right.
 - Switching **to dark**: the opposite — the moon rises from the lower-left and the sun sets to the lower-right.
 - Icons: Sun and Moon (lucide). With "reduce motion" turned on, the icons simply crossfade.
+- The page itself changes gradually: the new theme sweeps across the screen as a soft-edged wave from left to right (same direction as the icons), about 0.7s. With "reduce motion" on, or in browsers without support, it switches instantly.
 - Dark stays the default. Your choice is remembered on that device, and the page never flashes the wrong theme on load.
 - Accessible label ("Switch to light theme" / "Switch to dark theme"), keyboard friendly, visible focus ring.
 
@@ -35,4 +36,5 @@ The dark cyan #62F4E0 is unreadable on white (about 1.4:1), so light mode uses d
 - Tokens: keep current values as dark under `.dark`/`:root`, add a `.light` block; Tailwind `dark` custom variant already exists.
 - Pre-paint inline script in the root head reads stored theme; React reads it in an effect (no hydration mismatch).
 - New feature slice `features/theme-toggle`; arc motion via Motion `x`/`y`/`rotate` keyframes inside an `overflow-hidden` circle.
+- Wave: View Transitions API (`document.startViewTransition`) with the new snapshot revealed by an animated `mask-image` linear gradient (soft edge) moving left to right; fallback is an instant class swap. Tests: transition used when available, skipped when reduced motion or unsupported.
 - Record in AGENTS.md: theme is a root class toggled by the theme-toggle feature; all colours via tokens.
