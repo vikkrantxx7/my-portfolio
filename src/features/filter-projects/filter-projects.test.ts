@@ -7,10 +7,9 @@ describe("Project filtering", () => {
     const first = content.projects[0];
     if (!first) throw new Error("A project fixture is required");
     expect(
-      filterProjects(
-        [...content.projects, { ...first, slug: "hidden", featured: false }],
-        {},
-      ).map((p) => p.slug),
+      filterProjects([...content.projects, { ...first, slug: "hidden", featured: false }], {}).map(
+        (p) => p.slug,
+      ),
     ).toEqual(["prepforge", "git-contributor-stats"]);
   });
   it("filters by exact technology and intersects domain", () => {
