@@ -41,7 +41,7 @@ describe("buildPaletteItems", () => {
 describe("CommandPalette", () => {
   it("AC1: Ctrl+K opens and Esc closes", async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CommandPalette />);
+    await renderWithRouter(() => <CommandPalette />);
     await screen.findByRole("button", { name: /search/i });
     await user.keyboard("{Control>}k{/Control}");
     expect(await screen.findByRole("dialog")).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe("CommandPalette", () => {
 
   it("AC1: Meta+K opens it too", async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CommandPalette />);
+    await renderWithRouter(() => <CommandPalette />);
     await screen.findByRole("button", { name: /search/i });
     await user.keyboard("{Meta>}k{/Meta}");
     expect(await screen.findByRole("dialog")).toBeInTheDocument();
@@ -63,7 +63,7 @@ describe("CommandPalette", () => {
     window.addEventListener(achievementNavigationEvent, (e) =>
       heard((e as CustomEvent<string>).detail),
     );
-    renderWithRouter(<CommandPalette />);
+    await renderWithRouter(() => <CommandPalette />);
     await user.click(await screen.findByRole("button", { name: /search/i }));
     await user.type(screen.getByRole("combobox"), "rspack");
     await user.keyboard("{Enter}");
