@@ -33,9 +33,9 @@ export function ProjectDock({ projects, slug }: { projects: Project[]; slug: str
   return (
     <nav
       aria-label="Project controls"
-      className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
     >
-      <div className="flex w-full max-w-sm items-center justify-between rounded-full border border-primary/30 bg-background/85 px-2 backdrop-blur-xl">
+      <div className="pointer-events-auto flex w-full max-w-sm items-center justify-between rounded-full border border-primary/30 bg-background/85 px-2 backdrop-blur-xl">
         {previous ? (
           <Link
             to="/projects/$slug"
