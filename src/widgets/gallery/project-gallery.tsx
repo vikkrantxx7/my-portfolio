@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, RotateCcw } from "lucide-react";
 import { content } from "@/content/data";
 import { projectArtwork } from "@/content/project-artwork";
@@ -90,14 +91,15 @@ export function ProjectGallery({
                   ))}
                 </div>
                 <div className="mt-auto border-t border-border pt-6">
-                  <a
-                    href={`/projects/${project.slug}`}
+                  <Link
+                    to="/projects/$slug"
+                    params={{ slug: project.slug }}
                     aria-label={`Open case study: ${project.title}`}
                     className={buttonVariants({ variant: "ghost", size: "sm" })}
                   >
                     Open case study
                     <ArrowUpRight className="size-4 shrink-0" aria-hidden="true" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>
