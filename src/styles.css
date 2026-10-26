@@ -113,6 +113,59 @@
   --gradient-accent: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 
+/* Light theme: deeper teal/violet keep WCAG AA on cool paper; glows become soft shadows. */
+.light {
+  --background: oklch(0.977 0.005 265); /* #F6F7FB */
+  --foreground: oklch(0.18 0.025 265); /* #0E1220 */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.025 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.025 265);
+  --primary: oklch(0.52 0.09 182); /* #0A7C72 */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.5 0.21 285); /* #5B45D6 */
+  --secondary-foreground: oklch(0.99 0 0);
+  --muted: oklch(0.94 0.008 265);
+  --muted-foreground: oklch(0.43 0.03 265); /* #4A5266 */
+  --accent: oklch(0.94 0.008 265);
+  --accent-foreground: oklch(0.18 0.025 265);
+  --border: oklch(0.91 0.01 265); /* #E3E6EE */
+  --input: oklch(0.88 0.012 265);
+  --ring: oklch(0.52 0.09 182);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.18 0.025 265);
+  --sidebar-border: oklch(0.91 0.01 265);
+  --glow-primary:
+    0 1px 2px oklch(0.3 0.02 265 / 8%),
+    0 6px 18px -6px color-mix(in oklab, var(--primary) 22%, transparent);
+  --glow-violet: 0 8px 24px -8px color-mix(in oklab, var(--secondary) 22%, transparent);
+  --glow-halo:
+    0 0 0 3px var(--background),
+    0 4px 14px -2px oklch(0.3 0.02 265 / 18%);
+}
+
+.light .gradient-frame {
+  background: linear-gradient(oklch(1 0 0 / 0.92), oklch(0.97 0.005 265 / 0.9));
+}
+
+/* Theme change sweeps in as a soft-edged wave from left to right. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  mask-image: linear-gradient(to right, #000 40%, transparent 60%);
+  mask-size: 300% 100%;
+  mask-position: 100% 0;
+  animation: theme-wave 0.7s ease-in-out forwards;
+}
+@keyframes theme-wave {
+  to {
+    mask-position: 0 0;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

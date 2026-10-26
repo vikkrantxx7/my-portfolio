@@ -21,6 +21,7 @@ import {
 } from "react";
 import { content } from "@/content/data";
 import { replaceHash } from "@/features/deep-link/deep-link";
+import { ThemeToggle } from "@/features/theme-toggle/theme-toggle";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { AvatarPreview } from "./avatar-preview";
@@ -110,6 +111,7 @@ export function SiteNav() {
               ))}
             </a>
           </div>
+          <div className="flex items-center gap-6">
           <ul className="hidden items-center gap-8 md:flex">
             {NAV_SECTIONS.map((s) => (
               <li key={s.id}>
@@ -133,6 +135,8 @@ export function SiteNav() {
               </a>
             </li>
           </ul>
+          <ThemeToggle />
+          </div>
         </nav>
         <ScrollProgress />
       </header>

@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { type ReactNode, useEffect } from "react";
 import { CommandPalette } from "@/features/command-palette/command-palette";
+import { THEME_SCRIPT } from "@/features/theme-toggle/theme";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
 
@@ -106,8 +107,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: static pre-paint theme script */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <HeadContent />
       </head>
       <body>
