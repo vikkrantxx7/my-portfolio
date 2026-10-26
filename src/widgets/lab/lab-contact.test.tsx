@@ -16,7 +16,9 @@ describe("Engineering lab", () => {
 
   it("rejects lab links to achievements that do not exist", () => {
     const bad = { ...content, lab: [{ ...content.lab[0], achievementRef: "adidas/nope" }] };
-    expect(validateContent(bad as typeof content)).toContain("Unknown lab achievement: adidas/nope");
+    expect(validateContent(bad as typeof content)).toContain(
+      "Unknown lab achievement: adidas/nope",
+    );
   });
 });
 
