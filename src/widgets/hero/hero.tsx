@@ -36,7 +36,7 @@ export function Hero() {
           </Button>
           <a
             href={profile.resumeUrl}
-            download
+            download={profile.resumeFileName}
             className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}
           >
             Download resume ↗

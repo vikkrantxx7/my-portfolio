@@ -34,6 +34,6 @@ describe("Hero", () => {
     render(<Hero />);
     const link = screen.getByRole("link", { name: /download resume/i });
     expect(link).toHaveAttribute("href", "/resume.pdf");
-    expect(link).toHaveAttribute("download");
+    expect(link).toHaveAttribute("download", "Vikrant_Sharma_Lead_Fullstack_Engineer.pdf");
   });
 });
