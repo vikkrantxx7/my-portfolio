@@ -1,6 +1,7 @@
 export interface Profile {
   name: string;
   monogram: string;
+  avatarUrl?: string;
   role: string;
   headline: string;
   summary: string;

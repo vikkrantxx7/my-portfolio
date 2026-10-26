@@ -99,9 +99,22 @@ export function SiteNav() {
           <a href="#top" className="flex items-center gap-3 font-semibold text-foreground">
             <span
               aria-hidden
-              className="grid size-8 place-items-center rounded-md border border-primary/50 font-mono text-xs text-primary shadow-glow"
+              className="relative grid size-8 place-items-center overflow-hidden rounded-md border border-primary/50 font-mono text-xs text-primary shadow-glow"
             >
               {profile.monogram}
+              {profile.avatarUrl && (
+                <img
+                  data-avatar
+                  src={profile.avatarUrl}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="absolute inset-0 size-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              )}
             </span>
             <span>{profile.name}</span>
           </a>

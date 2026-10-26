@@ -6,6 +6,7 @@ export const content: Content = {
   profile: {
     name: "Vikrant Sharma",
     monogram: "VS",
+    avatarUrl: "https://avatars.githubusercontent.com/u/37444378?v=4",
     role: "Lead Fullstack Engineer · Frontend Architecture · AI-Assisted Development",
     headline: "I build systems, not just screens.",
     summary:
