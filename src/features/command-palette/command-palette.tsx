@@ -12,16 +12,29 @@ import {
 } from "@/features/deep-link/deep-link";
 import { scrollToSection } from "@/shared/lib/use-prefers-reduced-motion";
 
+type Base = { id: string; label: string; hint: string; keywords?: string[] };
 export type PaletteItem =
-  | { kind: "section"; id: string; label: string; hint: string; hash: string }
-  | { kind: "project"; id: string; label: string; hint: string; slug: string }
-  | { kind: "achievement"; id: string; label: string; hint: string; hash: string };
+  | (Base & { kind: "section"; hash: string })
+  | (Base & { kind: "project"; slug: string })
+  | (Base & { kind: "achievement"; hash: string });
 
 const SECTIONS = [
   { id: "work", label: "Work" },
   { id: "experience", label: "Experience" },
   { id: "about", label: "About & contact" },
 ];
+
+/** Every typed word must appear somewhere in the item's text. */
+export function paletteFilter(value: string, search: string, keywords: string[] = []) {
+  const hay = `${value} ${keywords.join(" ")}`.toLowerCase();
+  return search
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((w) => hay.includes(w))
+    ? 1
+    : 0;
+}
 
 /** Pure: every place the palette can reach, all of which also exist in normal navigation. */
 export function buildPaletteItems(c: Content): PaletteItem[] {
@@ -42,6 +55,7 @@ export function buildPaletteItems(c: Content): PaletteItem[] {
         label: p.title,
         hint: p.category,
         slug: p.slug,
+        keywords: [p.problem, ...p.tech, ...p.domains],
       }),
     ),
     ...c.experiences.flatMap((e) =>
@@ -52,6 +66,7 @@ export function buildPaletteItems(c: Content): PaletteItem[] {
           label: a.summary,
           hint: e.company,
           hash: achievementHash(e.id, a.id),
+          keywords: [a.context, a.contribution, a.impact, ...a.decisions],
         }),
       ),
     ),
@@ -117,7 +132,11 @@ export function CommandPalette() {
           <DialogDescription className="sr-only">
             Jump to a section, project or achievement.
           </DialogDescription>
-          <CommandPrimitive className="bg-popover text-popover-foreground" loop>
+          <CommandPrimitive
+            className="bg-popover text-popover-foreground"
+            loop
+            filter={paletteFilter}
+          >
             <div className="flex items-center gap-2 border-b border-border px-4">
               <Search aria-hidden className="size-4 text-primary" />
               <CommandPrimitive.Input
@@ -142,6 +161,7 @@ export function CommandPalette() {
                       <CommandPrimitive.Item
                         key={i.id}
                         value={`${i.label} ${i.hint} ${i.id}`}
+                        keywords={i.keywords}
                         onSelect={() => select(i)}
                         className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-2.5 text-sm data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-primary"
                       >

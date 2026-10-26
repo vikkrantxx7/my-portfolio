@@ -66,7 +66,6 @@ describe("CommandPalette", () => {
     await renderWithRouter(() => <CommandPalette />);
     await user.click(await screen.findByRole("button", { name: /search/i }));
     await user.type(screen.getByRole("combobox"), "rspack");
-    console.log("OPTS", screen.queryAllByRole("option").map((o) => o.textContent + o.getAttribute("aria-selected")));
     await user.keyboard("{Enter}");
     await waitFor(() => expect(heard).toHaveBeenCalledWith("#exp-adidas-rspack-optimization"));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
