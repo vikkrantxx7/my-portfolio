@@ -64,7 +64,7 @@ export function replaceHash(
   if (typeof window === "undefined") return;
   const url = new URL(window.location.href);
   url.hash = hash ?? "";
-  window.history.replaceState(window.history.state, "", url.href);
+  window.history.replaceState(window.history.state ?? null, "", url.href);
 }
 
 export function achievementShareUrl(hash: string) {
