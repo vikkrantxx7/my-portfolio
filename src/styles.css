@@ -106,7 +106,8 @@
   --glow-primary: 0 0 24px -4px color-mix(in oklab, var(--primary) 60%, transparent);
   --glow-violet: 0 0 32px -6px color-mix(in oklab, var(--secondary) 55%, transparent);
   /* Tight dark separation ring + cyan bloom: lifts a small badge off photography. */
-  --glow-halo: 0 0 0 3px color-mix(in oklab, var(--background) 72%, transparent),
+  --glow-halo:
+    0 0 0 3px color-mix(in oklab, var(--background) 72%, transparent),
     0 0 18px 2px color-mix(in oklab, var(--primary) 55%, transparent),
     0 0 42px 10px color-mix(in oklab, var(--primary) 26%, transparent);
   --gradient-accent: linear-gradient(90deg, var(--primary), var(--secondary));
@@ -237,10 +238,7 @@
   isolation: isolate;
   border-color: transparent;
   color: var(--color-foreground);
-  background: linear-gradient(
-    oklch(0.17 0.03 252 / 0.85),
-    oklch(0.14 0.03 252 / 0.82)
-  );
+  background: linear-gradient(oklch(0.17 0.03 252 / 0.85), oklch(0.14 0.03 252 / 0.82));
 }
 
 .gradient-frame::before {
@@ -295,18 +293,41 @@
 }
 
 @keyframes dock-hint-left {
-  0%, 100% { transform: translateX(0); opacity: 0.6; }
-  50% { transform: translateX(-3px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(-3px);
+    opacity: 1;
+  }
 }
 @keyframes dock-hint-right {
-  0%, 100% { transform: translateX(0); opacity: 0.6; }
-  50% { transform: translateX(3px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(3px);
+    opacity: 1;
+  }
 }
-.dock-hint-left { animation: dock-hint-left 1.8s ease-in-out infinite; }
-.dock-hint-right { animation: dock-hint-right 1.8s ease-in-out infinite; }
+.dock-hint-left {
+  animation: dock-hint-left 1.8s ease-in-out infinite;
+}
+.dock-hint-right {
+  animation: dock-hint-right 1.8s ease-in-out infinite;
+}
 @media (max-width: 767px) {
-  body { padding-bottom: calc(env(safe-area-inset-bottom) + 6rem); }
+  body {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dock-hint-left, .dock-hint-right { animation: none; }
+  .dock-hint-left,
+  .dock-hint-right {
+    animation: none;
+  }
 }
