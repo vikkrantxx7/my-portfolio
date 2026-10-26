@@ -11,9 +11,10 @@ import type { ReactNode } from "react";
 
 /** Renders UI at "/" inside a minimal router so TanStack `Link`s work in tests. */
 export async function renderWithRouter(ui: () => ReactNode) {
-  const rootRoute = createRootRoute({ component: () => <Outlet /> });
-  const home = createRoute({ getParentRoute: () => rootRoute, path: "/", component: ui });
+  const rootRoute = createRootRoute({ staticData: { sitemap: false }, component: () => <Outlet /> });
+  const home = createRoute({ staticData: { sitemap: true }, getParentRoute: () => rootRoute, path: "/", component: ui });
   const project = createRoute({
+    staticData: { sitemap: true },
     getParentRoute: () => rootRoute,
     path: "/projects/$slug",
     component: () => <h1>Case study page</h1>,

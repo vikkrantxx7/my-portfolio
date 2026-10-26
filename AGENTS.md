@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
 - Social banner media uses a CDN asset pointer and the favicon uses a small local public image, keeping share media lightweight and browser icon discovery reliable.
 - Section navigation replaces the hash with automatic scrolling disabled; on mobile, close the menu before measuring the scroll target and restore focus with preventScroll to avoid correction jumps.
