@@ -3,6 +3,7 @@ import { projectArtwork } from "@/content/project-artwork";
 import type { Project } from "@/content/types";
 import { buttonVariants } from "@/shared/ui/button";
 import { Tag } from "@/shared/ui/tag";
+import { ArchitectureDiagram } from "@/widgets/architecture-diagram/architecture-diagram";
 
 export function ProjectDetail({ project }: { project: Project }) {
   const study = project.caseStudy;
@@ -49,6 +50,7 @@ export function ProjectDetail({ project }: { project: Project }) {
       </section>
       <section className="space-y-6 border-t border-border pt-10">
         <h2 className="text-2xl font-semibold">System design</h2>
+        <ArchitectureDiagram diagram={study.diagram} />
         <ol className="grid gap-8 sm:grid-cols-2">
           {study.architecture.map((layer, index) => (
             <li key={layer.title} className="space-y-3">

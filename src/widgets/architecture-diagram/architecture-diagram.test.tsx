@@ -1,15 +1,21 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
+import { content } from "@/content/data";
 import type { Diagram } from "@/content/types";
 import { validateDiagram } from "@/content/validate";
-import { content } from "@/content/data";
 import { ArchitectureDiagram, connectedIds } from "./architecture-diagram";
 
 const diagram: Diagram = {
   layers: [
     { title: "Client", nodes: [{ id: "web", label: "Web app" }] },
-    { title: "Service", nodes: [{ id: "api", label: "API" }, { id: "jobs", label: "Jobs" }] },
+    {
+      title: "Service",
+      nodes: [
+        { id: "api", label: "API" },
+        { id: "jobs", label: "Jobs" },
+      ],
+    },
     { title: "Data", nodes: [{ id: "db", label: "Database" }] },
   ],
   edges: [
@@ -45,9 +51,15 @@ describe("ArchitectureDiagram", () => {
     fireEvent.mouseEnter(screen.getByRole("button", { name: "Web app" }));
     expect(screen.getByRole("button", { name: "Web app" })).toHaveAttribute("data-state", "active");
     expect(screen.getByRole("button", { name: "API" })).toHaveAttribute("data-state", "related");
-    expect(screen.getByRole("button", { name: "Database" })).toHaveAttribute("data-state", "dimmed");
+    expect(screen.getByRole("button", { name: "Database" })).toHaveAttribute(
+      "data-state",
+      "dimmed",
+    );
     expect(screen.getByText(/Web app calls API/)).toHaveAttribute("data-state", "related");
-    expect(screen.getByText(/API reads and writes Database/)).toHaveAttribute("data-state", "dimmed");
+    expect(screen.getByText(/API reads and writes Database/)).toHaveAttribute(
+      "data-state",
+      "dimmed",
+    );
   });
 
   it("works with the keyboard and clears when focus leaves", async () => {
