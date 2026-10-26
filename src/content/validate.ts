@@ -7,6 +7,7 @@ export function validateContent(c: Content): string[] {
   for (const p of c.projects) {
     if (slugs.has(p.slug)) errors.push(`Duplicate project slug: ${p.slug}`);
     slugs.add(p.slug);
+    if (!p.caseStudy.repository) errors.push(`Missing project repository: ${p.slug}`);
   }
   const expIds = new Set<string>();
   for (const e of c.experiences) {

@@ -1,9 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { content } from "@/content/data";
-import { projectArtwork } from "@/content/project-artwork";
 import { buttonVariants } from "@/shared/ui/button";
-import { Tag } from "@/shared/ui/tag";
+import { ProjectDetail } from "@/widgets/project-detail/project-detail";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -49,27 +48,7 @@ function ProjectOverview() {
         <ArrowLeft className="size-4" aria-hidden="true" />
         Selected work
       </Link>
-      <p className="font-mono text-sm text-secondary">{project.category}</p>
-      <h1 className="break-words text-4xl font-semibold sm:text-5xl">{project.title}</h1>
-      <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">{project.problem}</p>
-      <p>
-        <span className="text-muted-foreground">My role · </span>
-        {project.role}
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {project.tech.map((tech) => (
-          <Tag key={tech}>{tech}</Tag>
-        ))}
-      </div>
-      {projectArtwork[project.slug] && (
-        <img
-          src={projectArtwork[project.slug]}
-          alt=""
-          width={1024}
-          height={640}
-          className="aspect-[8/5] w-full rounded-lg object-cover"
-        />
-      )}
+      <ProjectDetail project={project} />
     </main>
   );
 }

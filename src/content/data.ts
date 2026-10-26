@@ -1,3 +1,4 @@
+import { gitStatsCaseStudy, prepforgeCaseStudy } from "./case-studies";
 import type { Content } from "./types";
 
 // Content sourced from Vikrant's resume. Achievement "decisions" are summarised from it.
@@ -174,11 +175,13 @@ export const content: Content = {
       slug: "prepforge",
       title: "PrepForge",
       category: "Open Source · Interview Prep",
-      problem: "Interview prep platform with progress tracking and spaced repetition.",
+      problem:
+        "A structured interview question bank with topic browsing and question-level progress APIs.",
       role: "Creator",
       tech: ["Next.js", "Fastify", "GraphQL", "PostgreSQL", "Drizzle ORM", "TypeScript"],
       domains: ["Fullstack", "Open Source"],
       featured: true,
+      caseStudy: prepforgeCaseStudy,
     },
     {
       slug: "git-contributor-stats",
@@ -187,9 +190,10 @@ export const content: Content = {
       problem:
         "CLI and library for Git contributor and activity analytics, with charts and reports.",
       role: "Author & Maintainer",
-      tech: ["TypeScript", "Node.js", "Vite", "Vitest", "Biome"],
+      tech: ["TypeScript", "Node.js", "Commander", "Chart.js", "Vitest", "Biome"],
       domains: ["Developer Tools", "Open Source"],
       featured: true,
+      caseStudy: gitStatsCaseStudy,
     },
   ],
   skills: [

@@ -28,6 +28,17 @@ export interface Experience {
   achievements: Achievement[];
 }
 
+export interface CaseStudy {
+  repository: string;
+  status: string;
+  overview: string;
+  architecture: { title: string; detail: string }[];
+  decisions: { title: string; detail: string }[];
+  implementation: string[];
+  results: string[];
+  sources: { label: string; path: string }[];
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -37,6 +48,7 @@ export interface Project {
   tech: string[];
   domains: string[];
   featured: boolean;
+  caseStudy: CaseStudy;
 }
 
 export interface Skill {

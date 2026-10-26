@@ -1,5 +1,5 @@
-# Story 6 — Selected work
-- [x] Write and run failing filter and gallery tests.
-- [x] Build gallery for the two resume-backed projects, with domain/technology URL filters and artwork.
-- [x] Add working project overview destinations; full case studies stay in Story 7.
-- [x] Run tests, check preview, and verify filters, navigation, and mobile layout.
+# Portfolio — Current requests
+- [x] Replace React Hook Form and resolvers with tested TanStack Form primitives.
+- [x] Reproduce and fix filter scroll jumps without reloading or losing achievement hashes.
+- [x] Research both repositories and add evidence-backed project case studies.
+- [x] Run tests and verify filters, project details, links, and phone layout.

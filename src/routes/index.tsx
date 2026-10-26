@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { content } from "@/content/data";
+import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
 import { SectionHeading } from "@/shared/ui/section-heading";
 import { ProjectGallery } from "@/widgets/gallery/project-gallery";
@@ -46,7 +47,7 @@ function Index() {
             <ProjectGallery
               filters={filters}
               onFiltersChange={(search) =>
-                navigate({ search, hash: window.location.hash.slice(1), resetScroll: false })
+                navigate(projectFilterNavigation(search, window.location.hash))
               }
             />
             <CareerTimeline />
