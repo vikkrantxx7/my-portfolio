@@ -12,7 +12,7 @@ describe("content model", () => {
   });
 
   it("uses the owner's name", () => {
-    expect(content.profile.name).toBe("Vikkrant Sharma");
+    expect(content.profile.name).toBe("Vikrant Sharma");
   });
 
   it("reports duplicate experience ids", () => {
@@ -25,17 +25,13 @@ describe("content model", () => {
       ...content,
       experiences: [{ ...exp, achievements: [ach, ach] }],
     };
-    expect(validateContent(broken)).toContain(
-      `Duplicate achievement id: ${exp.id}/${ach.id}`,
-    );
+    expect(validateContent(broken)).toContain(`Duplicate achievement id: ${exp.id}/${ach.id}`);
   });
 
   it("reports achievement links to unknown projects", () => {
     const broken = {
       ...content,
-      experiences: [
-        { ...exp, achievements: [{ ...ach, projectSlugs: ["ghost"] }] },
-      ],
+      experiences: [{ ...exp, achievements: [{ ...ach, projectSlugs: ["ghost"] }] }],
     };
     expect(validateContent(broken)).toContain(`Unknown project slug: ghost`);
   });

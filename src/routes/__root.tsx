@@ -78,9 +78,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Vikkrant Sharma — Senior Software Engineer" },
-      { name: "description", content: "Portfolio of Vikkrant Sharma: frontend architecture, scalable systems and AI-enabled products." },
-      { name: "author", content: "Vikkrant Sharma" },
+      { title: "Vikrant Sharma — Senior Software Engineer" },
+      { name: "description", content: "Portfolio of Vikrant Sharma: frontend architecture, scalable systems and AI-enabled products." },
+      { name: "author", content: "Vikrant Sharma" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
