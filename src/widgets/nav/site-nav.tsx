@@ -100,8 +100,14 @@ export function SiteNav() {
         >
           <div className="flex items-center gap-3">
             <AvatarPreview />
-            <a href="#top" className="font-semibold text-foreground">
-              {profile.name}
+            <a href="#top" onClick={go("top")} aria-label={profile.name} className="font-semibold text-foreground">
+              {profile.name.split(" ").map((part, index) => (
+                <span key={`${index}-${part}`}>
+                  {index > 0 ? " " : ""}
+                  <span className={index === 0 ? "text-primary" : "text-secondary"}>{part.slice(0, 1)}</span>
+                  {part.slice(1)}
+                </span>
+              ))}
             </a>
           </div>
           <ul className="hidden items-center gap-8 md:flex">
