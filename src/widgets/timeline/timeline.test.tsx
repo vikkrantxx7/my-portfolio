@@ -19,6 +19,15 @@ beforeEach(() => {
     addEventListener: () => {},
     removeEventListener: () => {},
   })) as typeof window.matchMedia;
+  Object.assign(navigator, {
+    clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+  });
+  Element.prototype.scrollIntoView = vi.fn();
+});
+
+afterEach(() => {
+  window.location.hash = "";
+  vi.restoreAllMocks();
 });
 
 describe("Career timeline", () => {
