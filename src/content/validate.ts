@@ -6,6 +6,13 @@ export function validateDiagram(d: Diagram): string[] {
   const errors: string[] = [];
   for (const e of d.edges)
     for (const id of [e.from, e.to]) if (!ids.has(id)) errors.push(`Unknown diagram box: ${id}`);
+  for (const entry of c.lab ?? []) {
+    if (!entry.achievementRef) continue;
+    const [expId, achId] = entry.achievementRef.split("/");
+    const exp = c.experiences.find((e) => e.id === expId);
+    if (!exp?.achievements.some((a) => a.id === achId))
+      errors.push(`Unknown lab achievement: ${entry.achievementRef}`);
+  }
   return errors;
 }
 
@@ -29,6 +36,13 @@ export function validateContent(c: Content): string[] {
       achIds.add(a.id);
       for (const s of a.projectSlugs) if (!slugs.has(s)) errors.push(`Unknown project slug: ${s}`);
     }
+  }
+  for (const entry of c.lab ?? []) {
+    if (!entry.achievementRef) continue;
+    const [expId, achId] = entry.achievementRef.split("/");
+    const exp = c.experiences.find((e) => e.id === expId);
+    if (!exp?.achievements.some((a) => a.id === achId))
+      errors.push(`Unknown lab achievement: ${entry.achievementRef}`);
   }
   return errors;
 }
