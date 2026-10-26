@@ -139,7 +139,7 @@ describe("Achievement deep links", () => {
     render(<CareerTimeline />);
     await user.click(screen.getByRole("button", { name: achievement.summary }));
     await user.click(screen.getByRole("button", { name: "Copy link" }));
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+    expect(await navigator.clipboard.readText()).toBe(
       `${window.location.origin}${window.location.pathname}${hash}`,
     );
     expect(screen.getByRole("status")).toHaveTextContent("Link copied");
