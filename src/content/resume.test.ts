@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { content } from "./data";
 
@@ -26,5 +27,13 @@ describe("content from resume", () => {
     const slugs = content.projects.map((p) => p.slug);
     expect(slugs).toContain("prepforge");
     expect(slugs).toContain("git-contributor-stats");
+  });
+
+  it("the resume PDF the site serves uses the same email", () => {
+    const pdf = readFileSync("public/resume.pdf", "latin1");
+    const mailtos = pdf.match(/mailto:[^>\s/)]+/g) ?? [];
+    expect(mailtos.length).toBeGreaterThan(0);
+    expect(new Set(mailtos)).toEqual(new Set([`mailto:${content.profile.email}`]));
+    expect(pdf).not.toContain("sharma.vikrant@gmail.com");
   });
 });
