@@ -3,6 +3,26 @@ import type { CaseStudy } from "./types";
 export const prepforgeCaseStudy: CaseStudy = {
   repository: "https://github.com/vikkrantxx7/prepforge",
   status: "In development",
+  diagram: {
+    layers: [
+      { title: "Client", nodes: [{ id: "web", label: "Next.js web app" }] },
+      {
+        title: "Service",
+        nodes: [
+          { id: "rest", label: "REST /api/v1 · Fastify" },
+          { id: "graphql", label: "GraphQL · Mercurius" },
+        ],
+      },
+      { title: "Data", nodes: [{ id: "db", label: "PostgreSQL · Drizzle" }] },
+      { title: "Shared", nodes: [{ id: "schemas", label: "Zod schemas package" }] },
+    ],
+    edges: [
+      { from: "rest", to: "db", label: "reads and writes" },
+      { from: "graphql", to: "db", label: "reads and writes" },
+      { from: "schemas", to: "web", label: "validates contracts for" },
+      { from: "schemas", to: "rest", label: "validates contracts for" },
+    ],
+  },
   overview:
     "An interview-preparation platform that organizes questions by technology and topic. Guests can browse the question bank; backend progress APIs support studying and completed states for signed-in users. A shared schema package keeps the web and API contracts aligned.",
   architecture: [
@@ -75,6 +95,40 @@ export const prepforgeCaseStudy: CaseStudy = {
 export const gitStatsCaseStudy: CaseStudy = {
   repository: "https://github.com/vikkrantxx7/git-contributor-stats",
   status: "Package v2.2.0 · MIT",
+  diagram: {
+    layers: [
+      {
+        title: "Interfaces",
+        nodes: [
+          { id: "cli", label: "CLI · Commander" },
+          { id: "lib", label: "ESM library exports" },
+        ],
+      },
+      {
+        title: "Input",
+        nodes: [
+          { id: "stats", label: "Stats entry point" },
+          { id: "git", label: "Git log" },
+        ],
+      },
+      { title: "Analysis", nodes: [{ id: "analyze", label: "Analyzer + aggregator" }] },
+      {
+        title: "Output",
+        nodes: [
+          { id: "reports", label: "Reports" },
+          { id: "charts", label: "Charts · SVG/PNG" },
+        ],
+      },
+    ],
+    edges: [
+      { from: "cli", to: "stats", label: "runs" },
+      { from: "lib", to: "stats", label: "exposes" },
+      { from: "stats", to: "git", label: "parses commits from" },
+      { from: "stats", to: "analyze", label: "feeds records to" },
+      { from: "analyze", to: "reports", label: "formats into" },
+      { from: "analyze", to: "charts", label: "renders into" },
+    ],
+  },
   overview:
     "A Node.js CLI and importable TypeScript library that turns local Git history into contributor and activity analytics. It supports identity grouping, targeted repository filters, report output and charts without requiring a hosted analytics service.",
   architecture: [

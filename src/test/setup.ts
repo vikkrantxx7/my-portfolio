@@ -18,3 +18,23 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: () => {},
   }),
 });
+
+// jsdom lacks IntersectionObserver; Motion's in-view reveals need a no-op stand-in.
+if (!("IntersectionObserver" in window)) {
+  class NoopIntersectionObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() {
+      return [];
+    }
+  }
+  Object.defineProperty(window, "IntersectionObserver", {
+    writable: true,
+    value: NoopIntersectionObserver,
+  });
+  Object.defineProperty(globalThis, "IntersectionObserver", {
+    writable: true,
+    value: NoopIntersectionObserver,
+  });
+}

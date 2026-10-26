@@ -28,7 +28,18 @@ export interface Experience {
   achievements: Achievement[];
 }
 
+export interface DiagramNode {
+  id: string;
+  label: string;
+}
+
+export interface Diagram {
+  layers: { title: string; nodes: DiagramNode[] }[];
+  edges: { from: string; to: string; label: string }[];
+}
+
 export interface CaseStudy {
+  diagram: Diagram;
   repository: string;
   status: string;
   overview: string;
