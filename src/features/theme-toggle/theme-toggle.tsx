@@ -1,0 +1,43 @@
+import { Moon, Sun } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import { readTheme, switchTheme, type Theme } from "./theme";
+
+export function ThemeToggle() {
+  const [theme, setTheme] = useState<Theme>("dark");
+  const reduce = usePrefersReducedMotion();
+
+  useEffect(() => setTheme(readTheme()), []);
+
+  const next: Theme = theme === "dark" ? "light" : "dark";
+  const Icon = theme === "light" ? Sun : Moon;
+
+  return (
+    <button
+      type="button"
+      aria-label={`Switch to ${next} theme`}
+      aria-pressed={theme === "light"}
+      onClick={() => {
+        switchTheme(next, reduce);
+        setTheme(next);
+      }}
+      className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-card/60 text-primary shadow-glow transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <AnimatePresence initial={false}>
+        <motion.span
+          key={theme}
+          data-icon={theme === "light" ? "sun" : "moon"}
+          className="absolute inset-0 flex items-center justify-center"
+          // Rises from the lower-left, sets toward the lower-right.
+          initial={reduce ? { opacity: 0 } : { x: -16, y: 16, rotate: -60, opacity: 0 }}
+          animate={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
+          exit={reduce ? { opacity: 0 } : { x: 16, y: 16, rotate: 60, opacity: 0 }}
+          transition={reduce ? { duration: 0.15 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Icon aria-hidden className="size-5" />
+        </motion.span>
+      </AnimatePresence>
+    </button>
+  );
+}
