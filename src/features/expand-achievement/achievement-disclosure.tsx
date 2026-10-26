@@ -65,7 +65,7 @@ export function AchievementDisclosure({
       }
     }, 250);
     return () => window.clearTimeout(retry);
-  }, [experienceId, achievement.id, id, hash]);
+  }, [experienceId, achievement.id, id, hash, triggerId]);
 
   const relatedProjects = content.projects.filter((project) =>
     achievement.projectSlugs.includes(project.slug),
@@ -129,7 +129,7 @@ export function AchievementDisclosure({
   return (
     <li className="border-b border-border last:border-b-0">
       <Button
-        id={`${id}-trigger`}
+        id={triggerId}
         variant="ghost"
         aria-expanded={open}
         aria-controls={`${id}-details`}
@@ -148,7 +148,7 @@ export function AchievementDisclosure({
       </Button>
       {reducedMotion ? (
         open && (
-          <section id={`${id}-details`} aria-labelledby={`${id}-trigger`}>
+          <section id={`${id}-details`} aria-labelledby={triggerId}>
             {details}
           </section>
         )
@@ -158,7 +158,7 @@ export function AchievementDisclosure({
             <motion.section
               key="details"
               id={`${id}-details`}
-              aria-labelledby={`${id}-trigger`}
+              aria-labelledby={triggerId}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
