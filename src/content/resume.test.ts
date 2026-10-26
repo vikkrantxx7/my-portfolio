@@ -28,4 +28,12 @@ describe("content from resume", () => {
     expect(slugs).toContain("prepforge");
     expect(slugs).toContain("git-contributor-stats");
   });
+
+  it("the resume PDF the site serves uses the same email", () => {
+    const pdf = readFileSync(new URL("../../public/resume.pdf", import.meta.url), "latin1");
+    const mailtos = pdf.match(/mailto:[^>\s/)]+/g) ?? [];
+    expect(mailtos.length).toBeGreaterThan(0);
+    expect(new Set(mailtos)).toEqual(new Set([`mailto:${content.profile.email}`]));
+    expect(pdf).not.toContain("sharma.vikrant@gmail.com");
+  });
 });
