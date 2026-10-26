@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import ogBannerUrl from "@/assets/og-banner.jpg";
 import { content } from "@/content/data";
-import { getRequestOrigin } from "@/shared/lib/origin.functions";
-import { personJsonLd } from "@/shared/lib/seo";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
+import { getRequestOrigin } from "@/shared/lib/origin.functions";
+import { personJsonLd } from "@/shared/lib/seo";
 import { Contact } from "@/widgets/contact/contact";
 import { ProjectGallery } from "@/widgets/gallery/project-gallery";
 import { Hero } from "@/widgets/hero/hero";
