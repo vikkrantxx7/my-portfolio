@@ -1,3 +1,4 @@
+import { useRouter } from "@tanstack/react-router";
 import { ArrowUpRight, ChevronDown, Link2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
@@ -44,6 +45,8 @@ export function AchievementDisclosure({
   experienceId: string;
 }) {
   const [open, setOpen] = useState(false);
+  const router = useRouter({ warn: false });
+  const navigate = router?.navigate;
   const [highlighted, setHighlighted] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const id = `achievement-${experienceId}-${achievement.id}`;
@@ -76,7 +79,7 @@ export function AchievementDisclosure({
           settled = true;
           window.clearTimeout(settleTimer);
           if (onSettled) window.removeEventListener("scrollend", onSettled);
-          replaceHash(hash);
+          replaceHash(hash, navigate);
           setHighlighted(true);
           highlightTimer = window.setTimeout(() => setHighlighted(false), 2000);
         };
@@ -91,7 +94,7 @@ export function AchievementDisclosure({
       cancel();
       window.removeEventListener(achievementNavigationEvent, reveal);
     };
-  }, [hash, triggerId, reducedMotion]);
+  }, [hash, triggerId, reducedMotion, navigate]);
 
   useEffect(() => {
     const link = resolveDeepLink(content.experiences, window.location.hash);
@@ -187,7 +190,7 @@ export function AchievementDisclosure({
         onClick={() => {
           const next = !open;
           setOpen(next);
-          replaceHash(next ? hash : null);
+          replaceHash(next ? hash : null, navigate);
         }}
         className="h-auto min-h-16 w-full scroll-mt-24 justify-between gap-4 rounded-none border-0 px-4 py-5 text-left font-sans text-sm normal-case tracking-normal hover:bg-primary/5 md:px-5 md:text-base"
       >
