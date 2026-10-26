@@ -12,7 +12,7 @@ describe("Hero", () => {
   it("AC1: shows headline, role line and both actions", () => {
     render(<Hero />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      /I build systems, not just screens/i,
+      /I build systems,\s*not just screens/i,
     );
     expect(screen.getByText(/Lead Fullstack Engineer/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /explore my work/i })).toBeInTheDocument();
