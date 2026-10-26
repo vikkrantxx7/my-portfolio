@@ -1,9 +1,28 @@
 import { useRouter } from "@tanstack/react-router";
-import { type KeyboardEvent, type MouseEvent, useEffect, useRef, useState } from "react";
+import {
+  Briefcase,
+  ChevronLeft,
+  ChevronRight,
+  FileDown,
+  GitCommitVertical,
+  LayoutGrid,
+  type LucideIcon,
+  User,
+  X,
+} from "lucide-react";
+import { motion } from "motion/react";
+import {
+  type AnchorHTMLAttributes,
+  type KeyboardEvent,
+  type MouseEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { content } from "@/content/data";
 import { replaceHash } from "@/features/deep-link/deep-link";
 import { cn } from "@/lib/utils";
-import { scrollToSection } from "@/shared/lib/use-prefers-reduced-motion";
+import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { useActiveSection } from "./use-active-section";
 
 export const NAV_SECTIONS = [
@@ -12,12 +31,18 @@ export const NAV_SECTIONS = [
   { id: "about", label: "About" },
 ] as const;
 
+const LEFT = [
+  { id: "work", short: "Work", icon: Briefcase },
+  { id: "experience", short: "Experience", icon: GitCommitVertical },
+] as const;
+
 const ids = NAV_SECTIONS.map((s) => s.id);
 
 export function SiteNav() {
   const { profile } = content;
   const router = useRouter({ warn: false });
   const active = useActiveSection(ids);
+  const reduce = usePrefersReducedMotion();
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -65,6 +90,7 @@ export function SiteNav() {
     );
 
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
       <nav
         aria-label="Primary"
@@ -102,44 +128,119 @@ export function SiteNav() {
             </a>
           </li>
         </ul>
+      </nav>
+    </header>
+    <div
+      data-dock
+      className="fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
+    >
+      {open && (
+        <button
+          type="button"
+          aria-hidden
+          tabIndex={-1}
+          className="fixed inset-0 -z-10 bg-background/40 backdrop-blur-[2px]"
+          onClick={close}
+        />
+      )}
+      <div className="relative flex h-16 w-full max-w-sm items-center justify-center">
+        {open && (
+          <motion.div
+            id="mobile-menu"
+            ref={menuRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+            onKeyDown={onMenuKey}
+            initial={reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }}
+            animate={{ clipPath: "inset(0 0% 0 0% round 999px)", opacity: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
+          >
+            <ul data-testid="dock-left" className="flex justify-around">
+              {LEFT.map((s) => (
+                <li key={s.id}>
+                  <DockLink
+                    href={`#${s.id}`}
+                    onClick={go(s.id)}
+                    icon={s.icon}
+                    label={s.short}
+                    active={active === s.id}
+                  />
+                </li>
+              ))}
+            </ul>
+            <span aria-hidden />
+            <ul data-testid="dock-right" className="flex justify-around">
+              <li>
+                <DockLink
+                  href="#about"
+                  onClick={go("about")}
+                  icon={User}
+                  label="About"
+                  active={active === "about"}
+                />
+              </li>
+              <li>
+                <DockLink href={profile.resumeUrl} download icon={FileDown} label="CV" />
+              </li>
+            </ul>
+          </motion.div>
+        )}
         <button
           ref={toggleRef}
           type="button"
-          className="font-mono text-xs uppercase tracking-[0.18em] text-foreground md:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => (open ? close() : setOpen(true))}
+          className="relative z-10 flex h-12 items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
         >
-          {open ? "Close" : "Menu"}
+          {open ? (
+            <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+          ) : (
+            <>
+              <ChevronLeft className="dock-hint-left size-4" />
+              <LayoutGrid className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+              <ChevronRight className="dock-hint-right size-4" />
+            </>
+          )}
         </button>
-      </nav>
-      {open && (
-        <div
-          id="mobile-menu"
-          ref={menuRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menu"
-          onKeyDown={onMenuKey}
-          className="border-t border-border bg-background px-6 py-6 md:hidden"
-        >
-          <ul className="flex flex-col gap-5">
-            {NAV_SECTIONS.map((s) => (
-              <li key={s.id}>
-                <a href={`#${s.id}`} onClick={go(s.id)} className={linkCls(s.id)}>
-                  {s.label}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href={profile.resumeUrl} download className={linkCls("resume")}>
-                Resume PDF
-              </a>
-            </li>
-          </ul>
-        </div>
+      </div>
+    </div>
+    </>
+  );
+}
+
+function DockLink({
+  icon: Icon,
+  label,
+  active,
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement> & {
+  icon: LucideIcon;
+  label: string;
+  active?: boolean;
+}) {
+  return (
+    <a
+      {...props}
+      aria-current={active ? "true" : undefined}
+      className={cn(
+        "flex min-h-12 min-w-12 flex-col items-center justify-center gap-1 rounded-xl px-1 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+        active ? "text-primary" : "text-muted-foreground",
       )}
-    </header>
+    >
+      <Icon
+        aria-hidden
+        className={cn(
+          "size-5 text-primary",
+          active
+            ? "drop-shadow-[0_0_10px_var(--color-primary)]"
+            : "opacity-80 drop-shadow-[0_0_4px_var(--color-primary)]",
+        )}
+      />
+      <span className="font-mono text-[10px] uppercase tracking-[0.14em]">{label}</span>
+    </a>
   );
 }
