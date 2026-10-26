@@ -7,12 +7,9 @@ function StatCard({ stat }: { stat: Stat }) {
   const { ref, value } = useCountUp<HTMLDivElement>(stat.value);
   return (
     <div ref={ref} className="rounded-xl border border-border bg-card p-6">
-      <p
-        data-testid={`stat-${stat.id}`}
-        className="text-4xl font-semibold tabular-nums text-primary md:text-5xl"
-      >
+      <p className="text-4xl font-semibold tabular-nums text-primary md:text-5xl">
         <span className="sr-only">{`${stat.value}${stat.suffix}`}</span>
-        <span aria-hidden>{`${value}${stat.suffix}`}</span>
+        <span aria-hidden data-testid={`stat-${stat.id}`}>{`${value}${stat.suffix}`}</span>
       </p>
       <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
         {stat.label}

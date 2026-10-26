@@ -41,21 +41,22 @@ describe("Snapshot", () => {
   it("AC1: renders strengths, stats and problem areas from content", () => {
     setReducedMotion(true);
     render(<Snapshot />);
-    for (const s of content.snapshot.strengths) expect(screen.getByText(s.title)).toBeInTheDocument();
+    for (const s of content.snapshot.strengths)
+      expect(screen.getByText(s.title)).toBeInTheDocument();
     for (const p of content.snapshot.problemAreas) expect(screen.getByText(p)).toBeInTheDocument();
   });
 
   it("AC2: reduced motion shows final values immediately", () => {
     setReducedMotion(true);
     render(<Snapshot />);
-    expect(screen.getByTestId("stat-years")).toHaveTextContent("13+");
+    expect(screen.getByTestId("stat-years")).toHaveTextContent(/^13\+$/);
   });
 
   it("AC2: counts up after scrolling into view", async () => {
     render(<Snapshot />);
-    expect(screen.getByTestId("stat-years")).toHaveTextContent("0+");
+    expect(screen.getByTestId("stat-years")).toHaveTextContent(/^0\+$/);
     act(() => trigger());
-    await waitFor(() => expect(screen.getByTestId("stat-years")).toHaveTextContent("13+"), {
+    await waitFor(() => expect(screen.getByTestId("stat-years")).toHaveTextContent(/^13\+$/), {
       timeout: 2500,
     });
   });
