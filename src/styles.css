@@ -138,14 +138,19 @@
 
 .achievement-highlight {
   background-color: color-mix(in oklab, var(--primary) 8%, transparent);
-  box-shadow: inset 3px 0 var(--primary), var(--glow-primary);
+  box-shadow:
+    inset 3px 0 var(--primary),
+    var(--glow-primary);
   animation: achievement-highlight-fade 2s ease-out forwards;
 }
 
 @keyframes achievement-highlight-fade {
-  0%, 55% {
+  0%,
+  55% {
     background-color: color-mix(in oklab, var(--primary) 8%, transparent);
-    box-shadow: inset 3px 0 var(--primary), var(--glow-primary);
+    box-shadow:
+      inset 3px 0 var(--primary),
+      var(--glow-primary);
   }
   to {
     background-color: transparent;

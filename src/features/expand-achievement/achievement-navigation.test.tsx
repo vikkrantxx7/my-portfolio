@@ -19,14 +19,24 @@ describe("lab achievement navigation", () => {
     const scroll = vi.fn();
     Element.prototype.scrollIntoView = scroll;
     const push = vi.spyOn(window.history, "pushState");
-    render(<><CareerTimeline /><EngineeringLab /></>);
+    render(
+      <>
+        <CareerTimeline />
+        <EngineeringLab />
+      </>,
+    );
     const link = screen.getAllByRole("link", { name: "See it in my career timeline" })[0];
     if (!link) throw new Error("Lab link required");
     const target = document.getElementById("exp-adidas-rspack-optimization");
     if (!target) throw new Error("Achievement target required");
     fireEvent.click(link);
     expect(target).toHaveAttribute("aria-expanded", "true");
-    await waitFor(() => expect(scroll).toHaveBeenCalledWith({ behavior: reduced ? "auto" : "smooth", block: "start" }));
+    await waitFor(() =>
+      expect(scroll).toHaveBeenCalledWith({
+        behavior: reduced ? "auto" : "smooth",
+        block: "start",
+      }),
+    );
     if (!reduced) fireEvent(window, new Event("scrollend"));
     expect(target).toHaveAttribute("aria-current", "location");
     expect(window.location.hash).toBe("#exp-adidas-rspack-optimization");

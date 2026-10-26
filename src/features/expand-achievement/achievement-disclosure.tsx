@@ -175,7 +175,9 @@ export function AchievementDisclosure({
   );
 
   return (
-    <li className={`border-b border-border last:border-b-0 ${highlighted ? "achievement-highlight" : ""}`}>
+    <li
+      className={`border-b border-border last:border-b-0 ${highlighted ? "achievement-highlight" : ""}`}
+    >
       <Button
         id={triggerId}
         variant="ghost"
