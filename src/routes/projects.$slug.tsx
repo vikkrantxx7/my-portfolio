@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { content } from "@/content/data";
 import { buttonVariants } from "@/shared/ui/button";
 import { ProjectDetail } from "@/widgets/project-detail/project-detail";
+import { ProjectPager } from "@/widgets/project-detail/project-pager";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -49,6 +50,7 @@ function ProjectOverview() {
         Selected work
       </Link>
       <ProjectDetail project={project} />
+      <ProjectPager projects={content.projects} slug={project.slug} />
     </main>
   );
 }
