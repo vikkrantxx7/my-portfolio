@@ -20,3 +20,4 @@
 - Project artwork is a separate typed mapping of bundled concept illustrations, not product screenshots; case studies use typed repository-backed content, cite source files and distinguish implemented features from plans or unverified outcomes.
 - Form state uses TanStack Form with reusable context-bound fields and submit controls in shared UI; no React Hook Form or resolver wrappers, to keep form contracts aligned with the TanStack stack.
 - Query-only filter navigation disables both resetScroll and hashScrollIntoView; preserving a hash must not retrigger achievement scrolling.
+- Internal navigation uses TanStack `Link` (never plain `<a href>`) so pages switch in-app without a full reload; tests render such widgets with `src/test/render-with-router.tsx`.
