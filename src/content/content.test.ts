@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { content } from "./data";
 import { validateContent } from "./validate";
 
-const exp = exp!;
-const ach = ach!;
-const proj = proj!;
+const exp = content.experiences[0]!;
+const ach = exp.achievements[0]!;
+const proj = content.projects[0]!;
 
 describe("content model", () => {
   it("placeholder content passes validation", () => {
