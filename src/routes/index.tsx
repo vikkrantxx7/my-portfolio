@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { content } from "@/content/data";
+import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
 import { SectionHeading } from "@/shared/ui/section-heading";
-import { Tag } from "@/shared/ui/tag";
+import { ProjectGallery } from "@/widgets/gallery/project-gallery";
 import { Hero } from "@/widgets/hero/hero";
 import { SiteNav } from "@/widgets/nav/site-nav";
 import { Snapshot } from "@/widgets/snapshot/snapshot";
 import { CareerTimeline } from "@/widgets/timeline/timeline";
 
 export const Route = createFileRoute("/")({
+  validateSearch: validateProjectSearch,
   head: () => ({
     meta: [
       { title: "Vikrant Sharma — I build systems, not just screens" },
@@ -30,7 +32,9 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { profile, projects } = content;
+  const { profile } = content;
+  const filters = Route.useSearch();
+  const navigate = Route.useNavigate();
   return (
     <>
       <SiteNav />
@@ -39,27 +43,12 @@ function Index() {
         <div className="px-6 py-24 md:px-16">
           <div className="mx-auto max-w-6xl space-y-32">
             <Snapshot />
-            <section id="work" className="min-h-[60vh] scroll-mt-20 space-y-8">
-              <SectionHeading
-                index="03"
-                label="Selected work"
-                title={
-                  <>
-                    Things I've <span className="text-gradient-accent">built</span>.
-                  </>
-                }
-              />
-              <div className="flex flex-wrap gap-2">
-                {projects
-                  .flatMap((p) => p.tech)
-                  .filter((t, i, a) => a.indexOf(t) === i)
-                  .map((t) => (
-                    <Tag key={t} tone="accent">
-                      {t}
-                    </Tag>
-                  ))}
-              </div>
-            </section>
+            <ProjectGallery
+              filters={filters}
+              onFiltersChange={(search) =>
+                navigate({ search, hash: window.location.hash.slice(1), resetScroll: false })
+              }
+            />
             <CareerTimeline />
             <section id="about" className="min-h-[60vh] scroll-mt-20 space-y-8">
               <SectionHeading index="06" label="About" title="A bit about me." />
