@@ -47,17 +47,15 @@ export function AchievementDisclosure({
   const id = `achievement-${experienceId}-${achievement.id}`;
   const hash = achievementHash(experienceId, achievement.id);
 
-  const { achievementId, experienceId: linkExperienceId } = { achievementId: achievement.id, experienceId };
-
   useEffect(() => {
     const link = resolveDeepLink(content.experiences, window.location.hash);
-    if (link?.experienceId === linkExperienceId && link.achievementId === achievementId) {
+    if (link?.experienceId === experienceId && link.achievementId === achievement.id) {
       setOpen(true);
       scrollToSection(`${id}-trigger`);
     }
     // Runs on mount and when this instance's identity changes: a shared deep link
     // opens and scrolls to its achievement.
-  }, [linkExperienceId, achievementId, id]);
+  }, [experienceId, achievement.id, id]);
 
   const relatedProjects = content.projects.filter((project) =>
     achievement.projectSlugs.includes(project.slug),
