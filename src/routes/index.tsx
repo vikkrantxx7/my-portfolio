@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ogBannerUrl from "@/assets/og-banner.jpg";
+import ogBanner from "@/assets/og-banner.jpg.asset.json";
 import { content } from "@/content/data";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
@@ -21,27 +21,31 @@ export const Route = createFileRoute("/")({
       { title: "Vikrant Sharma — I build systems, not just screens" },
       {
         name: "description",
-        content: "Lead fullstack engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
+        content:
+          "Lead fullstack engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
       },
       { property: "og:title", content: "Vikrant Sharma — I build systems, not just screens" },
       {
         property: "og:description",
-        content: "Lead fullstack engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
+        content:
+          "Lead fullstack engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
       ...(loaderData?.origin
         ? [
-            { property: "og:image", content: `${loaderData.origin}${ogBannerUrl}` },
+            { property: "og:image", content: `${loaderData.origin}${ogBanner.url}` },
             { property: "og:image:width", content: "1200" },
             { property: "og:image:height", content: "630" },
-            { name: "twitter:image", content: `${loaderData.origin}${ogBannerUrl}` },
+            { name: "twitter:image", content: `${loaderData.origin}${ogBanner.url}` },
           ]
         : []),
     ],
     links: [{ rel: "canonical", href: "/" }],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify(personJsonLd(content.profile)) }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(personJsonLd(content.profile)) },
+    ],
   }),
   component: Index,
 });
@@ -59,7 +63,9 @@ function Index() {
             <Snapshot />
             <ProjectGallery
               filters={filters}
-              onFiltersChange={(search) => navigate(projectFilterNavigation(search, window.location.hash))}
+              onFiltersChange={(search) =>
+                navigate(projectFilterNavigation(search, window.location.hash))
+              }
             />
             <CareerTimeline />
             <EngineeringLab />
