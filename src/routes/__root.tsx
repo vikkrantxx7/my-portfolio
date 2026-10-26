@@ -52,7 +52,8 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => {
               router.invalidate();
               reset();
@@ -82,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Portfolio of Vikrant Sharma: frontend architecture, scalable systems and AI-enabled products.",
+          "Portfolio of Vikrant Sharma: frontend architecture, scalable systems and AI-assisted workflows.",
       },
       { name: "author", content: "Vikrant Sharma" },
       { property: "og:type", content: "website" },
