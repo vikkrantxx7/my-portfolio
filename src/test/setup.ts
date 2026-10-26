@@ -38,3 +38,13 @@ if (!("IntersectionObserver" in window)) {
     value: NoopIntersectionObserver,
   });
 }
+
+// jsdom lacks ResizeObserver (used by cmdk).
+if (!("ResizeObserver" in globalThis)) {
+  // biome-ignore lint/suspicious/noExplicitAny: test stub
+  (globalThis as any).ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}

@@ -9,6 +9,7 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { type ReactNode, useEffect } from "react";
+import { CommandPalette } from "@/features/command-palette/command-palette";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
 
@@ -51,7 +52,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
+          <button type="button"
             onClick={() => {
               router.invalidate();
               reset();
@@ -122,6 +123,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <CommandPalette />
     </QueryClientProvider>
   );
 }
