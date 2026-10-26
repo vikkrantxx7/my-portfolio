@@ -182,7 +182,12 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <DockLink href={profile.resumeUrl} download={profile.resumeFileName} icon={FileDown} label="CV" />
+                  <DockLink
+                    href={profile.resumeUrl}
+                    download={profile.resumeFileName}
+                    icon={FileDown}
+                    label="CV"
+                  />
                 </li>
               </ul>
             </motion.div>
