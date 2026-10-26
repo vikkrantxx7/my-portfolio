@@ -1,5 +1,7 @@
+import { useRouter } from "@tanstack/react-router";
 import { type KeyboardEvent, type MouseEvent, useEffect, useRef, useState } from "react";
 import { content } from "@/content/data";
+import { replaceHash } from "@/features/deep-link/deep-link";
 import { cn } from "@/lib/utils";
 import { scrollToSection } from "@/shared/lib/use-prefers-reduced-motion";
 import { useActiveSection } from "./use-active-section";
@@ -14,35 +16,31 @@ const ids = NAV_SECTIONS.map((s) => s.id);
 
 export function SiteNav() {
   const { profile } = content;
+  const router = useRouter({ warn: false });
   const active = useActiveSection(ids);
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (open) menuRef.current?.querySelector<HTMLElement>("a")?.focus();
+    if (open) menuRef.current?.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
   }, [open]);
 
   const close = () => {
     setOpen(false);
-    requestAnimationFrame(() => toggleRef.current?.focus());
-    toggleRef.current?.focus();
+    toggleRef.current?.focus({ preventScroll: true });
   };
 
   const go = (id: string) => (e: MouseEvent) => {
     e.preventDefault();
-    scrollToSection(id);
-    // The router reacts to history changes with an instant hash scroll, which
-    // cancels the glide — so update the address only once scrolling settles.
-    let done = false;
-    const update = () => {
-      if (done) return;
-      done = true;
-      history.replaceState(history.state, "", `#${id}`);
-    };
-    window.addEventListener("scrollend", update, { once: true });
-    window.setTimeout(update, 1200);
-    if (open) close();
+    replaceHash(`#${id}`, router?.navigate);
+    if (open) {
+      close();
+      // Measure after the menu leaves the document flow, not while it is expanded.
+      requestAnimationFrame(() => scrollToSection(id));
+    } else {
+      scrollToSection(id);
+    }
   };
 
   const onMenuKey = (e: KeyboardEvent) => {
