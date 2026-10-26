@@ -1,14 +1,38 @@
-import { createRootRoute, createRoute, createRouter, createMemoryHistory } from "@tanstack/react-router";
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+} from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
-import { sitemapStaticPaths, sitemapPathForLocation, sitemapXML } from "./sitemap";
+import { sitemapPathForLocation, sitemapStaticPaths, sitemapXML } from "./sitemap";
 
 function fixture() {
   const root = createRootRoute({ staticData: { sitemap: false } });
-  const home = createRoute({ getParentRoute: () => root, path: "/", staticData: { sitemap: true } });
-  const project = createRoute({ getParentRoute: () => root, path: "/projects/$slug", staticData: { sitemap: true } });
-  const excluded = createRoute({ getParentRoute: () => root, path: "/internal", staticData: { sitemap: "exclude-subtree" } });
-  const child = createRoute({ getParentRoute: () => excluded, path: "child", staticData: { sitemap: true } });
-  return createRouter({ routeTree: root.addChildren([home, project, excluded.addChildren([child])]), history: createMemoryHistory() });
+  const home = createRoute({
+    getParentRoute: () => root,
+    path: "/",
+    staticData: { sitemap: true },
+  });
+  const project = createRoute({
+    getParentRoute: () => root,
+    path: "/projects/$slug",
+    staticData: { sitemap: true },
+  });
+  const excluded = createRoute({
+    getParentRoute: () => root,
+    path: "/internal",
+    staticData: { sitemap: "exclude-subtree" },
+  });
+  const child = createRoute({
+    getParentRoute: () => excluded,
+    path: "child",
+    staticData: { sitemap: true },
+  });
+  return createRouter({
+    routeTree: root.addChildren([home, project, excluded.addChildren([child])]),
+    history: createMemoryHistory(),
+  });
 }
 
 describe("sitemap", () => {
@@ -19,10 +43,20 @@ describe("sitemap", () => {
     const router = fixture();
     const location = router.buildLocation({ to: "/projects/$slug", params: { slug: "prepforge" } });
     expect(sitemapPathForLocation(router, location, "/projects/$slug")).toBe("/projects/prepforge");
-    expect(sitemapPathForLocation(router, { pathname: "/missing", publicHref: "/missing" }, "/projects/$slug")).toBeUndefined();
+    expect(
+      sitemapPathForLocation(
+        router,
+        { pathname: "/missing", publicHref: "/missing" },
+        "/projects/$slug",
+      ),
+    ).toBeUndefined();
   });
   it("uses the primary domain, deduplicates entries and omits invented lastmod dates", () => {
-    const xml = sitemapXML("https://vikrantfullstack.in", [{ path: "/" }, { path: "/projects/prepforge" }, { path: "/" }]);
+    const xml = sitemapXML("https://vikrantfullstack.in", [
+      { path: "/" },
+      { path: "/projects/prepforge" },
+      { path: "/" },
+    ]);
     expect(xml).toContain("<loc>https://vikrantfullstack.in/</loc>");
     expect(xml).toContain("<loc>https://vikrantfullstack.in/projects/prepforge</loc>");
     expect(xml.match(/<url>/g)).toHaveLength(2);

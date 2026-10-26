@@ -1,7 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getRouterInstance } from "@tanstack/react-start";
 import { content } from "@/content/data";
-import { isSitemapRouteIncluded, sitemapPathForLocation, sitemapStaticPaths, sitemapXML, type SitemapEntry } from "@/lib/sitemap";
+import {
+  isSitemapRouteIncluded,
+  type SitemapEntry,
+  sitemapPathForLocation,
+  sitemapStaticPaths,
+  sitemapXML,
+} from "@/lib/sitemap";
 import { pageUrl } from "@/shared/lib/seo";
 
 export const Route = createFileRoute("/sitemap.xml")({
