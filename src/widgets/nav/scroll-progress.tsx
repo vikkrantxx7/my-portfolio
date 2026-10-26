@@ -14,7 +14,7 @@ export function progressPath(progress: number): string {
   if (progress <= 0) return "";
   const p = Math.min(progress, 1) * 100;
   const rampStart = Math.max(p - HEAD_RAMP, 0);
-  return `M0 ${TRAIL_TOP} L${rampStart} ${TRAIL_TOP} C ${rampStart + (p - rampStart) * 0.55} ${TRAIL_TOP}, ${p - (p - rampStart) * 0.3} 3.8, ${p} ${HEAD_TOP} L${p} ${RIBBON_HEIGHT} L0 ${RIBBON_HEIGHT} Z`;
+  return `M0 ${TRAIL_TOP} L${rampStart} ${TRAIL_TOP} C ${rampStart + (p - rampStart) * 0.55} ${TRAIL_TOP}, ${p - (p - rampStart) * 0.3} ${HEAD_TOP + 0.4}, ${p} ${HEAD_TOP} L${p} ${RIBBON_HEIGHT} L0 ${RIBBON_HEIGHT} Z`;
 }
 
 function readScrollProgress(): number {
