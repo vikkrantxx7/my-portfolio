@@ -132,14 +132,14 @@ export function SiteNav() {
       </header>
       <div
         data-dock
-        className="fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
       >
         {open && (
           <button
             type="button"
             aria-hidden
             tabIndex={-1}
-            className="fixed inset-0 -z-10 bg-background/40 backdrop-blur-[2px]"
+            className="pointer-events-auto fixed inset-0 -z-10 bg-background/40 backdrop-blur-[2px]"
             onClick={close}
           />
         )}
@@ -157,7 +157,7 @@ export function SiteNav() {
               }
               animate={{ clipPath: "inset(0 0% 0 0% round 999px)", opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
+              className="pointer-events-auto absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
             >
               <ul data-testid="dock-left" className="flex justify-around">
                 {LEFT.map((s) => (
@@ -196,7 +196,7 @@ export function SiteNav() {
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => (open ? close() : setOpen(true))}
-            className="relative z-10 flex h-12 items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
+            className="pointer-events-auto relative z-10 flex h-12 items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
           >
             {open ? (
               <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
