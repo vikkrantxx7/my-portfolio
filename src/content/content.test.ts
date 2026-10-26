@@ -25,17 +25,13 @@ describe("content model", () => {
       ...content,
       experiences: [{ ...exp, achievements: [ach, ach] }],
     };
-    expect(validateContent(broken)).toContain(
-      `Duplicate achievement id: ${exp.id}/${ach.id}`,
-    );
+    expect(validateContent(broken)).toContain(`Duplicate achievement id: ${exp.id}/${ach.id}`);
   });
 
   it("reports achievement links to unknown projects", () => {
     const broken = {
       ...content,
-      experiences: [
-        { ...exp, achievements: [{ ...ach, projectSlugs: ["ghost"] }] },
-      ],
+      experiences: [{ ...exp, achievements: [{ ...ach, projectSlugs: ["ghost"] }] }],
     };
     expect(validateContent(broken)).toContain(`Unknown project slug: ghost`);
   });
