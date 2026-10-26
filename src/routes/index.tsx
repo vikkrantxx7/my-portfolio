@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { content } from "@/content/data";
+import { personJsonLd } from "@/shared/lib/seo";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
 import { Contact } from "@/widgets/contact/contact";
@@ -26,7 +28,12 @@ export const Route = createFileRoute("/")({
           "Senior software engineer portfolio: frontend architecture, case studies and AI-enabled products.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(personJsonLd(content.profile)) },
     ],
   }),
   component: Index,
