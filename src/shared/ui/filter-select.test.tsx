@@ -4,34 +4,61 @@ import { describe, expect, it, vi } from "vitest";
 import { FilterSelect } from "./filter-select";
 
 describe("FilterSelect", () => {
-  it("shows the label, the current value and every option", () => {
+  it("shows the label and the current value, and lists every option when opened", async () => {
     render(
       <FilterSelect label="Technology" value="" options={["Fastify", "React"]} onChange={vi.fn()} />,
     );
-    const select = screen.getByRole("combobox", { name: "Technology" });
-    expect(select).toHaveValue("");
-    expect(screen.getByRole("option", { name: "All technologies" })).toBeInTheDocument();
+    const trigger = screen.getByRole("combobox", { name: "Technology" });
+    expect(trigger).toHaveTextContent("All technologies");
+    expect(screen.queryByRole("option", { name: "Fastify" })).not.toBeInTheDocument();
+
+    await userEvent.click(trigger);
     expect(screen.getByRole("option", { name: "Fastify" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "React" })).toBeInTheDocument();
   });
 
-  it("reports the chosen option to the caller", async () => {
+  it("reports the chosen option to the caller and closes the list", async () => {
     const change = vi.fn();
     render(
       <FilterSelect label="Domain" value="" options={["Open Source"]} onChange={change} />,
     );
-    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Domain" }), "Open Source");
+    await userEvent.click(screen.getByRole("combobox", { name: "Domain" }));
+    await userEvent.click(screen.getByRole("option", { name: "Open Source" }));
     expect(change).toHaveBeenCalledWith("Open Source");
+    expect(screen.queryByRole("option", { name: "Open Source" })).not.toBeInTheDocument();
   });
 
-  it("keeps its own chevron clear of the edge and out of the click path", () => {
+  it("reports an empty value when the caller picks the all option", async () => {
+    const change = vi.fn();
     render(
-      <FilterSelect label="Technology" value="" options={["Fastify"]} onChange={vi.fn()} />,
+      <FilterSelect label="Technology" value="Fastify" options={["Fastify"]} onChange={change} />,
     );
-    const select = screen.getByRole("combobox", { name: "Technology" });
-    // The browser's own arrow sits flush against the border, so the control draws its own.
-    expect(select).toHaveClass("appearance-none");
-    const chevron = select.parentElement?.querySelector("svg");
-    expect(chevron).not.toBeNull();
-    expect(chevron).toHaveClass("right-3", "pointer-events-none");
+    await userEvent.click(screen.getByRole("combobox", { name: "Technology" }));
+    await userEvent.click(screen.getByRole("option", { name: "All technologies" }));
+    expect(change).toHaveBeenCalledWith("");
+  });
+
+  it("closes the list with Escape and leaves the choice unchanged", async () => {
+    const change = vi.fn();
+    render(
+      <FilterSelect label="Technology" value="" options={["Fastify"]} onChange={change} />,
+    );
+    await userEvent.click(screen.getByRole("combobox", { name: "Technology" }));
+    expect(screen.getByRole("option", { name: "Fastify" })).toBeInTheDocument();
+    await userEvent.keyboard("{Escape}");
+    expect(screen.queryByRole("option", { name: "Fastify" })).not.toBeInTheDocument();
+    expect(change).not.toHaveBeenCalled();
+  });
+
+  it("opens with the keyboard and moves through options with arrow keys", async () => {
+    const change = vi.fn();
+    render(
+      <FilterSelect label="Technology" value="" options={["Fastify", "React"]} onChange={change} />,
+    );
+    await userEvent.tab();
+    await userEvent.keyboard("{ArrowDown}");
+    expect(screen.getByRole("option", { name: "Fastify" })).toBeInTheDocument();
+    await userEvent.keyboard("{ArrowDown}{Enter}");
+    expect(change).toHaveBeenCalledWith("React");
   });
 });
