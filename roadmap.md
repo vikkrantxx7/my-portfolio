@@ -15,3 +15,5 @@
 - [x] Reduce the grid to barely visible hairlines and render the full name as one consistently aligned line.
 - [x] Add a scroll progress ribbon below the sticky header: tapered thin tail, broad head, cyan-to-violet gradient across the page (TDD).
 - [x] Reshape the ribbon as a meteor trail with a slightly narrower head; verify shape in the preview.
+- [x] Theme switcher (top right, sun/moon arc motion) with an accessible light palette (TDD).
+- [x] Theme change sweeps across the page as a left-to-right wave.
