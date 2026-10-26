@@ -15,13 +15,14 @@ describe("AvatarPreview", () => {
     );
     expect(dialog).toHaveTextContent("@vikkrantxx7");
     expect(dialog).toHaveTextContent("Lead Fullstack Engineer");
-    const links = screen.getAllByRole("link", { name: /github profile/i });
-    for (const l of links) {
-      expect(l).toHaveAttribute("href", "https://github.com/vikkrantxx7");
-      expect(l).toHaveAttribute("target", "_blank");
-      expect(l).toHaveAttribute("rel", expect.stringContaining("noopener"));
-    }
-    expect(links.length).toBe(2);
+    const link = screen.getByRole("link", { name: /github profile/i });
+    expect(link).toHaveAttribute("href", "https://github.com/vikkrantxx7");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"));
+    // the one control is a bare glowing GitHub mark, not an arrow and not a text link
+    expect(link.querySelector("svg")).toBeInTheDocument();
+    expect(link.textContent).toBe("");
+    expect(dialog).not.toHaveTextContent("Visit GitHub profile");
   });
 
   it("closes on Escape", async () => {
