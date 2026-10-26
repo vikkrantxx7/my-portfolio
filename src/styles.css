@@ -165,6 +165,27 @@
     mask-position: 0 0;
   }
 }
+/* Dark sweeps the other way: right to left. */
+[data-theme-wave="rtl"]::view-transition-new(root) {
+  mask-image: linear-gradient(to left, #000 40%, transparent 60%);
+  mask-position: 0 0;
+  animation-name: theme-wave-rtl;
+}
+@keyframes theme-wave-rtl {
+  to {
+    mask-position: 100% 0;
+  }
+}
+/* Keep the toggle live above the snapshots so its sun/moon motion is visible. */
+.theme-toggle {
+  view-transition-name: theme-toggle;
+}
+::view-transition-old(theme-toggle) {
+  display: none;
+}
+::view-transition-new(theme-toggle) {
+  animation: none;
+}
 
 @layer base {
   * {
