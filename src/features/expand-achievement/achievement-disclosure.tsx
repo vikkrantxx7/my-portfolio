@@ -54,7 +54,6 @@ export function AchievementDisclosure({
     const link = resolveDeepLink(content.experiences, window.location.hash);
     if (link?.experienceId !== experienceId || link.achievementId !== achievement.id) return;
     setOpen(true);
-    const triggerId = hash.slice(1);
     const scrollToTrigger = () => scrollToSection(triggerId);
     scrollToTrigger();
     // The router's scroll restoration can settle after hydration and reset the
