@@ -5,6 +5,13 @@ export interface AchievementDeepLink {
   achievementId: string;
 }
 
+export const achievementNavigationEvent = "portfolio:achievement-navigation";
+
+/** Explicit same-page action; leave URL updates until the scroll has settled. */
+export function navigateToAchievement(hash: string) {
+  window.dispatchEvent(new CustomEvent(achievementNavigationEvent, { detail: hash }));
+}
+
 export function achievementHash(experienceId: string, achievementId: string) {
   return `#exp-${experienceId}-${achievementId}`;
 }

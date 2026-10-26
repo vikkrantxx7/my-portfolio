@@ -5,6 +5,7 @@ import { content } from "@/content/data";
 import type { Achievement } from "@/content/types";
 import {
   achievementHash,
+  achievementNavigationEvent,
   achievementShareUrl,
   replaceHash,
   resolveDeepLink,
@@ -43,6 +44,7 @@ export function AchievementDisclosure({
   experienceId: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [highlighted, setHighlighted] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const id = `achievement-${experienceId}-${achievement.id}`;
   const hash = achievementHash(experienceId, achievement.id);
@@ -51,9 +53,52 @@ export function AchievementDisclosure({
   const triggerId = hash.slice(1);
 
   useEffect(() => {
+    let startTimer: number | undefined;
+    let settleTimer: number | undefined;
+    let highlightTimer: number | undefined;
+    let onSettled: (() => void) | undefined;
+    const cancel = () => {
+      window.clearTimeout(startTimer);
+      window.clearTimeout(settleTimer);
+      window.clearTimeout(highlightTimer);
+      if (onSettled) window.removeEventListener("scrollend", onSettled);
+    };
+    const reveal = (event: Event) => {
+      if (!(event instanceof CustomEvent) || event.detail !== hash) return;
+      cancel();
+      setOpen(true);
+      setHighlighted(false);
+      // Let expansion settle so scroll anchoring cannot cancel the glide.
+      startTimer = window.setTimeout(() => {
+        let settled = false;
+        onSettled = () => {
+          if (settled) return;
+          settled = true;
+          window.clearTimeout(settleTimer);
+          if (onSettled) window.removeEventListener("scrollend", onSettled);
+          replaceHash(hash);
+          setHighlighted(true);
+          highlightTimer = window.setTimeout(() => setHighlighted(false), 2000);
+        };
+        if (!reducedMotion) window.addEventListener("scrollend", onSettled);
+        scrollToSection(triggerId);
+        if (reducedMotion) onSettled();
+        else settleTimer = window.setTimeout(onSettled, 1400);
+      }, reducedMotion ? 0 : 350);
+    };
+    window.addEventListener(achievementNavigationEvent, reveal);
+    return () => {
+      cancel();
+      window.removeEventListener(achievementNavigationEvent, reveal);
+    };
+  }, [hash, triggerId, reducedMotion]);
+
+  useEffect(() => {
     const link = resolveDeepLink(content.experiences, window.location.hash);
     if (link?.experienceId !== experienceId || link.achievementId !== achievement.id) return;
     setOpen(true);
+    setHighlighted(true);
+    const highlightTimer = window.setTimeout(() => setHighlighted(false), 2000);
     const scrollToTrigger = () => scrollToSection(triggerId);
     scrollToTrigger();
     // The router's scroll restoration can settle after hydration and reset the
@@ -64,8 +109,11 @@ export function AchievementDisclosure({
         scrollToTrigger();
       }
     }, 250);
-    return () => window.clearTimeout(retry);
-  }, [experienceId, achievement.id, id, hash, triggerId]);
+    return () => {
+      window.clearTimeout(retry);
+      window.clearTimeout(highlightTimer);
+    };
+  }, [experienceId, achievement.id, triggerId]);
 
   const relatedProjects = content.projects.filter((project) =>
     achievement.projectSlugs.includes(project.slug),
@@ -127,11 +175,14 @@ export function AchievementDisclosure({
   );
 
   return (
-    <li className="border-b border-border last:border-b-0">
+    <li
+      className={`border-b border-border last:border-b-0 ${highlighted ? "achievement-highlight" : ""}`}
+    >
       <Button
         id={triggerId}
         variant="ghost"
         aria-expanded={open}
+        aria-current={highlighted ? "location" : undefined}
         aria-controls={`${id}-details`}
         onClick={() => {
           const next = !open;

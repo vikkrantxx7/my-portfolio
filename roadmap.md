@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [x] Make lab timeline links reveal the achievement, scroll smoothly, and highlight it briefly; verify reduced motion and repeat clicks.
 - [x] Replace React Hook Form and resolvers with tested TanStack Form primitives.
 - [x] Reproduce and fix filter scroll jumps without reloading or losing achievement hashes.
 - [x] Research both repositories and add evidence-backed project case studies.
