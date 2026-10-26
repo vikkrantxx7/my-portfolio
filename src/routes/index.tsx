@@ -14,6 +14,7 @@ import { Snapshot } from "@/widgets/snapshot/snapshot";
 import { CareerTimeline } from "@/widgets/timeline/timeline";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   validateSearch: validateProjectSearch,
   loader: async () => ({ origin: await getRequestOrigin() }),
   head: ({ loaderData }) => ({

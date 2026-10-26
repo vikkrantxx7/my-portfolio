@@ -8,6 +8,7 @@ import { ProjectDock } from "@/widgets/project-detail/project-dock";
 import { ProjectPager } from "@/widgets/project-detail/project-pager";
 
 export const Route = createFileRoute("/projects/$slug")({
+  staticData: { sitemap: true },
   loader: ({ params }) => {
     const project = content.projects.find((item) => item.slug === params.slug);
     if (!project) throw notFound();
