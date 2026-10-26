@@ -68,7 +68,7 @@ export function AchievementDisclosure({
       cancel();
       setOpen(true);
       setHighlighted(false);
-      // Wait for the disclosure to commit before measuring and scrolling.
+      // Let expansion settle so scroll anchoring cannot cancel the glide.
       startTimer = window.setTimeout(() => {
         let settled = false;
         onSettled = () => {
@@ -84,7 +84,7 @@ export function AchievementDisclosure({
         scrollToSection(triggerId);
         if (reducedMotion) onSettled();
         else settleTimer = window.setTimeout(onSettled, 1400);
-      }, 0);
+      }, reducedMotion ? 0 : 350);
     };
     window.addEventListener(achievementNavigationEvent, reveal);
     return () => {
@@ -113,7 +113,7 @@ export function AchievementDisclosure({
       window.clearTimeout(retry);
       window.clearTimeout(highlightTimer);
     };
-  }, [experienceId, achievement.id, id, hash, triggerId]);
+  }, [experienceId, achievement.id, triggerId]);
 
   const relatedProjects = content.projects.filter((project) =>
     achievement.projectSlugs.includes(project.slug),
