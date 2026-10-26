@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 
 // Ribbon geometry in a 100x8 viewBox stretched across the header width.
-// The tail starts thin (2.5/8 tall) and the head swells broad (7/8 tall).
+// Meteor trail: a thin level trail (1.8/8 tall) that swells sharply into a
+// rounded head (5.8/8 tall) over the last 12% of the drawn length.
 const RIBBON_HEIGHT = 8;
-const TAIL_TOP = 5.5;
-const HEAD_TOP = 1;
+const TRAIL_TOP = 6.2;
+const HEAD_TOP = 2.2;
+const HEAD_RAMP = 12;
+const HEAD_CENTER_Y = 5.1;
 
-/** Tapered ribbon path: thin tail at x=0 swelling to a broad head at x=progress*100. */
+/** Meteor-trail path: thin level trail ending in a rounded, broader head. */
 export function progressPath(progress: number): string {
   if (progress <= 0) return "";
   const p = Math.min(progress, 1) * 100;
-  return `M0 ${TAIL_TOP} C ${p * 0.3} 4.8, ${p * 0.65} 2.8, ${p} ${HEAD_TOP} L${p} ${RIBBON_HEIGHT} L0 ${RIBBON_HEIGHT} Z`;
+  const rampStart = Math.max(p - HEAD_RAMP, 0);
+  return `M0 ${TRAIL_TOP} L${rampStart} ${TRAIL_TOP} C ${rampStart + (p - rampStart) * 0.55} ${TRAIL_TOP}, ${p - (p - rampStart) * 0.3} 3.8, ${p} ${HEAD_TOP} L${p} ${RIBBON_HEIGHT} L0 ${RIBBON_HEIGHT} Z`;
 }
 
 function readScrollProgress(): number {
