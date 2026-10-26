@@ -58,7 +58,7 @@ describe("FilterSelect", () => {
     await userEvent.tab();
     await userEvent.keyboard("{ArrowDown}");
     expect(screen.getByRole("option", { name: "Fastify" })).toBeInTheDocument();
-    await userEvent.keyboard("{ArrowDown}{Enter}");
+    await userEvent.keyboard("{ArrowDown}{ArrowDown}{Enter}");
     expect(change).toHaveBeenCalledWith("React");
   });
 });
