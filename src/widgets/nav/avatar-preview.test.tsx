@@ -22,6 +22,8 @@ describe("AvatarPreview", () => {
     // the one control is a bare glowing GitHub mark, not an arrow and not a text link
     expect(link.querySelector("svg")).toBeInTheDocument();
     expect(link.textContent).toBe("");
+    // the badge sits in its own halo so it reads apart from the photo behind it
+    expect(link).toHaveClass("shadow-halo");
     expect(dialog).not.toHaveTextContent("Visit GitHub profile");
   });
 
