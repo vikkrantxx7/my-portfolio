@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { content } from "@/content/data";
+import { Snapshot } from "@/widgets/snapshot/snapshot";
 import { Hero } from "@/widgets/hero/hero";
 import { SectionHeading } from "@/shared/ui/section-heading";
 import { Tag } from "@/shared/ui/tag";
@@ -36,6 +37,7 @@ function Index() {
         <Hero />
         <div className="px-6 py-24 md:px-16">
           <div className="mx-auto max-w-6xl space-y-32">
+            <Snapshot />
             <section id="work" className="min-h-[60vh] scroll-mt-20 space-y-8">
               <SectionHeading
                 index="03"

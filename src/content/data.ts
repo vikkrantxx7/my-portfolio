@@ -16,6 +16,38 @@ export const content: Content = {
     },
     resumeUrl: "/resume.pdf",
   },
+  snapshot: {
+    strengths: [
+      {
+        title: "Frontend architecture",
+        detail: "Micro-frontends, Feature-Sliced Design and design systems that scale with teams.",
+      },
+      {
+        title: "API & BFF design",
+        detail: "GraphQL BFFs on Node.js and Fastify that decouple UIs from backend churn.",
+      },
+      {
+        title: "Performance",
+        detail: "Bundle, image and caching work measured against Web Vitals.",
+      },
+      {
+        title: "Developer experience",
+        detail: "CI health, shared standards and AI-assisted workflows that cut effort.",
+      },
+    ],
+    stats: [
+      { id: "years", value: 13, suffix: "+", label: "Years building for the web" },
+      { id: "bundle", value: 50, suffix: "%", label: "Smaller JS/CSS bundles" },
+      { id: "images", value: 90, suffix: "%", label: "Smaller images" },
+      { id: "effort", value: 40, suffix: "%", label: "Less development effort" },
+    ],
+    problemAreas: [
+      "Untangling frontends from many backends",
+      "Slow, heavy pages at scale",
+      "Inconsistent UI across teams",
+      "Fragile builds and pipelines",
+    ],
+  },
   experiences: [
     {
       id: "adidas",
