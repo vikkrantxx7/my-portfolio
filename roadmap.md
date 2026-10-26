@@ -1,5 +1,5 @@
 # Portfolio — Current requests
-- [ ] SEO Review: add a router-derived sitemap with public case studies and reference it in crawler rules.
+- [x] SEO Review: add a router-derived sitemap with public case studies and reference it in crawler rules.
 - [x] Fix header name navigation to absolute page top, clear the progress trail, and colour V cyan / S violet.
 - [x] Replace relative canonical and Open Graph page addresses with self-referencing primary-domain URLs; add regression tests and verify rendered tags.
 - [x] Make lab timeline links reveal the achievement, scroll smoothly, and highlight it briefly; verify reduced motion and repeat clicks.
