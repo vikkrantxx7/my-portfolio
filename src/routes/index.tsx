@@ -7,12 +7,12 @@ import { SectionHeading } from "@/shared/ui/section-heading";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vikkrant Sharma — I build systems, not just screens" },
+      { title: "Vikrant Sharma — I build systems, not just screens" },
       {
         name: "description",
         content: "Senior software engineer portfolio: frontend architecture, case studies and AI-enabled products.",
       },
-      { property: "og:title", content: "Vikkrant Sharma — I build systems, not just screens" },
+      { property: "og:title", content: "Vikrant Sharma — I build systems, not just screens" },
       {
         property: "og:description",
         content: "Senior software engineer portfolio: frontend architecture, case studies and AI-enabled products.",

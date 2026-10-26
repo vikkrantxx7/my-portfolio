@@ -12,7 +12,7 @@ describe("content model", () => {
   });
 
   it("uses the owner's name", () => {
-    expect(content.profile.name).toBe("Vikkrant Sharma");
+    expect(content.profile.name).toBe("Vikrant Sharma");
   });
 
   it("reports duplicate experience ids", () => {
