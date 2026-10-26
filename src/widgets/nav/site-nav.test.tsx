@@ -151,4 +151,19 @@ describe("SiteNav", () => {
       "true",
     );
   });
+
+  it("leaves page content under the dock tappable", async () => {
+    const user = userEvent.setup();
+    render(<SiteNav />);
+    const toggle = screen.getByRole("button", { name: /open menu/i });
+    const dock = toggle.closest("[data-dock]") as HTMLElement;
+    // The full-width fixed wrapper must not swallow taps aimed at the page beneath it.
+    expect(dock).toHaveClass("pointer-events-none");
+    expect(toggle).toHaveClass("pointer-events-auto");
+    await user.click(toggle);
+    const dialog = screen.getByRole("dialog", { name: /menu/i });
+    expect(dialog).toHaveClass("pointer-events-auto");
+    expect(within(dialog).getByRole("link", { name: "Work" })).toBeInTheDocument();
+  });
 });
+

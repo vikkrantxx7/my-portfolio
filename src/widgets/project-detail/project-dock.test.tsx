@@ -40,4 +40,12 @@ describe("ProjectDock", () => {
     await userEvent.click(await screen.findByRole("button", { name: /back to top/i }));
     expect(spy).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
   });
+
+  it("lets taps through to page content behind the bar", async () => {
+    await renderWithRouter(() => <ProjectDock projects={list} slug="b" />);
+    const dock = await screen.findByRole("navigation", { name: /project controls/i });
+    expect(dock).toHaveClass("pointer-events-none");
+    expect(dock.firstElementChild).toHaveClass("pointer-events-auto");
+  });
 });
+
