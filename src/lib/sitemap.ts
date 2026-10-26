@@ -83,7 +83,7 @@ export function sitemapXML(baseURL: string, entries: SitemapEntry[]): string {
     '"': "&quot;",
     "'": "&apos;",
   };
-  const escape = (value: string) =>
+  const escapeXML = (value: string) =>
     value.replace(/[&<>"']/g, (character) => entities[character] ?? character);
   const seen = new Set<string>();
   const urls: string[] = [];
@@ -93,7 +93,7 @@ export function sitemapXML(baseURL: string, entries: SitemapEntry[]): string {
     if (seen.has(url.href)) continue;
     seen.add(url.href);
     urls.push(
-      `<url><loc>${escape(url.href)}</loc>${entry.lastmod ? `<lastmod>${escape(entry.lastmod)}</lastmod>` : ""}</url>`,
+      `<url><loc>${escapeXML(url.href)}</loc>${entry.lastmod ? `<lastmod>${escapeXML(entry.lastmod)}</lastmod>` : ""}</url>`,
     );
   }
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join("")}</urlset>`;
