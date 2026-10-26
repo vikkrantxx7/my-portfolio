@@ -123,8 +123,12 @@ export function AchievementDisclosure({
         variant="ghost"
         aria-expanded={open}
         aria-controls={`${id}-details`}
-        onClick={() => setOpen((value) => !value)}
-        className="h-auto min-h-16 w-full justify-between gap-4 rounded-none border-0 px-4 py-5 text-left font-sans text-sm normal-case tracking-normal hover:bg-primary/5 md:px-5 md:text-base"
+        onClick={() => {
+          const next = !open;
+          setOpen(next);
+          replaceHash(next ? hash : null);
+        }}
+        className="h-auto min-h-16 w-full scroll-mt-24 justify-between gap-4 rounded-none border-0 px-4 py-5 text-left font-sans text-sm normal-case tracking-normal hover:bg-primary/5 md:px-5 md:text-base"
       >
         <span className={open ? "text-primary" : "text-foreground"}>{achievement.summary}</span>
         <ChevronDown
