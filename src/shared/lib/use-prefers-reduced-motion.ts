@@ -16,6 +16,11 @@ export function prefersReducedMotion(): boolean {
 }
 
 export function scrollToSection(id: string) {
+  // The hero target sits below the sticky header; "top" means document origin.
+  if (id === "top") {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    return;
+  }
   document.getElementById(id)?.scrollIntoView({
     behavior: prefersReducedMotion() ? "auto" : "smooth",
     block: "start",

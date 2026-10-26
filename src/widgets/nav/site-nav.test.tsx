@@ -44,7 +44,7 @@ describe("SiteNav", () => {
   it("AC1: shows name, section links and resume PDF", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    expect(within(nav).getByText("Vikrant Sharma")).toBeInTheDocument();
+    expect(within(nav).getByRole("link", { name: "Vikrant Sharma" })).toBeInTheDocument();
     for (const l of ["Work", "Experience", "About"]) {
       expect(within(nav).getByRole("link", { name: l })).toBeInTheDocument();
     }
@@ -62,6 +62,16 @@ describe("SiteNav", () => {
       behavior: "smooth",
       block: "start",
     });
+  });
+
+  it.each([false, true])("returns to document top with reduced motion %s", async (reduce) => {
+    setReducedMotion(reduce);
+    const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+    render(<SiteNav />);
+    await userEvent.click(screen.getByRole("link", { name: "Vikrant Sharma" }));
+    expect(scroll).toHaveBeenCalledWith({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
+    scroll.mockRestore();
   });
 
   it("AC2: scrolls instantly with reduced motion", async () => {
