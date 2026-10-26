@@ -44,7 +44,21 @@ export interface Skill {
   group: string;
 }
 
+export interface Stat {
+  id: string;
+  value: number;
+  suffix: string;
+  label: string;
+}
+
+export interface Snapshot {
+  strengths: { title: string; detail: string }[];
+  stats: Stat[];
+  problemAreas: string[];
+}
+
 export interface Content {
+  snapshot: Snapshot;
   profile: Profile;
   experiences: Experience[];
   projects: Project[];
