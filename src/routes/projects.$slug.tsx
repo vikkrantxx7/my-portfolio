@@ -12,7 +12,7 @@ export const Route = createFileRoute("/projects/$slug")({
     if (!project) throw notFound();
     return project;
   },
-  head: ({ loaderData }) => ({
+  head: ({ loaderData, params }) => ({
     meta: [
       { title: `${loaderData?.title ?? "Project not found"} — Vikrant Sharma` },
       {
@@ -28,8 +28,10 @@ export const Route = createFileRoute("/projects/$slug")({
         content: loaderData?.problem ?? "This project is not in Vikrant Sharma's portfolio.",
       },
       { property: "og:type", content: "article" },
+      { property: "og:url", content: `/projects/${params.slug}` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `/projects/${params.slug}` }],
   }),
   component: ProjectOverview,
   notFoundComponent: () => (
