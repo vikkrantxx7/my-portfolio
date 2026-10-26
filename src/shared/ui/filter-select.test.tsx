@@ -6,7 +6,12 @@ import { FilterSelect } from "./filter-select";
 describe("FilterSelect", () => {
   it("shows the label and the current value, and lists every option when opened", async () => {
     render(
-      <FilterSelect label="Technology" value="" options={["Fastify", "React"]} onChange={vi.fn()} />,
+      <FilterSelect
+        label="Technology"
+        value=""
+        options={["Fastify", "React"]}
+        onChange={vi.fn()}
+      />,
     );
     const trigger = screen.getByRole("combobox", { name: "Technology" });
     expect(trigger).toHaveTextContent("All technologies");
@@ -19,9 +24,7 @@ describe("FilterSelect", () => {
 
   it("reports the chosen option to the caller and closes the list", async () => {
     const change = vi.fn();
-    render(
-      <FilterSelect label="Domain" value="" options={["Open Source"]} onChange={change} />,
-    );
+    render(<FilterSelect label="Domain" value="" options={["Open Source"]} onChange={change} />);
     await userEvent.click(screen.getByRole("combobox", { name: "Domain" }));
     await userEvent.click(screen.getByRole("option", { name: "Open Source" }));
     expect(change).toHaveBeenCalledWith("Open Source");
@@ -40,9 +43,7 @@ describe("FilterSelect", () => {
 
   it("closes the list with Escape and leaves the choice unchanged", async () => {
     const change = vi.fn();
-    render(
-      <FilterSelect label="Technology" value="" options={["Fastify"]} onChange={change} />,
-    );
+    render(<FilterSelect label="Technology" value="" options={["Fastify"]} onChange={change} />);
     await userEvent.click(screen.getByRole("combobox", { name: "Technology" }));
     expect(screen.getByRole("option", { name: "Fastify" })).toBeInTheDocument();
     await userEvent.keyboard("{Escape}");

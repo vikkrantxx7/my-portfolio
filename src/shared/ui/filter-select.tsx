@@ -53,11 +53,7 @@ export function FilterSelect({
           </SelectPrimitive.Trigger>
         </span>
         <SelectPrimitive.Portal>
-          <SelectPrimitive.Content
-            position="popper"
-            sideOffset={6}
-            className={contentVariants()}
-          >
+          <SelectPrimitive.Content position="popper" sideOffset={6} className={contentVariants()}>
             <SelectPrimitive.Viewport>
               <SelectPrimitive.Item value={ALL_VALUE} className={itemVariants()}>
                 <SelectPrimitive.ItemText>{allLabel}</SelectPrimitive.ItemText>
