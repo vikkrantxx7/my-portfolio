@@ -108,7 +108,6 @@ export function SiteNav() {
         </button>
       </nav>
       {open && (
-        // biome-ignore lint/a11y/useSemanticElements: custom modal menu
         <div
           id="mobile-menu"
           ref={menuRef}
