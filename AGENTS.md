@@ -13,3 +13,4 @@
 - Portfolio content is typed static data in `src/content` and must pass `validateContent` (no database in v1).
 - Reusable UI primitives live in `src/shared/ui` with `cva` variants; features/widgets follow simplified Feature-Sliced Design.
 - Every story ships with Vitest + Testing Library tests written first.
+- Linting and formatting use Biome (`bun run lint` / `bun run format`); ESLint and Prettier were removed to keep one fast tool.
