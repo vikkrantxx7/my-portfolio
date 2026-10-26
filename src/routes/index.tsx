@@ -43,7 +43,12 @@ function Index() {
         <div className="px-6 py-24 md:px-16">
           <div className="mx-auto max-w-6xl space-y-32">
             <Snapshot />
-            <ProjectGallery filters={filters} onFiltersChange={(search) => navigate({ search, hash: window.location.hash.slice(1), resetScroll: false })} />
+            <ProjectGallery
+              filters={filters}
+              onFiltersChange={(search) =>
+                navigate({ search, hash: window.location.hash.slice(1), resetScroll: false })
+              }
+            />
             <CareerTimeline />
             <section id="about" className="min-h-[60vh] scroll-mt-20 space-y-8">
               <SectionHeading index="06" label="About" title="A bit about me." />

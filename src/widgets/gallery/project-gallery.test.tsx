@@ -16,7 +16,10 @@ describe("Selected work gallery", () => {
       expect(within(card).getByText(project.problem)).toBeInTheDocument();
       expect(within(card).getByText(project.role)).toBeInTheDocument();
       for (const tech of project.tech) expect(within(card).getByText(tech)).toBeInTheDocument();
-      expect(within(card).getByRole("link", { name: /Open case study/ })).toHaveAttribute("href", `/projects/${project.slug}`);
+      expect(within(card).getByRole("link", { name: /Open case study/ })).toHaveAttribute(
+        "href",
+        `/projects/${project.slug}`,
+      );
     }
   });
   it("technology and domain selectors preserve the other filter", async () => {
@@ -30,7 +33,9 @@ describe("Selected work gallery", () => {
   });
   it("filters displayed cards and offers reset when no projects match", async () => {
     const change = vi.fn();
-    const { rerender } = render(<ProjectGallery filters={{ tech: "Fastify" }} onFiltersChange={change} />);
+    const { rerender } = render(
+      <ProjectGallery filters={{ tech: "Fastify" }} onFiltersChange={change} />,
+    );
     expect(screen.getAllByRole("article")).toHaveLength(1);
     expect(screen.getByRole("heading", { name: "PrepForge" })).toBeInTheDocument();
     rerender(<ProjectGallery filters={{ tech: "Rust" }} onFiltersChange={change} />);
