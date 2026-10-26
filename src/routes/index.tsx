@@ -32,59 +32,59 @@ function Index() {
   return (
     <>
       <SiteNav />
-    <main id="top" className="min-h-screen bg-background px-6 py-24 md:px-16">
-      <div className="mx-auto max-w-6xl space-y-32">
-        <section className="space-y-8">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            {profile.role}
-          </p>
-          <h1 className="max-w-4xl text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl">
-            I build <span className="text-primary">systems</span>,<br />
-            not just screens.
-          </h1>
-          <p className="max-w-xl text-lg text-muted-foreground">{profile.summary}</p>
-          <div className="flex flex-wrap gap-4">
-            <Button>Explore my work ↘</Button>
-            <Button variant="ghost">Download resume ↗</Button>
-          </div>
-        </section>
-        <section id="work" className="min-h-[60vh] scroll-mt-20 space-y-8">
-          <SectionHeading
-            index="03"
-            label="Selected work"
-            title={
-              <>
-                Things I've <span className="text-gradient-accent">built</span>.
-              </>
-            }
-          />
-          <div className="flex flex-wrap gap-2">
-            {projects
-              .flatMap((p) => p.tech)
-              .filter((t, i, a) => a.indexOf(t) === i)
-              .map((t) => (
-                <Tag key={t} tone="accent">
-                  {t}
-                </Tag>
+      <main id="top" className="min-h-screen bg-background px-6 py-24 md:px-16">
+        <div className="mx-auto max-w-6xl space-y-32">
+          <section className="space-y-8">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              {profile.role}
+            </p>
+            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl">
+              I build <span className="text-primary">systems</span>,<br />
+              not just screens.
+            </h1>
+            <p className="max-w-xl text-lg text-muted-foreground">{profile.summary}</p>
+            <div className="flex flex-wrap gap-4">
+              <Button>Explore my work ↘</Button>
+              <Button variant="ghost">Download resume ↗</Button>
+            </div>
+          </section>
+          <section id="work" className="min-h-[60vh] scroll-mt-20 space-y-8">
+            <SectionHeading
+              index="03"
+              label="Selected work"
+              title={
+                <>
+                  Things I've <span className="text-gradient-accent">built</span>.
+                </>
+              }
+            />
+            <div className="flex flex-wrap gap-2">
+              {projects
+                .flatMap((p) => p.tech)
+                .filter((t, i, a) => a.indexOf(t) === i)
+                .map((t) => (
+                  <Tag key={t} tone="accent">
+                    {t}
+                  </Tag>
+                ))}
+            </div>
+          </section>
+          <section id="experience" className="min-h-[60vh] scroll-mt-20 space-y-8">
+            <SectionHeading index="04" label="Experience" title="Where I've worked." />
+            <ul className="space-y-3 text-muted-foreground">
+              {experiences.map((e) => (
+                <li key={e.id}>
+                  <span className="text-foreground">{e.company}</span> — {e.role}
+                </li>
               ))}
-          </div>
-        </section>
-        <section id="experience" className="min-h-[60vh] scroll-mt-20 space-y-8">
-          <SectionHeading index="04" label="Experience" title="Where I've worked." />
-          <ul className="space-y-3 text-muted-foreground">
-            {experiences.map((e) => (
-              <li key={e.id}>
-                <span className="text-foreground">{e.company}</span> — {e.role}
-              </li>
-            ))}
-          </ul>
-        </section>
-        <section id="about" className="min-h-[60vh] scroll-mt-20 space-y-8">
-          <SectionHeading index="06" label="About" title="A bit about me." />
-          <p className="max-w-xl text-muted-foreground">{profile.summary}</p>
-        </section>
-      </div>
-    </main>
+            </ul>
+          </section>
+          <section id="about" className="min-h-[60vh] scroll-mt-20 space-y-8">
+            <SectionHeading index="06" label="About" title="A bit about me." />
+            <p className="max-w-xl text-muted-foreground">{profile.summary}</p>
+          </section>
+        </div>
+      </main>
     </>
   );
 }
