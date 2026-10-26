@@ -1,10 +1,39 @@
-import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Link2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { content } from "@/content/data";
 import type { Achievement } from "@/content/types";
-import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import {
+  achievementHash,
+  achievementShareUrl,
+  replaceHash,
+  resolveDeepLink,
+} from "@/features/deep-link/deep-link";
+import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { Button } from "@/shared/ui/button";
+
+function CopyLinkButton({ hash }: { hash: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          navigator.clipboard?.writeText(achievementShareUrl(hash)).then(() => {
+            setCopied(true);
+            window.setTimeout(() => setCopied(false), 2000);
+          });
+        }}
+        className="h-8 px-3"
+      >
+        <Link2 aria-hidden="true" className="size-3.5" />
+        Copy link
+      </Button>
+      {copied && <span role="status">Link copied</span>}
+    </>
+  );
+}
 
 export function AchievementDisclosure({
   achievement,
@@ -16,6 +45,18 @@ export function AchievementDisclosure({
   const [open, setOpen] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const id = `achievement-${experienceId}-${achievement.id}`;
+  const hash = achievementHash(experienceId, achievement.id);
+
+  useEffect(() => {
+    const link = resolveDeepLink(content.experiences, window.location.hash);
+    if (link && link.experienceId === experienceId && link.achievementId === achievement.id) {
+      setOpen(true);
+      scrollToSection(`${id}-trigger`);
+    }
+    // Runs once on mount: a shared deep link should open and scroll to its achievement.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const relatedProjects = content.projects.filter((project) =>
     achievement.projectSlugs.includes(project.slug),
   );
@@ -69,6 +110,9 @@ export function AchievementDisclosure({
           ))}
         </div>
       )}
+      <div className="mt-6 flex flex-wrap items-center gap-3 pl-4 md:pl-5">
+        <CopyLinkButton hash={hash} />
+      </div>
     </div>
   );
 
