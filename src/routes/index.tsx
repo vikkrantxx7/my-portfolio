@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ogBannerUrl from "@/assets/og-banner.jpg";
+import ogBanner from "@/assets/og-banner.jpg.asset.json";
 import { content } from "@/content/data";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
@@ -33,10 +33,10 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
       ...(loaderData?.origin
         ? [
-            { property: "og:image", content: `${loaderData.origin}${ogBannerUrl}` },
+            { property: "og:image", content: `${loaderData.origin}${ogBanner.url}` },
             { property: "og:image:width", content: "1200" },
             { property: "og:image:height", content: "630" },
-            { name: "twitter:image", content: `${loaderData.origin}${ogBannerUrl}` },
+            { name: "twitter:image", content: `${loaderData.origin}${ogBanner.url}` },
           ]
         : []),
     ],
