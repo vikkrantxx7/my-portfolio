@@ -46,6 +46,9 @@ export function AchievementDisclosure({
   const reducedMotion = usePrefersReducedMotion();
   const id = `achievement-${experienceId}-${achievement.id}`;
   const hash = achievementHash(experienceId, achievement.id);
+  // The trigger carries the deep-link id, so the browser and the router scroll
+  // to it natively when a shared link is opened.
+  const triggerId = hash.slice(1);
 
   useEffect(() => {
     const link = resolveDeepLink(content.experiences, window.location.hash);
