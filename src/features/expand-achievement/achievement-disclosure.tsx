@@ -90,17 +90,16 @@ export function AchievementDisclosure({
       </Button>
       {reducedMotion ? (
         open && (
-          <div id={`${id}-details`} role="region" aria-labelledby={`${id}-trigger`}>
+          <section id={`${id}-details`} aria-labelledby={`${id}-trigger`}>
             {details}
-          </div>
+          </section>
         )
       ) : (
         <AnimatePresence initial={false}>
           {open && (
-            <motion.div
+            <motion.section
               key="details"
               id={`${id}-details`}
-              role="region"
               aria-labelledby={`${id}-trigger`}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
@@ -109,7 +108,7 @@ export function AchievementDisclosure({
               className="overflow-hidden"
             >
               {details}
-            </motion.div>
+            </motion.section>
           )}
         </AnimatePresence>
       )}

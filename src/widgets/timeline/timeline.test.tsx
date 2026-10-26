@@ -25,9 +25,9 @@ describe("Career timeline", () => {
       "UKG",
       "Infosys",
     ]);
-    expect(screen.getByText("Dec 2021 — Present")).toBeInTheDocument();
-    expect(screen.getByText("Jun 2019 — Nov 2021")).toBeInTheDocument();
-    expect(screen.getByText("Sep 2013 — May 2019")).toBeInTheDocument();
+    expect(screen.getByText("Dec 2021").parentElement).toHaveTextContent("Dec 2021 — Present");
+    expect(screen.getByText("Jun 2019").parentElement).toHaveTextContent("Jun 2019 — Nov 2021");
+    expect(screen.getByText("Sep 2013").parentElement).toHaveTextContent("Sep 2013 — May 2019");
     for (const experience of content.experiences) {
       expect(screen.getByText(experience.role)).toBeInTheDocument();
       for (const item of experience.achievements) {
@@ -37,7 +37,7 @@ describe("Career timeline", () => {
         );
       }
     }
-    expect(screen.queryByRole("region")).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: achievement.summary })).not.toBeInTheDocument();
   });
 
   it("click reveals every detail and a second click closes it", async () => {
@@ -57,7 +57,7 @@ describe("Career timeline", () => {
       expect(within(details).getByText(value)).toBeInTheDocument();
     }
     await user.click(trigger);
-    await waitFor(() => expect(screen.queryByRole("region")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("region", { name: achievement.summary })).not.toBeInTheDocument());
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(trigger).toHaveFocus();
   });
@@ -75,7 +75,7 @@ describe("Career timeline", () => {
     await user.keyboard(" ");
     expect(first).toHaveAttribute("aria-expanded", "true");
     expect(second).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getAllByRole("region")).toHaveLength(2);
+    expect(screen.getAllByRole("region").filter((region) => region.id.endsWith("-details"))).toHaveLength(2);
     await user.keyboard(" ");
     expect(second).toHaveAttribute("aria-expanded", "false");
     expect(first).toHaveAttribute("aria-expanded", "true");
