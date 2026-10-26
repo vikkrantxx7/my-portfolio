@@ -161,7 +161,7 @@ export function CommandPalette() {
                       <CommandPrimitive.Item
                         key={i.id}
                         value={`${i.label} ${i.hint} ${i.id}`}
-                        keywords={i.keywords}
+                        keywords={i.keywords ?? []}
                         onSelect={() => select(i)}
                         className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-2.5 text-sm data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-primary"
                       >

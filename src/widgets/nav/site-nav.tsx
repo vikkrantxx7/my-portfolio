@@ -121,7 +121,7 @@ export function SiteNav() {
             <li>
               <a
                 href={profile.resumeUrl}
-                download
+                download={profile.resumeFileName}
                 className="rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10"
               >
                 Resume PDF
@@ -184,7 +184,7 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <DockLink href={profile.resumeUrl} download icon={FileDown} label="CV" />
+                  <DockLink href={profile.resumeUrl} download={profile.resumeFileName} icon={FileDown} label="CV" />
                 </li>
               </ul>
             </motion.div>

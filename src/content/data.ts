@@ -16,6 +16,7 @@ export const content: Content = {
       github: "https://github.com/vikkrantxx7",
     },
     resumeUrl: "/resume.pdf",
+    resumeFileName: "Vikrant_Sharma_Lead_Fullstack_Engineer.pdf",
   },
   snapshot: {
     strengths: [

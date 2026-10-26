@@ -7,6 +7,7 @@ export interface Profile {
   email: string;
   links: { linkedin: string; github: string };
   resumeUrl: string;
+  resumeFileName: string;
 }
 
 export interface Achievement {
