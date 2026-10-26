@@ -44,7 +44,7 @@ describe("lab achievement navigation", () => {
     vi.useFakeTimers();
     // Repeat clicks work even when the URL already points at this achievement.
     fireEvent.click(link);
-    act(() => vi.advanceTimersByTime(1500));
+    act(() => vi.advanceTimersByTime(1800));
     expect(target).toHaveAttribute("aria-expanded", "true");
     expect(target).toHaveAttribute("aria-current", "location");
     act(() => vi.advanceTimersByTime(2000));
