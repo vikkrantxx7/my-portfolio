@@ -15,6 +15,12 @@ function setScrollProgress(p: number) {
 beforeEach(() => {
   document.body.innerHTML = "";
   setScrollProgress(0);
+  // jsdom rAF is not synchronous; flush callbacks immediately so act() sees updates.
+  window.requestAnimationFrame = ((cb: FrameRequestCallback) => {
+    cb(0);
+    return 1;
+  }) as unknown as typeof window.requestAnimationFrame;
+  window.cancelAnimationFrame = () => {};
 });
 
 describe("progressPath", () => {
