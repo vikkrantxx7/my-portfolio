@@ -6,7 +6,10 @@ Based on the shared ChatGPT concept: dark cinematic look, glowing accents, motio
 
 1. **Framework**: The chat recommends Next.js. This project runs on TanStack Start (React 19, TypeScript, Vite). It gives us the same things the chat wanted: file-based pages, a separate page for each project, page metadata and server rendering. The plan uses TanStack Start.
 2. **Stitches**: Stitches is no longer maintained (its authors stopped work on it in 2023, and the last release was 1.2.8). It also has known server-rendering problems with React 19. Using it next to Tailwind v4 would give us two styling systems that do the same job. My recommendation: use **Tailwind v4 + CSS variables + `cva` variants**. This gets us the Stitches-style typed variant API (`variants`, `compoundVariants`) without the risk. If you still want Stitches, Story 0 will set it up just for component variants.
-3. **Content**: I'll use placeholder resume and project data. I need your real experience, projects, links and resume PDF later. The mockups use the name "Harshit Raj", so I'll use your name instead.
+3. **Content**: Placeholder data under the name Vikkrant Sharma; real experience, links and resume PDF to come.
+4. **Ask Vikk AI assistant**: parked for a future phase.
+
+Status: Story 0 done.
 
 ## Design system (from the mockups)
 
