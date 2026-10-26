@@ -127,17 +127,17 @@ export function CommandPalette() {
         <kbd className="rounded border border-border px-1.5 text-[10px]">⌘K</kbd>
       </button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="overflow-hidden border-primary/30 p-0 shadow-glow">
+        <DialogContent className="block overflow-hidden border-primary/30 p-0 shadow-glow">
           <DialogTitle className="sr-only">Search the site</DialogTitle>
           <DialogDescription className="sr-only">
             Jump to a section, project or achievement.
           </DialogDescription>
           <CommandPrimitive
-            className="bg-popover text-popover-foreground"
+            className="w-full min-w-0 bg-popover text-popover-foreground"
             loop
             filter={paletteFilter}
           >
-            <div className="flex items-center gap-2 border-b border-border px-4">
+            <div className="flex items-center gap-2 border-b border-border px-4 pr-12">
               <Search aria-hidden className="size-4 text-primary" />
               <CommandPrimitive.Input
                 autoFocus
@@ -145,7 +145,7 @@ export function CommandPalette() {
                 className="h-12 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
             </div>
-            <CommandPrimitive.List className="max-h-96 overflow-y-auto p-2">
+            <CommandPrimitive.List className="max-h-96 overflow-x-hidden overflow-y-auto p-2">
               <CommandPrimitive.Empty className="py-6 text-center text-sm text-muted-foreground">
                 No matches.
               </CommandPrimitive.Empty>
@@ -166,8 +166,8 @@ export function CommandPalette() {
                         className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-2.5 text-sm data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-primary"
                       >
                         {g.icon}
-                        <span className="flex-1 truncate">{i.label}</span>
-                        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                        <span className="min-w-0 flex-1 truncate">{i.label}</span>
+                        <span className="max-w-[40%] shrink-0 truncate font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                           {i.hint}
                         </span>
                       </CommandPrimitive.Item>
