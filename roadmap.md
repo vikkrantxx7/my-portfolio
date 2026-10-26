@@ -11,3 +11,4 @@
 - [x] Replace the favicon with the profile photo and verify it loads.
 - [x] Align the banner name on one baseline and restore the avatar halo, grid, and violet background tint.
 - [x] Reduce the grid to barely visible hairlines and render the full name as one consistently aligned line.
+- [x] Add a scroll progress ribbon below the sticky header: tapered thin tail, broad head, cyan-to-violet gradient across the page (TDD).
