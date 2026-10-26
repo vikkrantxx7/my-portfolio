@@ -62,8 +62,8 @@ describe("ScrollProgress", () => {
     const path = bar.querySelector("path") as SVGPathElement;
     expect(path).toHaveAttribute("d", progressPath(0.5));
     // A bright meteor head rides at the tip of the trail.
-    const head = bar.querySelector("circle") as SVGCircleElement;
-    expect(head).toHaveAttribute("cx", "50");
+    const head = bar.querySelector("[data-head]") as HTMLElement;
+    expect(head.style.left).toBe("50%");
   });
 
   it("has no meteor head before the page scrolls", () => {
