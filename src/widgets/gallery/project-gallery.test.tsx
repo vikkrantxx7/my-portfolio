@@ -29,9 +29,11 @@ describe("Selected work gallery", () => {
     await renderWithRouter(() => (
       <ProjectGallery filters={{ domain: "Open Source" }} onFiltersChange={change} />
     ));
-    await user.selectOptions(screen.getByRole("combobox", { name: "Technology" }), "Fastify");
+    await user.click(screen.getByRole("combobox", { name: "Technology" }));
+    await user.click(screen.getByRole("option", { name: "Fastify" }));
     expect(change).toHaveBeenLastCalledWith({ tech: "Fastify", domain: "Open Source" });
-    await user.selectOptions(screen.getByRole("combobox", { name: "Domain" }), "Developer Tools");
+    await user.click(screen.getByRole("combobox", { name: "Domain" }));
+    await user.click(screen.getByRole("option", { name: "Developer Tools" }));
     expect(change).toHaveBeenLastCalledWith({ domain: "Developer Tools" });
   });
   it("filters displayed cards and offers reset when no projects match", async () => {
