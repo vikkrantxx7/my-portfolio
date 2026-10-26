@@ -1,5 +1,5 @@
+import { gitStatsCaseStudy, prepforgeCaseStudy } from "./case-studies";
 import type { Content } from "./types";
-import { prepforgeCaseStudy, gitStatsCaseStudy } from "./case-studies";
 
 // Content sourced from Vikrant's resume. Achievement "decisions" are summarised from it.
 export const content: Content = {
@@ -175,7 +175,8 @@ export const content: Content = {
       slug: "prepforge",
       title: "PrepForge",
       category: "Open Source · Interview Prep",
-      problem: "A structured interview question bank with topic browsing and question-level progress APIs.",
+      problem:
+        "A structured interview question bank with topic browsing and question-level progress APIs.",
       role: "Creator",
       tech: ["Next.js", "Fastify", "GraphQL", "PostgreSQL", "Drizzle ORM", "TypeScript"],
       domains: ["Fullstack", "Open Source"],

@@ -19,6 +19,11 @@ describe("Repository-backed project content", () => {
   it("rejects a case study with a missing repository", () => {
     const project = content.projects[0];
     if (!project) throw new Error("Project fixture required");
-    expect(validateContent({ ...content, projects: [{ ...project, caseStudy: { ...project.caseStudy, repository: "" } }] })).toContain("Missing project repository: prepforge");
+    expect(
+      validateContent({
+        ...content,
+        projects: [{ ...project, caseStudy: { ...project.caseStudy, repository: "" } }],
+      }),
+    ).toContain("Missing project repository: prepforge");
   });
 });

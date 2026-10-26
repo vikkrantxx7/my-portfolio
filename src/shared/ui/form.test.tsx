@@ -8,12 +8,24 @@ function Example({ submit }: { submit: (value: string) => void }) {
     defaultValues: { name: "" },
     onSubmit: ({ value }) => submit(value.name),
   });
-  return <form onSubmit={(event) => { event.preventDefault(); void form.handleSubmit(); }}>
-    <form.AppField name="name" validators={{ onChange: ({ value }) => value ? undefined : "Name is required" }}>
-      {(field) => <field.TextField label="Name" />}
-    </form.AppField>
-    <form.AppForm><form.SubmitButton>Save</form.SubmitButton></form.AppForm>
-  </form>;
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      <form.AppField
+        name="name"
+        validators={{ onChange: ({ value }) => (value ? undefined : "Name is required") }}
+      >
+        {(field) => <field.TextField label="Name" />}
+      </form.AppField>
+      <form.AppForm>
+        <form.SubmitButton>Save</form.SubmitButton>
+      </form.AppForm>
+    </form>
+  );
 }
 
 describe("TanStack Form primitives", () => {

@@ -9,9 +9,17 @@ describe("Project case study", () => {
     if (!project) throw new Error("Project fixture required");
     render(<ProjectDetail project={project} />);
     expect(screen.getByText(project.caseStudy.overview)).toBeInTheDocument();
-    for (const item of project.caseStudy.architecture) expect(screen.getByText(item.detail)).toBeInTheDocument();
-    for (const item of project.caseStudy.implementation) expect(screen.getByText(item)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "View repository" })).toHaveAttribute("href", "https://github.com/vikkrantxx7/prepforge");
-    expect(screen.getByRole("link", { name: "API assembly" })).toHaveAttribute("href", "https://github.com/vikkrantxx7/prepforge/blob/main/apps/api/src/app.ts");
+    for (const item of project.caseStudy.architecture)
+      expect(screen.getByText(item.detail)).toBeInTheDocument();
+    for (const item of project.caseStudy.implementation)
+      expect(screen.getByText(item)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View repository" })).toHaveAttribute(
+      "href",
+      "https://github.com/vikkrantxx7/prepforge",
+    );
+    expect(screen.getByRole("link", { name: "API assembly" })).toHaveAttribute(
+      "href",
+      "https://github.com/vikkrantxx7/prepforge/blob/main/apps/api/src/app.ts",
+    );
   });
 });
