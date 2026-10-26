@@ -31,7 +31,7 @@ describe("lab achievement navigation", () => {
     if (!target) throw new Error("Achievement target required");
     fireEvent.click(link);
     // Do not expand content above the note before the glide: that shifts the viewport.
-    expect(target).toHaveAttribute("aria-expanded", reduced ? "false" : "false");
+    expect(target).toHaveAttribute("aria-expanded", "false");
     await waitFor(() =>
       expect(scroll).toHaveBeenCalledWith({
         behavior: reduced ? "auto" : "smooth",

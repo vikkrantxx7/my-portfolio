@@ -69,9 +69,8 @@ export function AchievementDisclosure({
     const reveal = (event: Event) => {
       if (!(event instanceof CustomEvent) || event.detail !== hash) return;
       cancel();
-      setOpen(true);
       setHighlighted(false);
-      // Let expansion settle so scroll anchoring cannot cancel the glide.
+      // Scroll to the stable trigger first; expanding above the note shifts the viewport.
       startTimer = window.setTimeout(() => {
         let settled = false;
         onSettled = () => {
@@ -79,6 +78,7 @@ export function AchievementDisclosure({
           settled = true;
           window.clearTimeout(settleTimer);
           if (onSettled) window.removeEventListener("scrollend", onSettled);
+          setOpen(true);
           replaceHash(hash, navigate);
           setHighlighted(true);
           highlightTimer = window.setTimeout(() => setHighlighted(false), 2000);
@@ -87,7 +87,7 @@ export function AchievementDisclosure({
         scrollToSection(triggerId);
         if (reducedMotion) onSettled();
         else settleTimer = window.setTimeout(onSettled, 1400);
-      }, reducedMotion ? 0 : 350);
+      }, 0);
     };
     window.addEventListener(achievementNavigationEvent, reveal);
     return () => {
