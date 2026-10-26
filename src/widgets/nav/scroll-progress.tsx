@@ -89,6 +89,19 @@ export function ScrollProgress() {
           }}
         />
       </svg>
+      {progress > 0 && (
+        <span
+          data-head
+          aria-hidden
+          className="absolute size-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            left: `${progress * 100}%`,
+            top: `${(HEAD_CENTER_Y / RIBBON_HEIGHT) * 100}%`,
+            background: `radial-gradient(circle, rgba(255,255,255,0.95) 0%, color-mix(in oklab, var(--color-primary) ${(1 - progress) * 100}%, var(--color-secondary)) 52%, transparent 74%)`,
+            filter: `drop-shadow(0 0 6px color-mix(in oklab, var(--color-primary) ${(1 - progress) * 100}%, var(--color-secondary)))`,
+          }}
+        />
+      )}
     </div>
   );
 }
