@@ -45,4 +45,16 @@ describe("achievement deep links", () => {
     expect(pushState).not.toHaveBeenCalled();
     expect(replaceState).toHaveBeenCalled();
   });
+
+  it("clears an accordion hash through navigation without resetting scroll or filters", () => {
+    const navigate = vi.fn();
+    replaceHash(null, navigate);
+    expect(navigate).toHaveBeenCalledWith({
+      hash: "",
+      search: true,
+      replace: true,
+      resetScroll: false,
+      hashScrollIntoView: false,
+    });
+  });
 });
