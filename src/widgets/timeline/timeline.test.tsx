@@ -12,6 +12,10 @@ beforeEach(() => {
   window.matchMedia = ((query: string) => ({
     matches: query.includes("reduce"),
     media: query,
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => true,
     addEventListener: () => {},
     removeEventListener: () => {},
   })) as typeof window.matchMedia;
