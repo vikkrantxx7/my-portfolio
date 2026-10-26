@@ -16,7 +16,8 @@ describe("lab achievement navigation", () => {
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
     });
-    const scroll = vi.spyOn(Element.prototype, "scrollIntoView");
+    const scroll = vi.fn();
+    Element.prototype.scrollIntoView = scroll;
     const push = vi.spyOn(window.history, "pushState");
     render(<><CareerTimeline /><EngineeringLab /></>);
     const link = screen.getAllByRole("link", { name: "See it in my career timeline" })[0];
