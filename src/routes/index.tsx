@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import ogBanner from "@/assets/og-banner.jpg.asset.json";
 import { content } from "@/content/data";
+import { getRequestOrigin } from "@/shared/lib/origin.functions";
 import { personJsonLd } from "@/shared/lib/seo";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
@@ -13,7 +15,8 @@ import { CareerTimeline } from "@/widgets/timeline/timeline";
 
 export const Route = createFileRoute("/")({
   validateSearch: validateProjectSearch,
-  head: () => ({
+  loader: async () => ({ origin: await getRequestOrigin() }),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Vikrant Sharma — I build systems, not just screens" },
       {
@@ -30,6 +33,14 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
+      ...(loaderData?.origin
+        ? [
+            { property: "og:image", content: `${loaderData.origin}${ogBanner.url}` },
+            { property: "og:image:width", content: "1200" },
+            { property: "og:image:height", content: "630" },
+            { name: "twitter:image", content: `${loaderData.origin}${ogBanner.url}` },
+          ]
+        : []),
     ],
     links: [{ rel: "canonical", href: "/" }],
     scripts: [
