@@ -38,12 +38,33 @@ export function resolveDeepLink(
   return null;
 }
 
-/** Replaces (never pushes) the URL hash; null clears it. */
-export function replaceHash(hash: string | null) {
+interface HashNavigationOptions {
+  hash: string;
+  search: true;
+  replace: true;
+  resetScroll: false;
+  hashScrollIntoView: false;
+}
+
+/** Replaces (never pushes) the URL hash without triggering router scroll. */
+export function replaceHash(
+  hash: string | null,
+  navigate?: (options: HashNavigationOptions) => unknown,
+) {
+  if (navigate) {
+    void navigate({
+      hash: (hash ?? "").replace(/^#/, ""),
+      search: true,
+      replace: true,
+      resetScroll: false,
+      hashScrollIntoView: false,
+    });
+    return;
+  }
   if (typeof window === "undefined") return;
   const url = new URL(window.location.href);
   url.hash = hash ?? "";
-  window.history.replaceState(null, "", url.href);
+  window.history.replaceState(window.history.state, "", url.href);
 }
 
 export function achievementShareUrl(hash: string) {
