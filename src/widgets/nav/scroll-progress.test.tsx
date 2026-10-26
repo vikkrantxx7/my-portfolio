@@ -32,8 +32,8 @@ describe("progressPath", () => {
     const d = progressPath(0.5);
     // Trail sits low: only 1.8 of 8 units thick...
     expect(d).toMatch(/^M0 6\.2 L38 6\.2 /);
-    // ...then swells sharply to a broad head right at the tip.
-    expect(d).toMatch(/50 2\.2 L50 8 L0 8 Z$/);
+    // ...then swells to a slightly narrower head right at the tip.
+    expect(d).toMatch(/50 3 L50 8 L0 8 Z$/);
   });
 
   it("caps the head ramp so short ribbons stay trail-thin", () => {
@@ -64,6 +64,8 @@ describe("ScrollProgress", () => {
     // A bright meteor head rides at the tip of the trail.
     const head = bar.querySelector("[data-head]") as HTMLElement;
     expect(head.style.left).toBe("50%");
+    // The head dot stays compact — narrower than the ribbon it rides on.
+    expect(head).toHaveClass("size-[6px]");
   });
 
   it("has no meteor head before the page scrolls", () => {
