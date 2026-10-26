@@ -26,7 +26,7 @@ export function applyTheme(theme: Theme) {
 export function switchTheme(theme: Theme, reduceMotion: boolean) {
   const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
   if (reduceMotion || typeof doc.startViewTransition !== "function") return applyTheme(theme);
-  document.documentElement.dataset.themeWave = theme === "light" ? "ltr" : "rtl";
+  document.documentElement.dataset["themeWave"] = theme === "light" ? "ltr" : "rtl";
   doc.startViewTransition(() => applyTheme(theme));
 }
 

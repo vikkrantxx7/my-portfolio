@@ -30,9 +30,9 @@ describe("theme", () => {
     (document as any).startViewTransition = start;
     switchTheme("light", false);
     expect(start).toHaveBeenCalledOnce();
-    expect(document.documentElement.dataset.themeWave).toBe("ltr");
+    expect(document.documentElement.dataset["themeWave"]).toBe("ltr");
     switchTheme("dark", false);
-    expect(document.documentElement.dataset.themeWave).toBe("rtl");
+    expect(document.documentElement.dataset["themeWave"]).toBe("rtl");
     switchTheme("light", false);
     expect(document.documentElement.classList.contains("light")).toBe(true);
   });
