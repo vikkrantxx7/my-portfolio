@@ -9,7 +9,7 @@ Based on the shared ChatGPT concept: dark cinematic look, glowing accents, motio
 3. **Content**: Placeholder data under the name Vikkrant Sharma; real experience, links and resume PDF to come.
 4. **Ask Vikk AI assistant**: parked for a future phase.
 
-Status: Stories 0–4 done. Story 4 includes independent keyboard-accessible achievement disclosures and reduced-motion support. Current resume achievements have no related project references; referenced projects link to Selected Work until Story 7 adds case-study pages.
+Status: Stories 0–5 done. Story 5 adds shareable deep links (`#exp-<company>-<achievement>`) with history-replacing URL updates, auto-open + scroll on load, copy-link with confirmation, and ignored unknown hashes. Current resume achievements have no related project references; referenced projects link to Selected Work until Story 7 adds case-study pages.
 
 ## Design system (from the mockups)
 

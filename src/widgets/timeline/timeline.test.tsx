@@ -1,6 +1,6 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { content } from "@/content/data";
 import { CareerTimeline } from "./timeline";
 
@@ -19,6 +19,12 @@ beforeEach(() => {
     addEventListener: () => {},
     removeEventListener: () => {},
   })) as typeof window.matchMedia;
+  Element.prototype.scrollIntoView = vi.fn();
+});
+
+afterEach(() => {
+  window.location.hash = "";
+  vi.restoreAllMocks();
 });
 
 describe("Career timeline", () => {
@@ -98,5 +104,56 @@ describe("Career timeline", () => {
     );
     await user.click(screen.getByRole("button", { name: achievement.summary }));
     expect(screen.getByRole("link", { name: /PrepForge/ })).toHaveAttribute("href", "#work");
+  });
+});
+
+describe("Achievement deep links", () => {
+  const hash = "#exp-adidas-graphql-bff";
+
+  it("opening a bullet replaces the address without adding a history entry, and closing clears it", async () => {
+    const user = userEvent.setup();
+    const replaceState = vi.spyOn(window.history, "replaceState");
+    const pushState = vi.spyOn(window.history, "pushState");
+    render(<CareerTimeline />);
+
+    const trigger = screen.getByRole("button", { name: achievement.summary });
+    await user.click(trigger);
+    expect(replaceState).toHaveBeenCalledWith(null, "", expect.stringContaining(hash));
+    expect(pushState).not.toHaveBeenCalled();
+
+    await user.click(trigger);
+    expect(replaceState.mock.lastCall?.[2]).not.toContain("#exp-");
+  });
+
+  it("a deep link URL opens and scrolls to that achievement", async () => {
+    window.location.hash = hash;
+    render(<CareerTimeline />);
+    const trigger = screen.getByRole("button", { name: achievement.summary });
+    await waitFor(() => expect(trigger).toHaveAttribute("aria-expanded", "true"));
+    expect(trigger.scrollIntoView).toHaveBeenCalled();
+    expect(window.location.hash).toBe(hash);
+  });
+
+  it("copy link copies the shareable URL and shows a confirmation", async () => {
+    const user = userEvent.setup();
+    render(<CareerTimeline />);
+    await user.click(screen.getByRole("button", { name: achievement.summary }));
+    await user.click(screen.getByRole("button", { name: "Copy link" }));
+    expect(await navigator.clipboard.readText()).toBe(
+      `${window.location.origin}${window.location.pathname}${hash}`,
+    );
+    expect(screen.getByRole("status")).toHaveTextContent("Link copied");
+  });
+
+  it("an unknown deep link is ignored", () => {
+    window.location.hash = "#exp-nowhere-nothing";
+    render(<CareerTimeline />);
+    for (const trigger of screen.getAllByRole("button")) {
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+    }
+    expect(screen.getByRole("button", { name: achievement.summary })).not.toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
   });
 });
