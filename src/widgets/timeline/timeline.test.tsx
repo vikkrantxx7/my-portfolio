@@ -19,8 +19,9 @@ beforeEach(() => {
     addEventListener: () => {},
     removeEventListener: () => {},
   })) as typeof window.matchMedia;
-  Object.assign(navigator, {
-    clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+  Object.defineProperty(navigator, "clipboard", {
+    value: { writeText: vi.fn().mockResolvedValue(undefined) },
+    configurable: true,
   });
   Element.prototype.scrollIntoView = vi.fn();
 });
