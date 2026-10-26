@@ -30,7 +30,7 @@ describe("content from resume", () => {
   });
 
   it("the resume PDF the site serves uses the same email", () => {
-    const pdf = readFileSync(new URL("../../public/resume.pdf", import.meta.url), "latin1");
+    const pdf = readFileSync("public/resume.pdf", "latin1");
     const mailtos = pdf.match(/mailto:[^>\s/)]+/g) ?? [];
     expect(mailtos.length).toBeGreaterThan(0);
     expect(new Set(mailtos)).toEqual(new Set([`mailto:${content.profile.email}`]));
