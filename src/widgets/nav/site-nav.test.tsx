@@ -114,4 +114,39 @@ describe("SiteNav", () => {
     await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
     expect(focus).toHaveBeenCalledWith({ preventScroll: true });
   });
+
+  it("mobile dock sits at the bottom and opens symmetric wings with icon items", async () => {
+    const user = userEvent.setup();
+    render(<SiteNav />);
+    const toggle = screen.getByRole("button", { name: /open menu/i });
+    expect(toggle.closest("[data-dock]")).toHaveClass("fixed", "bottom-0");
+    await user.click(toggle);
+    const dialog = screen.getByRole("dialog", { name: /menu/i });
+    const left = within(dialog).getByTestId("dock-left");
+    const right = within(dialog).getByTestId("dock-right");
+    expect(within(left).getAllByRole("link").map((l) => l.textContent)).toEqual([
+      "Work",
+      "Experience",
+    ]);
+    expect(within(right).getAllByRole("link").map((l) => l.textContent)).toEqual([
+      "About",
+      "CV",
+    ]);
+    expect(within(right).getByRole("link", { name: "CV" })).toHaveAttribute("href", "/resume.pdf");
+    expect(dialog.querySelectorAll("svg").length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("mobile dock marks the active section", async () => {
+    const user = userEvent.setup();
+    render(<SiteNav />);
+    act(() => {
+      ioCallback([{ isIntersecting: true, target: document.getElementById("about") as Element }]);
+    });
+    await user.click(screen.getByRole("button", { name: /open menu/i }));
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByRole("link", { name: "About" })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+  });
 });
