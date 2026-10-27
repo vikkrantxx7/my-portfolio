@@ -1,4 +1,4 @@
-import { useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import {
   Briefcase,
   ChevronLeft,
@@ -6,6 +6,7 @@ import {
   FileText,
   GitCommitVertical,
   LayoutGrid,
+  PenLine,
   type LucideIcon,
   User,
   X,
@@ -133,9 +134,17 @@ export function SiteNav() {
           </div>
           <div className="flex items-center gap-6">
             <SectionNavigation items={NAV_SECTIONS} active={active} onSelect={go}>
-              <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
-                View Resume
-              </ResumeViewer>
+              <div className="flex items-center gap-8">
+                <Link
+                  to="/blog"
+                  className="block rounded-full px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                >
+                  Blog
+                </Link>
+                <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
+                  View Resume
+                </ResumeViewer>
+              </div>
             </SectionNavigation>
             <ThemeToggle />
           </div>
@@ -198,6 +207,11 @@ export function SiteNav() {
                     label="About"
                     active={active === "about"}
                   />
+                </li>
+                <li>
+                  <Link to="/blog" className={dockLinkCls()}>
+                    <DockInner icon={PenLine} label="Blog" />
+                  </Link>
                 </li>
                 <li>
                   <button
