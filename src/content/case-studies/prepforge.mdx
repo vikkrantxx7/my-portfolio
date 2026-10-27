@@ -1,0 +1,77 @@
+---
+repository: "https://github.com/vikkrantxx7/prepforge"
+status: "In development"
+sources:
+  - label: "Project README"
+    path: "README.md"
+  - label: "Development handover"
+    path: "HANDOVER.md"
+  - label: "API assembly"
+    path: "apps/api/src/app.ts"
+  - label: "Database schema"
+    path: "apps/api/src/db/schema.ts"
+  - label: "GraphQL resolvers"
+    path: "apps/api/src/graphql/resolvers.ts"
+  - label: "Web landing page"
+    path: "apps/web/src/app/page.tsx"
+---
+
+## Overview
+
+An interview-preparation platform that organizes questions by technology and topic. Guests can browse the question bank; backend progress APIs support studying and completed states for signed-in users. A shared schema package keeps the web and API contracts aligned.
+
+## System design
+
+<Diagram />
+
+### 01 · Web · Next.js App Router
+
+A React 19 frontend composes category and question sections into the landing page. Tailwind CSS 4 and reusable widgets structure the interface.
+
+### 02 · API · Fastify + GraphQL
+
+Fastify registers REST modules for auth, categories, topics, questions and progress under /api/v1. Mercurius exposes schema-first GraphQL queries and a progress mutation.
+
+### 03 · Storage · PostgreSQL + Drizzle
+
+Categories, topics, questions, users and user progress are modeled with Drizzle. Progress is keyed by user and question; structured answer tiers, hints and tags live alongside question content.
+
+### 04 · Contracts · Shared Zod schemas
+
+A pnpm/Turborepo workspace contains apps/api, apps/web and packages/shared. Both applications consume shared validation schemas for questions, topics, users and progress.
+
+## Decisions
+
+### A flat learning hierarchy
+
+Category → topic → tags avoids a separate subtopic layer. Studying and completed are explicit progress states; no progress record means unseen.
+
+### REST and schema-first GraphQL
+
+REST endpoints expose resource operations while GraphQL lets the frontend request related topic, question and progress data through an explicit SDL contract.
+
+### Batch per-question progress
+
+A GraphQL DataLoader batches progress lookups rather than resolving every question's progress in isolation.
+
+### Share validation across workspaces
+
+Zod schemas are packaged separately from the applications, reducing duplicated definitions between the browser and API.
+
+## Implementation
+
+- Modular Fastify registration, a health endpoint and centralized error handling for database and authentication failures.
+- Drizzle schema and migrations for the content hierarchy, user records and question-level progress, with cascading progress foreign keys.
+- GraphQL topic/question queries, user progress reads and a progress mutation backed by service modules and DataLoader.
+- A Next.js landing page assembled from hero, category, recent-question and mobile-navigation widgets.
+- Local PostgreSQL setup with Docker Compose and workspace scripts coordinated through Turborepo.
+
+## Results and learnings
+
+The repository contains backend REST and GraphQL layers, database migrations, shared schemas and frontend landing-page widgets.
+
+The handover records frontend authentication integration as unfinished. Backend auth code does not by itself establish a completed signed-in browser flow.
+
+Spaced repetition, offline/PWA support and deployment/observability goals are not presented here as shipped features.
+
+No production usage, performance or coverage measurements were verified. The main engineering takeaway is keeping shared contracts and per-question progress explicit as the product evolves.
