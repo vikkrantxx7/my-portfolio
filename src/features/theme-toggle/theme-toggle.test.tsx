@@ -39,3 +39,14 @@ describe("ThemeToggle", () => {
     expect(css).toContain("animation: theme-burn-out var(--theme-transition)");
   });
 });
+
+describe("ThemeToggle mount", () => {
+  it("shows the stored light theme on mount without animating from the moon", async () => {
+    document.documentElement.className = "light";
+    localStorage.setItem("theme", "light");
+    render(<ThemeToggle />);
+    const btn = await screen.findByRole("button", { name: "Switch to dark theme" });
+    expect(btn.querySelectorAll("[data-icon]")).toHaveLength(1);
+    expect(btn.querySelector("[data-icon]")).toHaveAttribute("data-icon", "sun");
+  });
+});

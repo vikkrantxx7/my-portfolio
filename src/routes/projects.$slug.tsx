@@ -3,7 +3,7 @@ import { content } from "@/content/data";
 import { site } from "@/content/site";
 import { pageUrl } from "@/shared/lib/seo";
 import { buttonVariants } from "@/shared/ui/button";
-import { ProjectBackLink } from "@/widgets/project-detail/project-back-link";
+import { ProjectHeader } from "@/widgets/project-detail/project-header";
 import { ProjectDetail } from "@/widgets/project-detail/project-detail";
 import { ProjectDock } from "@/widgets/project-detail/project-dock";
 import { ProjectPager } from "@/widgets/project-detail/project-pager";
@@ -50,11 +50,13 @@ export const Route = createFileRoute("/projects/$slug")({
 function ProjectOverview() {
   const project = Route.useLoaderData();
   return (
-    <main className="mx-auto max-w-4xl space-y-8 px-6 pt-16 pb-32 md:py-24">
-      <ProjectBackLink />
+    <>
+      <ProjectHeader />
+      <main className="mx-auto max-w-4xl space-y-8 px-6 pt-16 pb-32 md:pt-12 md:pb-24">
       <ProjectDetail project={project} />
       <ProjectPager projects={content.projects} slug={project.slug} />
       <ProjectDock projects={content.projects} slug={project.slug} />
-    </main>
+      </main>
+    </>
   );
 }
