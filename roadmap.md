@@ -17,3 +17,4 @@
 - [x] Reshape the ribbon as a meteor trail with a slightly narrower head; verify shape in the preview.
 - [x] Theme switcher (top right, sun/moon arc motion) with an accessible light palette (TDD).
 - [x] Theme change sweeps across the page as a left-to-right wave.
+- [x] PWA: installable + offline (published site only).
