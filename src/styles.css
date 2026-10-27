@@ -114,6 +114,7 @@
   --gradient-accent: linear-gradient(90deg, var(--primary), var(--secondary));
   --nav-energy-gradient: linear-gradient(90deg, transparent, color-mix(in oklab, var(--secondary) 65%, transparent) 38%, var(--primary) 90%, var(--foreground));
   --nav-energy-glow: 0 0 5px var(--primary), 0 0 14px color-mix(in oklab, var(--secondary) 65%, transparent);
+  --dock-ignition-glow: drop-shadow(0 0 3px color-mix(in oklab, var(--primary) 70%, transparent)) drop-shadow(0 0 8px color-mix(in oklab, var(--secondary) 50%, transparent));
 }
 
 /* Light theme: deeper teal/violet keep WCAG AA on cool paper; glows become soft shadows. */
@@ -499,6 +500,42 @@
   .gradient-frame::after {
     animation: none;
   }
+}
+
+/* One sweep per menu mount. Masking keeps the pulse on the actual pill border. */
+@property --dock-ignition-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: true;
+}
+.dock-ignition {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  filter: var(--dock-ignition-glow);
+  animation: dock-ignite 0.95s ease-out both;
+}
+.dock-ignition-rim {
+  --dock-ignition-gradient: conic-gradient(from var(--dock-ignition-angle), transparent 0deg 245deg, color-mix(in oklab, var(--secondary) 45%, transparent) 280deg, var(--secondary) 308deg, var(--primary) 335deg, transparent 360deg);
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--dock-ignition-gradient);
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  mask-composite: exclude;
+}
+@keyframes dock-ignite {
+  0% { --dock-ignition-angle: -90deg; opacity: 0; }
+  18% { opacity: 0.95; }
+  65% { opacity: 0.8; }
+  100% { --dock-ignition-angle: 270deg; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock-ignition { display: none; animation: none; }
 }
 
 @keyframes dock-hint-left {

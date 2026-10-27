@@ -183,6 +183,7 @@ describe("SiteNav", () => {
     const user = userEvent.setup();
     render(<SiteNav />);
     await user.click(screen.getByRole("button", { name: /open menu/i }));
+    expect(screen.getByTestId("dock-ignition")).toBeInTheDocument();
     const focus = vi.spyOn(HTMLElement.prototype, "focus");
     const scroll = vi.fn(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -191,6 +192,16 @@ describe("SiteNav", () => {
     await user.click(within(screen.getByRole("dialog")).getByRole("link", { name: "Work" }));
     await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
     expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+  });
+
+  it("opens and closes the mobile menu with no ignition under reduced motion", async () => {
+    setReducedMotion(true);
+    render(<SiteNav />);
+    await userEvent.click(screen.getByRole("button", { name: /open menu/i }));
+    expect(screen.getByRole("dialog", { name: /menu/i })).toBeInTheDocument();
+    expect(screen.queryByTestId("dock-ignition")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /close menu/i }));
+    expect(screen.queryByRole("dialog", { name: /menu/i })).not.toBeInTheDocument();
   });
 
   it("mobile dock sits at the bottom and opens symmetric wings with icon items", async () => {

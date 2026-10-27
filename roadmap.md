@@ -1,5 +1,5 @@
 # Portfolio — Current requests
-- [ ] Add a momentary cyan/violet border ignition when the mobile dock opens; retain immediate navigation and reduced-motion safety.
+- [x] Add a momentary cyan/violet border ignition when the mobile dock opens; verified repeat opening, immediate navigation, both themes and reduced motion (40 navigation tests pass).
 - [x] Remove trident-like impact forks; dissolve lightning into expanding, visible border illumination on the pill and avatar.
 - [x] Match impact illumination to the source and add a small lightning spread touching the curved border; verify both directions.
 - [x] Replace the liquid trail with thin irregular lightning and centre-weighted gradual border illumination; test and verify both directions.
