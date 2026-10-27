@@ -205,6 +205,12 @@
     cursor: pointer;
   }
 
+  /* No double-tap-zoom gesture delay on taps anywhere in the app. */
+  a,
+  button {
+    touch-action: manipulation;
+  }
+
   /* Header name: the glow lives on the name letters only — the role subheading
      stays clean. The transition is declared once on the letters' wrapper; the
      letter spans just inherit the animating value, which avoids the chained-

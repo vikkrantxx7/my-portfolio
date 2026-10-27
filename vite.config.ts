@@ -29,8 +29,12 @@ export default defineConfig({
           cleanupOutdatedCaches: true,
           runtimeCaching: [
             {
+              // The resume PDF is precached and shown in the in-app viewer; a raw
+              // navigation to it must never be served the offline page fallback.
               urlPattern: ({ request, url }) =>
-                request.mode === "navigate" && !url.pathname.startsWith("/~oauth"),
+                request.mode === "navigate" &&
+                !url.pathname.startsWith("/~oauth") &&
+                url.pathname !== "/resume.pdf",
               handler: "NetworkFirst",
               options: { cacheName: "pages", networkTimeoutSeconds: 4 },
             },
