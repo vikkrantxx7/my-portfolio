@@ -17,6 +17,8 @@ export const site = {
   titleSuffix: name,
   notFoundDescription: `This project is not in ${name}'s portfolio.`,
   themeColor: "#080A0F",
+  /** Google ownership verification; replace when connecting a different owner/site. */
+  googleSiteVerification: "oYRZoCUJG5fKLKwfY9BeXHo31DAp6X3WxczGfb2X0tU",
   /** Optional HTML resume shown in the viewer; remove to fall back to the PDF/images. */
   resumeHtmlUrl: "/resume.html" as string | undefined,
 } as const;
