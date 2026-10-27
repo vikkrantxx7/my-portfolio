@@ -36,3 +36,4 @@
 - Interactive controls must read as clickable: a base-layer cursor rule plus `cursor-pointer` on the shared Button and the theme toggle; the header name link carries `header-name` so its hover glow resolves from `currentColor`, and because text-shadow is inherited the fade is declared on the letter spans too.
 - The resume opens in the in-app viewer (src/features/resume-viewer), never as a raw PDF navigation, so installed-PWA users keep a way back; its floating controls use fixed dark hex values (not tokens) because they float over the paper-white PDF, and the Paper/Dark viewing toggle (CSS invert filter) is independent of the site theme. The home route loader resolves synchronously on client navigations — the origin is only needed for SSR head tags.
 
+- Bottom toolbars share `dockBar`/`dockItem` cva styles in `src/shared/ui/dock.ts` (tone `fixed` for the resume over white paper) so sizes stay identical across pages.
