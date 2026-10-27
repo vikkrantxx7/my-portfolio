@@ -8,18 +8,18 @@ export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("dark");
   // Icons only animate after the stored theme has been synced, so remounts
   // (e.g. returning from a project page) never replay a moon-to-sun arc.
-  const [synced, setSynced] = useState(false);
+  const [animated, setAnimated] = useState(false);
   const reduce = usePrefersReducedMotion();
 
   useEffect(() => {
     setTheme(readTheme());
-    setSynced(true);
   }, []);
 
   const next: Theme = theme === "dark" ? "light" : "dark";
   const Icon = theme === "light" ? Sun : Moon;
   // Light: rise from lower-left, set lower-right. Dark: mirrored, matching the wave.
-  const d = theme === "light" ? 1 : -1;
+  // 0 = no motion (mount sync); variants below jump straight into place.
+  const d = animated ? (theme === "light" ? 1 : -1) : 0;
 
   return (
     <button
@@ -29,11 +29,12 @@ export function ThemeToggle() {
       onClick={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
         switchTheme(next, reduce, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
+        setAnimated(true);
         setTheme(next);
       }}
       className="theme-toggle relative flex size-10 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border bg-card/60 text-primary shadow-glow transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <AnimatePresence initial={false} custom={d} mode={synced ? "sync" : "popLayout"}>
+      <AnimatePresence initial={false} custom={d}>
         <motion.span
           key={theme}
           data-icon={theme === "light" ? "sun" : "moon"}
@@ -42,9 +43,9 @@ export function ThemeToggle() {
           custom={d}
           variants={{
             enter: (dir: number) =>
-              reduce ? { opacity: 0 } : { x: -22 * dir, y: 22, rotate: -90 * dir, opacity: 0 },
+              dir === 0 ? { opacity: 1 } : reduce ? { opacity: 0 } : { x: -22 * dir, y: 22, rotate: -90 * dir, opacity: 0 },
             leave: (dir: number) =>
-              reduce ? { opacity: 0 } : { x: 22 * dir, y: 22, rotate: 90 * dir, opacity: 0 },
+              dir === 0 ? { opacity: 0, transition: { duration: 0 } } : reduce ? { opacity: 0 } : { x: 22 * dir, y: 22, rotate: 90 * dir, opacity: 0 },
           }}
           initial="enter"
           animate={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
