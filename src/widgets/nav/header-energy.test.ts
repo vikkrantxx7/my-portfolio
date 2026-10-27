@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { getEnergyTransfer, getLiquidFrame } from "./header-energy-geometry";
+import { getEnergyTransfer, getLightningPoints, rimFalloff } from "./header-energy-geometry";
 
 const avatar = { left: 20, right: 52, top: 16, height: 32 };
 const work = { left: 400, right: 480, top: 18, height: 28 };
@@ -44,15 +44,30 @@ it("avatar transfers travel farther and last longer than tab hops", () => {
   expect(flight.duration).toBeGreaterThan(hop.duration);
 });
 
-it("long liquid transfers touch the destination border and wrap its full height", () => {
-  const flight = getEnergyTransfer(avatar, work, "avatar", "pill");
-  const frame = getLiquidFrame(flight, 1);
-  expect(frame.x).toBe(400);
-  expect(frame.y).toBe(32);
-  expect(frame.radius).toBe(14);
+it("lightning starts and ends on the measured border centres in both directions", () => {
+  for (const flight of [getEnergyTransfer(avatar, work, "avatar", "pill"), getEnergyTransfer(work, avatar, "pill", "avatar")]) {
+    const points = getLightningPoints(flight, 1);
+    expect(points[0]).toEqual(flight.from);
+    expect(points.at(-1)).toEqual(flight.to);
+  }
 });
 
-it("leftward liquid transfers touch the right border without an offset", () => {
-  const flight = getEnergyTransfer(experience, work, "pill", "pill");
-  expect(getLiquidFrame(flight, 1).x).toBe(480);
+it("lightning is irregular but stays within a thin bounded corridor", () => {
+  const flight = getEnergyTransfer(avatar, work, "avatar", "pill");
+  const points = getLightningPoints(flight, 1);
+  expect(points.some((point) => point.y > 32)).toBe(true);
+  expect(points.some((point) => point.y < 32)).toBe(true);
+  for (const point of points) {
+    expect(point.x).toBeGreaterThanOrEqual(52);
+    expect(point.x).toBeLessThanOrEqual(400);
+    expect(Math.abs(point.y - 32)).toBeLessThanOrEqual(3.5);
+  }
+});
+
+it("border illumination peaks at centre and fades symmetrically toward the ends", () => {
+  expect(rimFalloff(0.5)).toBe(1);
+  expect(rimFalloff(0)).toBe(0);
+  expect(rimFalloff(1)).toBe(0);
+  expect(rimFalloff(0.25)).toBeLessThan(rimFalloff(0.4));
+  expect(rimFalloff(0.25)).toBeCloseTo(rimFalloff(0.75));
 });
