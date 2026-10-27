@@ -169,7 +169,7 @@
     #000 0 62%,
     transparent 82%
   );
-  animation: theme-burn-in 0.9s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+  animation: theme-burn-in 1s cubic-bezier(0.45, 0, 0.35, 1) forwards;
 }
 @keyframes theme-burn-in {
   to {
@@ -179,7 +179,7 @@
 
 /* Outgoing theme folds away like ash. */
 ::view-transition-old(root) {
-  animation: theme-burn-out 0.9s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+  animation: theme-burn-out 1s cubic-bezier(0.45, 0, 0.35, 1) forwards;
 }
 @keyframes theme-burn-out {
   0% {
