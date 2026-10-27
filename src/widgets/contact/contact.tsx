@@ -20,7 +20,7 @@ export function Contact() {
       <div className="flex flex-wrap items-center gap-3">
         <a
           href={`mailto:${profile.email}`}
-          aria-label={`Email Vikrant at ${profile.email}`}
+          aria-label={`Email ${profile.name.split(" ")[0]} at ${profile.email}`}
           className={buttonVariants({ variant: "glow" })}
         >
           <Mail className="size-4" aria-hidden="true" />

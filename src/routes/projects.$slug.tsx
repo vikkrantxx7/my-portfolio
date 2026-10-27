@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { content } from "@/content/data";
+import { site } from "@/content/site";
 import { pageUrl } from "@/shared/lib/seo";
 import { buttonVariants } from "@/shared/ui/button";
 import { ProjectBackLink } from "@/widgets/project-detail/project-back-link";
@@ -16,18 +17,18 @@ export const Route = createFileRoute("/projects/$slug")({
   },
   head: ({ loaderData, params }) => ({
     meta: [
-      { title: `${loaderData?.title ?? "Project not found"} — Vikrant Sharma` },
+      { title: `${loaderData?.title ?? "Project not found"} — ${site.titleSuffix}` },
       {
         name: "description",
-        content: loaderData?.problem ?? "This project is not in Vikrant Sharma's portfolio.",
+        content: loaderData?.problem ?? site.notFoundDescription,
       },
       {
         property: "og:title",
-        content: `${loaderData?.title ?? "Project not found"} — Vikrant Sharma`,
+        content: `${loaderData?.title ?? "Project not found"} — ${site.titleSuffix}`,
       },
       {
         property: "og:description",
-        content: loaderData?.problem ?? "This project is not in Vikrant Sharma's portfolio.",
+        content: loaderData?.problem ?? site.notFoundDescription,
       },
       { property: "og:type", content: "article" },
       { property: "og:url", content: pageUrl(`/projects/${params.slug}`) },

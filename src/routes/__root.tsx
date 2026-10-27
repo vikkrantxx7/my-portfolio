@@ -12,6 +12,7 @@ import { type ReactNode, useEffect } from "react";
 import { CommandPalette } from "@/features/command-palette/command-palette";
 import { THEME_SCRIPT } from "@/features/theme-toggle/theme";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { site } from "@/content/site";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -81,16 +82,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Vikrant Sharma — Senior Software Engineer" },
+      { title: site.defaultTitle },
       {
         name: "description",
-        content:
-          "Portfolio of Vikrant Sharma: frontend architecture, scalable systems and AI-assisted workflows.",
+        content: site.defaultDescription,
       },
-      { name: "author", content: "Vikrant Sharma" },
+      { name: "author", content: site.author },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "theme-color", content: "#080A0F" },
+      { name: "theme-color", content: site.themeColor },
     ],
     links: [
       {
