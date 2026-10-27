@@ -1,4 +1,6 @@
 # Portfolio — Current requests
+- [ ] Fix short About-section tracking without overriding deliberate navigation (TDD).
+- [ ] Share desktop section navigation and add directional avatar/pill streak emission, absorption and reduced-motion handling (TDD).
 - [x] Clear the active highlight on return to top and synchronize one non-overshooting pill with clicked targets and manual scrolling (TDD).
 - [x] SEO Review: add a router-derived sitemap with public case studies and reference it in crawler rules.
 - [x] Fix header name navigation to absolute page top, clear the progress trail, and colour V cyan / S violet.
