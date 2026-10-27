@@ -47,7 +47,9 @@ export function ProfileCardRim({ reducedMotion }: { reducedMotion: boolean }) {
       {sparks.map((spark, index) => {
         const sparkId = `${gradientId}-spark-${index}`;
         const start = spark[0];
-        const end = spark.at(-1)!;
+        if (!start) return null;
+        const end = spark.at(-1);
+        if (!end) return null;
         const color = index === 0 ? "var(--primary)" : "var(--secondary)";
         return (
           <g key={sparkId}>
