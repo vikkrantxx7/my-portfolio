@@ -43,7 +43,8 @@ export default defineConfig({
               options: { cacheName: "pages", networkTimeoutSeconds: 4 },
             },
             {
-              urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith("/assets/"),
+              urlPattern: ({ url, sameOrigin }) =>
+                sameOrigin && url.pathname.startsWith("/assets/"),
               handler: "CacheFirst",
               options: { cacheName: "assets", expiration: { maxEntries: 120 } },
             },

@@ -26,7 +26,9 @@ export function useActiveSection(ids: readonly string[]) {
       }
       // The final section may be too short to reach its scroll-margin. At the
       // document bottom it still owns the highlight instead of the prior tab.
-      const maxScroll = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - window.innerHeight;
+      const maxScroll =
+        Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) -
+        window.innerHeight;
       const lastId = key.split(",").at(-1);
       const last = lastId ? document.getElementById(lastId) : null;
       // Short final sections and bottom safe-area space can leave About below

@@ -5,7 +5,13 @@ import { Children, type ComponentProps, isValidElement, type ReactNode } from "r
 
 function textOf(node: ReactNode): string {
   return Children.toArray(node)
-    .map((c) => (typeof c === "string" || typeof c === "number" ? String(c) : isValidElement(c) ? textOf((c.props as { children?: ReactNode }).children) : ""))
+    .map((c) =>
+      typeof c === "string" || typeof c === "number"
+        ? String(c)
+        : isValidElement(c)
+          ? textOf((c.props as { children?: ReactNode }).children)
+          : "",
+    )
     .join("");
 }
 
@@ -36,7 +42,9 @@ function ProseLink({ href = "", children }: ComponentProps<"a">) {
 export function Callout({ kind, children }: { kind: "decision" | "plan"; children: ReactNode }) {
   return (
     <aside className="rounded-lg border border-border bg-card p-4 leading-relaxed text-muted-foreground">
-      <p className="mb-1 font-mono text-xs text-secondary">{kind === "plan" ? "Planned" : "Decision"}</p>
+      <p className="mb-1 font-mono text-xs text-secondary">
+        {kind === "plan" ? "Planned" : "Decision"}
+      </p>
       {children}
     </aside>
   );
@@ -44,7 +52,10 @@ export function Callout({ kind, children }: { kind: "decision" | "plan"; childre
 
 export const proseComponents = {
   h2: ({ children }: ComponentProps<"h2">) => (
-    <h2 id={slugify(children)} className="scroll-mt-24 border-t border-border pt-10 text-2xl font-semibold">
+    <h2
+      id={slugify(children)}
+      className="scroll-mt-24 border-t border-border pt-10 text-2xl font-semibold"
+    >
       {children}
     </h2>
   ),
@@ -53,7 +64,9 @@ export const proseComponents = {
       {children}
     </h3>
   ),
-  p: (props: ComponentProps<"p">) => <p className="leading-relaxed text-muted-foreground" {...props} />,
+  p: (props: ComponentProps<"p">) => (
+    <p className="leading-relaxed text-muted-foreground" {...props} />
+  ),
   ul: (props: ComponentProps<"ul">) => (
     <ul className="list-disc space-y-4 pl-5 leading-relaxed text-muted-foreground" {...props} />
   ),
@@ -65,17 +78,25 @@ export const proseComponents = {
     <code className="rounded bg-card px-1.5 py-0.5 font-mono text-sm text-foreground" {...props} />
   ),
   pre: (props: ComponentProps<"pre">) => (
-    <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 font-mono text-sm" {...props} />
+    <pre
+      className="overflow-x-auto rounded-lg border border-border bg-card p-4 font-mono text-sm"
+      {...props}
+    />
   ),
   blockquote: (props: ComponentProps<"blockquote">) => (
-    <blockquote className="border-l-2 border-primary pl-4 italic text-muted-foreground" {...props} />
+    <blockquote
+      className="border-l-2 border-primary pl-4 italic text-muted-foreground"
+      {...props}
+    />
   ),
   table: (props: ComponentProps<"table">) => (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-sm" {...props} />
     </div>
   ),
-  th: (props: ComponentProps<"th">) => <th className="border-b border-border py-2 pr-4 font-medium" {...props} />,
+  th: (props: ComponentProps<"th">) => (
+    <th className="border-b border-border py-2 pr-4 font-medium" {...props} />
+  ),
   td: (props: ComponentProps<"td">) => (
     <td className="border-b border-border py-2 pr-4 text-muted-foreground" {...props} />
   ),

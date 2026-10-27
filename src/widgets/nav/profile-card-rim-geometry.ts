@@ -65,10 +65,6 @@ export function getCornerSparks(width: number, height: number): Point[][] {
   const diagonal = Math.SQRT1_2;
   return [
     make({ x: inset + near, y: inset + near }, { x: -diagonal, y: -diagonal }, 0),
-    make(
-      { x: width - inset - near, y: height - inset - near },
-      { x: diagonal, y: diagonal },
-      5,
-    ),
+    make({ x: width - inset - near, y: height - inset - near }, { x: diagonal, y: diagonal }, 5),
   ];
 }

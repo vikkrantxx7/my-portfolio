@@ -1,7 +1,12 @@
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { type RefObject, useId, useLayoutEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
-import { type EnergyRect, getEnergyTransfer, getLightningPoints, rimFalloff } from "./header-energy-geometry";
+import {
+  type EnergyRect,
+  getEnergyTransfer,
+  getLightningPoints,
+  rimFalloff,
+} from "./header-energy-geometry";
 
 type Flight = ReturnType<typeof getEnergyTransfer> & { key: number };
 
@@ -19,8 +24,14 @@ function LightningFlight({ flight }: { flight: Flight }) {
   const absorption = useMotionValue(0);
   const dissolve = useMotionValue(0);
   const spread = useMotionValue(0.15);
-  const rimStart = useTransform(spread, s => flight.destination.top + flight.destination.height * (0.5 - s / 2));
-  const rimEnd = useTransform(spread, s => flight.destination.top + flight.destination.height * (0.5 + s / 2));
+  const rimStart = useTransform(
+    spread,
+    (s) => flight.destination.top + flight.destination.height * (0.5 - s / 2),
+  );
+  const rimEnd = useTransform(
+    spread,
+    (s) => flight.destination.top + flight.destination.height * (0.5 + s / 2),
+  );
   const gradientId = useId().replace(/:/g, "");
   useLayoutEffect(() => {
     const animation = animate(progress, 1, {
@@ -33,8 +44,16 @@ function LightningFlight({ flight }: { flight: Flight }) {
       times: [0, 0.3, 0.48, 1],
       ease: "easeInOut",
     });
-    const consume = animate(dissolve, 1, { delay: flight.duration, duration: 0.38, ease: "easeOut" });
-    const expansion = animate(spread, 1, { delay: flight.duration, duration: 0.42, ease: "easeOut" });
+    const consume = animate(dissolve, 1, {
+      delay: flight.duration,
+      duration: 0.38,
+      ease: "easeOut",
+    });
+    const expansion = animate(spread, 1, {
+      delay: flight.duration,
+      duration: 0.42,
+      ease: "easeOut",
+    });
     return () => {
       animation.stop();
       glow.stop();
@@ -43,9 +62,9 @@ function LightningFlight({ flight }: { flight: Flight }) {
     };
   }, [flight, progress, absorption, dissolve, spread]);
   const shape = useTransform(() => {
-    return getLightningPoints(flight, progress.get(), dissolve.get()).map((point, index) =>
-      `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`,
-    ).join(" ");
+    return getLightningPoints(flight, progress.get(), dissolve.get())
+      .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`)
+      .join(" ");
   });
   return (
     <motion.svg
@@ -68,18 +87,39 @@ function LightningFlight({ flight }: { flight: Flight }) {
           <stop offset="1" className="nav-energy-stop-head" />
         </linearGradient>
         {([flight.source, flight.destination] as const).map((rect, index) => (
-          <motion.linearGradient key={index} id={`${gradientId}-rim-${index}`} x1="0" x2="0"
-            y1={index === 1 ? rimStart : rect.top} y2={index === 1 ? rimEnd : rect.top + rect.height} gradientUnits="userSpaceOnUse">
+          <motion.linearGradient
+            key={index}
+            id={`${gradientId}-rim-${index}`}
+            x1="0"
+            x2="0"
+            y1={index === 1 ? rimStart : rect.top}
+            y2={index === 1 ? rimEnd : rect.top + rect.height}
+            gradientUnits="userSpaceOnUse"
+          >
             {[0, 0.15, 0.3, 0.4, 0.5, 0.6, 0.7, 0.85, 1].map((position) => (
-              <stop key={position} offset={position} className="nav-energy-stop-head" stopOpacity={rimFalloff(position)} />
+              <stop
+                key={position}
+                offset={position}
+                className="nav-energy-stop-head"
+                stopOpacity={rimFalloff(position)}
+              />
             ))}
           </motion.linearGradient>
         ))}
       </defs>
       <g className="nav-energy-fused">
-        <motion.path d={shape} stroke={`url(#${gradientId})`} className="nav-energy-lightning"
-          initial={{ opacity: 0 }} animate={{ opacity: [0, 0.85, 0.85, 0] }}
-          transition={{ duration: flight.duration + 0.38, times: [0, 0.15, flight.duration / (flight.duration + 0.38), 1], ease: "easeInOut" }} />
+        <motion.path
+          d={shape}
+          stroke={`url(#${gradientId})`}
+          className="nav-energy-lightning"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.85, 0.85, 0] }}
+          transition={{
+            duration: flight.duration + 0.38,
+            times: [0, 0.15, flight.duration / (flight.duration + 0.38), 1],
+            ease: "easeInOut",
+          }}
+        />
         <motion.path
           d={borderArc(flight.source, flight.rightward, flight.sourceKind === "avatar")}
           className="nav-energy-rim"
@@ -111,7 +151,10 @@ function LightningFlight({ flight }: { flight: Flight }) {
 }
 
 export type EnergyEndpoint = { element: HTMLElement; kind: "avatar" | "pill" };
-export type EnergyTargetResolver = (key: string | null, container: HTMLElement) => EnergyEndpoint | null;
+export type EnergyTargetResolver = (
+  key: string | null,
+  container: HTMLElement,
+) => EnergyEndpoint | null;
 
 /** Default lookup: any element marked data-energy-target="<key>"; data-energy-shape="circle" draws round rims. */
 export const dataAttributeTargets: EnergyTargetResolver = (key, container) => {

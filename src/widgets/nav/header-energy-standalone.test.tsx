@@ -9,7 +9,17 @@ vi.mock("@/shared/lib/use-prefers-reduced-motion", async (orig) => ({
 }));
 
 function rect(left: number, width: number) {
-  return { left, top: 0, width, height: 32, right: left + width, bottom: 32, x: left, y: 0, toJSON() {} };
+  return {
+    left,
+    top: 0,
+    width,
+    height: 32,
+    right: left + width,
+    bottom: 32,
+    x: left,
+    y: 0,
+    toJSON() {},
+  };
 }
 
 function Tabs({ active }: { active: string }) {
@@ -33,7 +43,9 @@ describe("HeaderEnergy outside the site nav", () => {
       .spyOn(HTMLElement.prototype, "getBoundingClientRect")
       .mockImplementation(function (this: HTMLElement) {
         const key = this.dataset["energyTarget"];
-        return (key === "one" ? rect(0, 80) : key === "two" ? rect(200, 32) : rect(0, 400)) as DOMRect;
+        return (
+          key === "one" ? rect(0, 80) : key === "two" ? rect(200, 32) : rect(0, 400)
+        ) as DOMRect;
       });
     const { container, rerender } = render(<Tabs active="one" />);
     expect(container.querySelector("svg")).toBeNull();

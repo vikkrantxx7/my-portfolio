@@ -10,7 +10,11 @@ export function mdxPlugin(): Plugin {
     enforce: "pre",
     ...(mdx({
       providerImportSource: "@mdx-js/react",
-      remarkPlugins: [remarkFrontmatter, remarkGfm, [remarkMdxFrontmatter, { name: "frontmatter" }]],
+      remarkPlugins: [
+        remarkFrontmatter,
+        remarkGfm,
+        [remarkMdxFrontmatter, { name: "frontmatter" }],
+      ],
     }) as Plugin),
   };
 }

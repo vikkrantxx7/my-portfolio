@@ -15,7 +15,10 @@ describe("watchForUpdates", () => {
   it("reloads once when a new version takes over an existing app", () => {
     const reload = vi.fn();
     const sw = new EventTarget();
-    watchForUpdates({ update: vi.fn() }, { doc: new EventTarget() as never, sw, reload, hadController: true });
+    watchForUpdates(
+      { update: vi.fn() },
+      { doc: new EventTarget() as never, sw, reload, hadController: true },
+    );
     sw.dispatchEvent(new Event("controllerchange"));
     sw.dispatchEvent(new Event("controllerchange"));
     expect(reload).toHaveBeenCalledTimes(1);
@@ -24,7 +27,10 @@ describe("watchForUpdates", () => {
   it("does not reload on the very first install", () => {
     const reload = vi.fn();
     const sw = new EventTarget();
-    watchForUpdates({ update: vi.fn() }, { doc: new EventTarget() as never, sw, reload, hadController: false });
+    watchForUpdates(
+      { update: vi.fn() },
+      { doc: new EventTarget() as never, sw, reload, hadController: false },
+    );
     sw.dispatchEvent(new Event("controllerchange"));
     expect(reload).not.toHaveBeenCalled();
   });

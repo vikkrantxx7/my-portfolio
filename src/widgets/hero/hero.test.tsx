@@ -29,7 +29,6 @@ describe("Hero", () => {
     expect(screen.getByRole("button", { name: /explore my work/i })).toHaveClass("cursor-pointer");
   });
 
-
   it("AC2: background is decorative and hidden from assistive tech", () => {
     const { container } = render(<Hero />);
     expect(container.querySelector("[data-hero-bg]")).toHaveAttribute("aria-hidden", "true");

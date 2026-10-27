@@ -169,7 +169,9 @@ export function SiteNav() {
                 reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }
               }
               animate={{ clipPath: "inset(0 0% 0 0% round 999px)", opacity: 1 }}
-              transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }}
+              transition={
+                reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }
+              }
               className="pointer-events-auto absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
             >
               <DockIgnition reducedMotion={reduce} />
