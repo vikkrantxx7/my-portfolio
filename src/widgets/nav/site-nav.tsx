@@ -16,6 +16,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -45,12 +46,35 @@ const ids = NAV_SECTIONS.map((s) => s.id);
 export function SiteNav() {
   const { profile } = content;
   const router = useRouter({ warn: false });
-  const active = useActiveSection(ids);
+  const { active, select } = useActiveSection(ids);
   const reduce = usePrefersReducedMotion();
   const [open, setOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const desktopRef = useRef<HTMLUListElement>(null);
+  const [pill, setPill] = useState({ x: 0, y: 0, width: 0, height: 0 });
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (!active) return;
+      const list = desktopRef.current;
+      const link = list?.querySelector<HTMLElement>(`a[href="#${active}"]`);
+      if (!list || !link) return;
+      const parent = list.getBoundingClientRect();
+      const rect = link.getBoundingClientRect();
+      setPill({
+        x: rect.left - parent.left,
+        y: rect.top - parent.top,
+        width: rect.width,
+        height: rect.height,
+      });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    if (desktopRef.current) observer.observe(desktopRef.current);
+    return () => observer.disconnect();
+  }, [active]);
 
   useEffect(() => {
     if (open) menuRef.current?.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
@@ -63,6 +87,7 @@ export function SiteNav() {
 
   const go = (id: string) => (e: MouseEvent) => {
     e.preventDefault();
+    select(id);
     replaceHash(`#${id}`, router?.navigate);
     if (open) {
       close();
@@ -126,40 +151,54 @@ export function SiteNav() {
             </a>
           </div>
           <div className="flex items-center gap-6">
-          <ul className="hidden items-center gap-8 md:flex">
-            {NAV_SECTIONS.map((s) => (
-              <li key={s.id}>
-                <a
-                  href={`#${s.id}`}
-                  onClick={go(s.id)}
-                  aria-current={active === s.id ? "true" : undefined}
-                  className={linkCls(s.id)}
-                >
-                  <AnimatePresence>
-                    {active === s.id && (
-                      <motion.span
-                        data-nav-pill
-                        {...(reduce ? {} : { layoutId: "active-nav-pill" })}
-                        initial={reduce ? false : { x: -14, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        {...(reduce ? {} : { exit: { x: -14, opacity: 0 } })}
-                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                        aria-hidden
-                        className="absolute inset-0 rounded-full border border-primary/25 bg-primary/10 shadow-xs"
-                      />
-                    )}
-                  </AnimatePresence>
-                  <span className="relative">{s.label}</span>
-                </a>
+            <ul ref={desktopRef} className="relative hidden items-center gap-8 md:flex">
+              <AnimatePresence>
+                {active && pill.width > 0 && (
+                  <motion.span
+                    key="active-nav-pill"
+                    data-nav-pill
+                    initial={
+                      reduce
+                        ? false
+                        : {
+                            x: pill.x - 14,
+                            y: pill.y,
+                            width: pill.width,
+                            height: pill.height,
+                            opacity: 0,
+                          }
+                    }
+                    animate={{ ...pill, opacity: 1 }}
+                    {...(reduce ? {} : { exit: { x: pill.x - 14, opacity: 0 } })}
+                    transition={{
+                      type: "tween",
+                      duration: reduce ? 0 : 0.28,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                    aria-hidden
+                    className="pointer-events-none absolute left-0 top-0 rounded-full border border-primary/25 bg-primary/10 shadow-xs"
+                  />
+                )}
+              </AnimatePresence>
+              {NAV_SECTIONS.map((s) => (
+                <li key={s.id}>
+                  <a
+                    href={`#${s.id}`}
+                    onClick={go(s.id)}
+                    aria-current={active === s.id ? "true" : undefined}
+                    className={linkCls(s.id)}
+                  >
+                    <span className="relative">{s.label}</span>
+                  </a>
+                </li>
+              ))}
+              <li>
+                <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
+                  View Resume
+                </ResumeViewer>
               </li>
-            ))}
-            <li>
-              <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
-                View Resume
-              </ResumeViewer>
-            </li>
-          </ul>
-          <ThemeToggle />
+            </ul>
+            <ThemeToggle />
           </div>
         </nav>
         <ScrollProgress />

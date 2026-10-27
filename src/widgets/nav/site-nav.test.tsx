@@ -4,7 +4,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SiteNav } from "./site-nav";
 
 type IOCallback = (entries: Partial<IntersectionObserverEntry>[]) => void;
-let ioCallback: IOCallback = () => {};
+let scrollPosition = 0;
+const ioCallback: IOCallback = (entries) => {
+  const hit = entries.find((entry) => entry.isIntersecting);
+  const index = ["work", "experience", "about"].indexOf(hit?.target?.id ?? "");
+  scrollPosition = index < 0 ? 0 : 500 + index * 1000;
+  window.dispatchEvent(new Event("scrollend"));
+};
 
 function setReducedMotion(reduce: boolean) {
   window.matchMedia = ((query: string) => ({
@@ -16,6 +22,19 @@ function setReducedMotion(reduce: boolean) {
 }
 
 beforeEach(() => {
+  scrollPosition = 0;
+  vi.spyOn(window, "scrollY", "get").mockImplementation(() => scrollPosition);
+  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (
+    this: HTMLElement,
+  ) {
+    const index = ["work", "experience", "about"].indexOf(this.id);
+    return {
+      top: index < 0 ? 0 : 500 + index * 1000 - scrollPosition,
+      left: 0,
+      width: 100,
+      height: 30,
+    } as DOMRect;
+  });
   document.body.innerHTML = "";
   for (const id of ["work", "experience", "about"]) {
     const s = document.createElement("section");
@@ -24,14 +43,6 @@ beforeEach(() => {
   }
   Element.prototype.scrollIntoView = vi.fn();
   setReducedMotion(false);
-  // biome-ignore lint/suspicious/noExplicitAny: test stub
-  (window as any).IntersectionObserver = class {
-    constructor(cb: IOCallback) {
-      ioCallback = cb;
-    }
-    observe() {}
-    disconnect() {}
-  };
 });
 
 describe("SiteNav", () => {
@@ -81,8 +92,6 @@ describe("SiteNav", () => {
     expect(glow?.textContent).not.toContain("Lead Fullstack Engineer");
   });
 
-
-
   it("AC2: smooth-scrolls to the section", async () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
@@ -129,54 +138,28 @@ describe("SiteNav", () => {
     expect(within(nav).getByRole("link", { name: "Work" })).not.toHaveAttribute("aria-current");
   });
 
-  it("renders the sliding pill only behind the active desktop link", () => {
+  it("selects a clicked destination immediately without intermediate highlights", async () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    expect(nav.querySelector("[data-nav-pill]")).toBeNull();
-    act(() => {
-      ioCallback([
-        { isIntersecting: true, target: document.getElementById("experience") as Element },
-      ]);
-    });
-    const experience = within(nav).getByRole("link", { name: "Experience" });
-    const work = within(nav).getByRole("link", { name: "Work" });
-    expect(experience.querySelector("[data-nav-pill]")).not.toBeNull();
-    expect(work.querySelector("[data-nav-pill]")).toBeNull();
-  });
-
-  it("slides the pill to the newly active link", async () => {
-    // Reduced motion: exit is skipped so the old pill unmounts immediately.
-    setReducedMotion(true);
-    render(<SiteNav />);
-    const nav = screen.getByRole("navigation", { name: /primary/i });
-    act(() => {
-      ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]);
-    });
-    expect(
-      within(nav).getByRole("link", { name: "Work" }).querySelector("[data-nav-pill]"),
-    ).not.toBeNull();
-    act(() => {
-      ioCallback([{ isIntersecting: true, target: document.getElementById("about") as Element }]);
-    });
-    expect(
-      within(nav).getByRole("link", { name: "About" }).querySelector("[data-nav-pill]"),
-    ).not.toBeNull();
-    // The old pill unmounts once its exit animation completes.
-    await waitFor(() =>
-      expect(
-        within(nav).getByRole("link", { name: "Work" }).querySelector("[data-nav-pill]"),
-      ).toBeNull(),
+    await userEvent.click(within(nav).getByRole("link", { name: "About" }));
+    expect(within(nav).getByRole("link", { name: "About" })).toHaveAttribute(
+      "aria-current",
+      "true",
     );
+    expect(within(nav).getByRole("link", { name: "Work" })).not.toHaveAttribute("aria-current");
   });
 
-  it("styles the pill as a capsule visible against the light theme", () => {
+  it("clears the selection immediately when the header name is clicked", async () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    act(() => {
-      ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]);
-    });
-    const pill = nav.querySelector("[data-nav-pill]") as HTMLElement;
-    expect(pill).toHaveClass("rounded-full", "border", "bg-primary/10");
+    act(() =>
+      ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]),
+    );
+    expect(within(nav).getByRole("link", { name: "Work" })).toHaveAttribute("aria-current", "true");
+    await userEvent.click(within(nav).getByRole("link", { name: "Vikrant Sharma" }));
+    for (const label of ["Work", "Experience", "About"]) {
+      expect(within(nav).getByRole("link", { name: label })).not.toHaveAttribute("aria-current");
+    }
   });
 
   it("AC4: mobile menu opens, traps focus and closes on Esc", async () => {
