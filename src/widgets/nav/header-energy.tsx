@@ -110,12 +110,29 @@ function LightningFlight({ flight }: { flight: Flight }) {
   );
 }
 
+export type EnergyEndpoint = { element: HTMLElement; kind: "avatar" | "pill" };
+export type EnergyTargetResolver = (key: string | null, container: HTMLElement) => EnergyEndpoint | null;
+
+/** Default lookup: any element marked data-energy-target="<key>"; data-energy-shape="circle" draws round rims. */
+export const dataAttributeTargets: EnergyTargetResolver = (key, container) => {
+  if (key === null) return null;
+  const element = container.querySelector<HTMLElement>(`[data-energy-target="${CSS.escape(key)}"]`);
+  if (!element) return null;
+  return { element, kind: element.dataset.energyShape === "circle" ? "avatar" : "pill" };
+};
+
+/**
+ * Lightning hand-off between two elements inside a container (nav bar, tabs, ...).
+ * `active` is the current target key; changing it fires one flight from the previous target.
+ */
 export function HeaderEnergy({
   active,
   navRef,
+  resolveTarget = dataAttributeTargets,
 }: {
   active: string | null;
   navRef: RefObject<HTMLElement | null>;
+  resolveTarget?: EnergyTargetResolver;
 }) {
   const reduce = usePrefersReducedMotion();
   const previous = useRef(active);
@@ -130,13 +147,11 @@ export function HeaderEnergy({
     }
     const nav = navRef.current;
     if (!nav) return;
-    const endpoint = (id: string | null) =>
-      nav.querySelector<HTMLElement>(id ? `a[href="#${id}"]` : "[data-avatar-frame]");
-    const source = endpoint(last);
-    const destination = endpoint(active);
+    const source = resolveTarget(last, nav);
+    const destination = resolveTarget(active, nav);
     if (!source || !destination) return;
-    const sourceRect = source.getBoundingClientRect();
-    const destinationRect = destination.getBoundingClientRect();
+    const sourceRect = source.element.getBoundingClientRect();
+    const destinationRect = destination.element.getBoundingClientRect();
     if (!sourceRect.width || !destinationRect.width) {
       setFlight(null);
       return;
@@ -152,11 +167,11 @@ export function HeaderEnergy({
       ...getEnergyTransfer(
         local(sourceRect),
         local(destinationRect),
-        last ? "pill" : "avatar",
-        active ? "pill" : "avatar",
+        source.kind,
+        destination.kind,
       ),
       key: ++serial.current,
     });
-  }, [active, reduce, navRef]);
+  }, [active, reduce, navRef, resolveTarget]);
   return flight && !reduce ? <LightningFlight key={flight.key} flight={flight} /> : null;
 }
