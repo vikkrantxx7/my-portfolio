@@ -1,0 +1,18 @@
+/* Shiki dual-theme tokens: light colours inline, dark via --shiki-dark. */
+[data-rehype-pretty-code-figure] pre { background: var(--card); }
+[data-rehype-pretty-code-figure] code { display: grid; background: transparent; padding: 0; border-radius: 0; }
+[data-rehype-pretty-code-figure] [data-line] { padding-inline: 0; }
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+  box-shadow: inset 2px 0 0 var(--primary);
+}
+[data-rehype-pretty-code-title] {
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted-foreground);
+  padding: 0.5rem 1rem; border: 1px solid var(--border); border-bottom: 0;
+  border-radius: 0.5rem 0.5rem 0 0; background: var(--card);
+}
+[data-rehype-pretty-code-title] + pre { border-top-left-radius: 0; border-top-right-radius: 0; }
+.dark [data-rehype-pretty-code-figure] span[style] {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+}

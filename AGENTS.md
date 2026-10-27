@@ -18,7 +18,7 @@
 - Portfolio content is typed static data in `src/content` and must pass `validateContent` (no database in v1).
 - Reusable UI primitives live in `src/shared/ui` with `cva` variants; features/widgets follow simplified Feature-Sliced Design.
 - Every story ships with Vitest + Testing Library tests written first.
-- Linting and formatting use Biome (`bun run lint` / `bun run format`); ESLint and Prettier were removed to keep one fast tool.
+- Lint/format with Biome only (one fast tool).
 - Career roles are composed in the timeline widget; achievement disclosure state lives in the expand-achievement feature so multiple achievements can open independently. Use the shared reduced-motion hook to bypass Motion springs when requested.
 - Achievement deep links use `#exp-<experienceId>-<achievementId>`, updated with `history.replaceState` (never push) via the deep-link feature; the disclosure trigger carries the hash id so native/router scrolling works, and unknown hashes resolve to null and are ignored.
 - Project filters are validated TanStack search parameters with pure matching in the filter-projects feature; navigation preserves achievement hashes and scroll to keep both sharing flows compatible.
@@ -40,3 +40,4 @@
 - Profile-card rim geometry is isolated and measured locally for reuse without blocking controls; see nav rules.
 - Author new case-study bodies in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and render through shared `Prose` components to preserve the existing page shell; summaries and diagrams stay typed, and projects without MDX retain typed sections. Vite and Vitest share the compiler via `mdx.config.ts`.
 - Blog posts are MDX in `src/content/blog/`, registered and validated in `src/content/blog.ts`, rendered via shared `Prose`; `/blog` filters by URL `?tag=` — one MDX pipeline with case studies.
+- MDX code is Shiki-highlighted at build time (dual themes via root class) so no highlighter ships.
