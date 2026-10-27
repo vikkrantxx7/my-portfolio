@@ -10,7 +10,7 @@
 
 ## 2. Files to replace
 - `public/resume.pdf` — your resume (file name shown on download comes from `profile.resumeFileName`).
-- `public/favicon.png` — 64x64 browser icon.
+- `public/favicon.png`, `public/icon-*.png`, `public/apple-touch-icon.png`, `public/manifest.webmanifest` — browser and installed-app icons/name.
 - `src/assets/og-banner.jpg` — 1200x630 social share banner.
 - `public/robots.txt` — update the sitemap URL to your domain.
 

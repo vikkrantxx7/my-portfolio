@@ -39,3 +39,6 @@
 - Bottom toolbars share `dockBar`/`dockItem` cva styles in `src/shared/ui/dock.ts` (tone `fixed` for the resume over white paper) so sizes stay identical across pages.
 - Desktop sections use Radix `SectionNavigation` and one measured capsule. Bounded SVG lightning joins border centres and dissolves into gradients on actual border arcs, never branches; selection is immediate and reduced motion skips flights. Hold click selection until scroll settles/interruption; rAF tracking uses scroll margins and a near-bottom threshold.
 - Mobile dock ignition mounts with the menu: a pointer-transparent masked CSS border sweep, removed on completion; no looping, navigation delay or reduced-motion animation.
+- Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
+- Component-only CSS lives beside its component and is `@import`ed at the top of `src/styles.css` (not imported from the component) so it is part of the SSR stylesheet and paints without a flash; the global file keeps only tokens, themes, base rules and shared utilities.
+- `HeaderEnergy` is container-agnostic: targets come from a `resolveTarget` prop (default `data-energy-target`/`data-energy-shape`); site nav supplies its own resolver.
