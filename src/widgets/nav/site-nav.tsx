@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { SectionNavigation } from "@/shared/ui/section-navigation";
 import { AvatarPreview } from "./avatar-preview";
+import { DockIgnition } from "./dock-ignition";
 import { HeaderEnergy } from "./header-energy";
 import { ScrollProgress } from "./scroll-progress";
 import { useActiveSection } from "./use-active-section";
@@ -162,9 +163,10 @@ export function SiteNav() {
                 reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }
               }
               animate={{ clipPath: "inset(0 0% 0 0% round 999px)", opacity: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }}
               className="pointer-events-auto absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
             >
+              <DockIgnition reducedMotion={reduce} />
               <ul data-testid="dock-left" className="flex justify-around">
                 {LEFT.map((s) => (
                   <li key={s.id}>
