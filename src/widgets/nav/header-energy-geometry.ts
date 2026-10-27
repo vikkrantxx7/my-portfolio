@@ -38,29 +38,17 @@ export function rimFalloff(position: number) {
   return Math.max(0, 1 - Math.abs(position * 2 - 1)) ** 2;
 }
 
-export function getImpactBranches(flight: ReturnType<typeof getEnergyTransfer>) {
-  const direction = flight.rightward ? 1 : -1;
-  const radius = flight.destination.height / 2;
-  const spread = Math.min(6, radius * 0.45);
-  const bend = flight.destinationKind === "avatar" ? 0 : radius - Math.sqrt(radius ** 2 - spread ** 2);
-  return [-1, 1].map((side) => [
-    { x: flight.to.x - direction * Math.min(12, flight.distance * 0.3), y: flight.to.y },
-    { x: flight.to.x - direction * 4, y: flight.to.y + side * spread * 0.4 },
-    { x: flight.to.x - direction * 6, y: flight.to.y + side * spread * 0.7 },
-    { x: flight.to.x + direction * bend, y: flight.to.y + side * spread },
-  ]);
-}
-
-export function getLightningPoints(flight: ReturnType<typeof getEnergyTransfer>, progress: number) {
+export function getLightningPoints(flight: ReturnType<typeof getEnergyTransfer>, progress: number, dissolve = 0) {
   const p = Math.min(1, Math.max(0, progress));
+  const consumed = Math.min(1, Math.max(0, dissolve));
   const segments = Math.max(4, Math.ceil(flight.distance / 18));
   return Array.from({ length: segments + 1 }, (_, index) => {
-    const t = index / segments;
+    const t = consumed + (1 - consumed) * index / segments;
     const offset = index === 0 || index === segments ? 0 :
       Math.sin(index * 2.399 + flight.distance * 0.017) * Math.min(3.5, flight.distance * 0.08) * Math.sin(Math.PI * t);
     return {
       x: flight.from.x + (flight.to.x - flight.from.x) * t * p,
-      y: flight.from.y + (flight.to.y - flight.from.y) * t * p + offset * p,
+      y: flight.from.y + (flight.to.y - flight.from.y) * t * p + offset * p * (1 - consumed),
     };
   });
 }
