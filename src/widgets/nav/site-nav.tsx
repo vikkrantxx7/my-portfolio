@@ -10,13 +10,12 @@ import {
   User,
   X,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import {
   type AnchorHTMLAttributes,
   type KeyboardEvent,
   type MouseEvent,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -26,7 +25,9 @@ import { ResumeViewer } from "@/features/resume-viewer/resume-viewer";
 import { ThemeToggle } from "@/features/theme-toggle/theme-toggle";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import { SectionNavigation } from "@/shared/ui/section-navigation";
 import { AvatarPreview } from "./avatar-preview";
+import { HeaderEnergy } from "./header-energy";
 import { ScrollProgress } from "./scroll-progress";
 import { useActiveSection } from "./use-active-section";
 
@@ -52,29 +53,7 @@ export function SiteNav() {
   const [resumeOpen, setResumeOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const desktopRef = useRef<HTMLUListElement>(null);
-  const [pill, setPill] = useState({ x: 0, y: 0, width: 0, height: 0 });
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      if (!active) return;
-      const list = desktopRef.current;
-      const link = list?.querySelector<HTMLElement>(`a[href="#${active}"]`);
-      if (!list || !link) return;
-      const parent = list.getBoundingClientRect();
-      const rect = link.getBoundingClientRect();
-      setPill({
-        x: rect.left - parent.left,
-        y: rect.top - parent.top,
-        width: rect.width,
-        height: rect.height,
-      });
-    };
-    measure();
-    const observer = new ResizeObserver(measure);
-    if (desktopRef.current) observer.observe(desktopRef.current);
-    return () => observer.disconnect();
-  }, [active]);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (open) menuRef.current?.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
@@ -113,18 +92,13 @@ export function SiteNav() {
     }
   };
 
-  const linkCls = (id: string) =>
-    cn(
-      "relative rounded-full px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] transition-colors hover:text-primary focus-visible:outline-none focus-visible:text-primary",
-      active === id ? "text-primary" : "text-muted-foreground",
-    );
-
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
         <nav
+          ref={navRef}
           aria-label="Primary"
-          className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16"
+          className="relative mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16"
         >
           <div className="flex items-center gap-3">
             <AvatarPreview />
@@ -151,55 +125,14 @@ export function SiteNav() {
             </a>
           </div>
           <div className="flex items-center gap-6">
-            <ul ref={desktopRef} className="relative hidden items-center gap-8 md:flex">
-              <AnimatePresence>
-                {active && pill.width > 0 && (
-                  <motion.span
-                    key="active-nav-pill"
-                    data-nav-pill
-                    initial={
-                      reduce
-                        ? false
-                        : {
-                            x: pill.x - 14,
-                            y: pill.y,
-                            width: pill.width,
-                            height: pill.height,
-                            opacity: 0,
-                          }
-                    }
-                    animate={{ ...pill, opacity: 1 }}
-                    {...(reduce ? {} : { exit: { x: pill.x - 14, opacity: 0 } })}
-                    transition={{
-                      type: "tween",
-                      duration: reduce ? 0 : 0.28,
-                      ease: [0.25, 0.1, 0.25, 1],
-                    }}
-                    aria-hidden
-                    className="pointer-events-none absolute left-0 top-0 rounded-full border border-primary/25 bg-primary/10 shadow-xs"
-                  />
-                )}
-              </AnimatePresence>
-              {NAV_SECTIONS.map((s) => (
-                <li key={s.id}>
-                  <a
-                    href={`#${s.id}`}
-                    onClick={go(s.id)}
-                    aria-current={active === s.id ? "true" : undefined}
-                    className={linkCls(s.id)}
-                  >
-                    <span className="relative">{s.label}</span>
-                  </a>
-                </li>
-              ))}
-              <li>
-                <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
-                  View Resume
-                </ResumeViewer>
-              </li>
-            </ul>
+            <SectionNavigation items={NAV_SECTIONS} active={active} onSelect={go}>
+              <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
+                View Resume
+              </ResumeViewer>
+            </SectionNavigation>
             <ThemeToggle />
           </div>
+          <HeaderEnergy active={active} navRef={navRef} />
         </nav>
         <ScrollProgress />
       </header>
