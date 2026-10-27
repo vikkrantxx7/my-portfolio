@@ -1,5 +1,8 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { getFilamentPoints } from "./profile-card-rim-geometry";
+import { getCornerSparks, getFilamentPoints } from "./profile-card-rim-geometry";
+
+const toPointList = (points: { x: number; y: number }[]) =>
+  points.map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
 
 export function ProfileCardRim({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<SVGSVGElement>(null);
