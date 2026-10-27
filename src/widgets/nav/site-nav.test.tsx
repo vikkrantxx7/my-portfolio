@@ -54,6 +54,20 @@ describe("SiteNav", () => {
     );
   });
 
+  it("shows the role as a subheading under the name", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    expect(within(name).getByText("Lead Fullstack Engineer")).toBeInTheDocument();
+  });
+
+  it("marks the name link for the hover glow treatment", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    expect(within(nav).getByRole("link", { name: "Vikrant Sharma" })).toHaveClass("header-name");
+  });
+
+
   it("AC2: smooth-scrolls to the section", async () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });

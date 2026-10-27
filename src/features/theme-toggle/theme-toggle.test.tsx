@@ -18,4 +18,12 @@ describe("ThemeToggle", () => {
       "true",
     );
   });
+
+  it("shows a pointer cursor", () => {
+    render(<ThemeToggle />);
+    expect(screen.getByRole("button", { name: "Switch to light theme" })).toHaveClass(
+      "cursor-pointer",
+    );
+  });
+
 });

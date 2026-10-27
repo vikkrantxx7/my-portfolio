@@ -15,6 +15,11 @@ describe("content model", () => {
     expect(content.profile.name).toBe("Vikrant Sharma");
   });
 
+  it("carries a short title for the header subheading", () => {
+    expect(content.profile.title).toBe("Lead Fullstack Engineer");
+  });
+
+
   it("reports duplicate experience ids", () => {
     const broken = { ...content, experiences: [exp, exp] };
     expect(validateContent(broken)).toContain(`Duplicate experience id: ${exp.id}`);
