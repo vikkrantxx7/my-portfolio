@@ -1,0 +1,323 @@
+---
+title: "Ship faster with MSW"
+description: "Build and test frontend features before the backend is ready with Mock Service Worker."
+publishedAt: "2026-10-27"
+readingMinutes: 9
+cover: "ship-faster-with-msw"
+coverAlt: "A road forking into a blue Mock API route and an orange Real API route, with an MSW switch lever in the middle."
+tags:
+  - React
+  - Testing
+  - MSW
+---
+
+A frontend task is ready for review, except for one thing: the API isn't ready yet.
+
+The layout is done. The acceptance criteria are clear. But the endpoint is still being built, or the shared test environment is unreliable, so the page has nothing useful to render. The usual workaround is a JSON file, a few hardcoded values, or a mock tucked inside a component. It gets the screen moving, but that code rarely survives the next change.
+
+[Mock Service Worker (MSW)](https://mswjs.io/) gives us a cleaner option: mock the API at the network boundary, so the application can make its normal requests and receive predictable responses. The same request handlers can power local development and automated tests.
+
+That means frontend work can move ahead without creating a second version of the data-fetching code just for development.
+
+## The problem with one-off mocks
+
+Mocking an API call directly inside a component is quick, but it couples the UI to a temporary implementation. Mocking `fetch` or an HTTP client in every test can be just as brittle: the test starts asserting how a request was made instead of how the application behaves when a response arrives.
+
+Hardcoded success data also leaves important states untested. A real endpoint can return an empty list, a `401`, a `404`, a `500`, or data that takes a second to arrive. Those are ordinary product states, not unusual edge cases.
+
+A useful mock setup should let us:
+
+- use the same request code in development and production;
+- return realistic payloads for the API contract;
+- switch between success, empty, loading, and error scenarios;
+- reuse the same definitions in component and integration tests; and
+- see intercepted requests in the browser's Network panel.
+
+MSW covers that layer without replacing the application's `fetch`, Axios, or query-library code.
+
+## How MSW fits into the request flow
+
+In the browser, MSW registers a Service Worker. When the application makes a matching request, the worker intercepts it and MSW runs the handler you defined. The handler returns a response, and the application consumes it as it would a response from the real API.
+
+```text
+React component / query hook
+            |
+            v
+      fetch('/api/products')
+            |
+            v
+     MSW Service Worker
+            |
+            v
+      request handler
+            |
+            v
+       mocked response
+```
+
+The important part is where the mock sits. The component doesn't need to know whether the response came from a local handler or a backend service. When the real endpoint is available, the application request remains the same.
+
+In Node.js tests there is no browser Service Worker. MSW uses `setupServer` to intercept requests in the Node process, while keeping the handler definitions unchanged. Despite its name, `setupServer` does not start an HTTP server for your app.
+
+## 1. Install MSW
+
+For a React application using Vite:
+
+```bash
+npm install --save-dev msw
+npx msw init public --save
+```
+
+The second command copies `mockServiceWorker.js` into Vite's `public` directory. If your project uses a different public-assets directory, pass that directory to `msw init` instead.
+
+Keep MSW in `devDependencies`. It should be a development and test tool, not a dependency that changes production API behavior.
+
+## 2. Define handlers around the API contract
+
+Put request handlers in one place instead of scattering temporary responses across components. For a small application, a single `src/mocks/handlers.ts` file is enough. As the project grows, split handlers by domain—products, account, checkout, and so on.
+
+Here is a small product API example:
+
+```ts
+// src/mocks/handlers.ts
+import { http, HttpResponse } from 'msw'
+
+type Product = {
+  id: string
+  name: string
+  price: number
+}
+
+const products: Product[] = [
+  { id: 'p-100', name: 'Everyday Runner', price: 89 },
+  { id: 'p-200', name: 'Trail Shoe', price: 125 },
+]
+
+export const handlers = [
+  http.get('/api/products', ({ request }) => {
+    const url = new URL(request.url)
+    const query = url.searchParams.get('q')?.trim().toLowerCase()
+
+    const result = query
+      ? products.filter((product) =>
+          product.name.toLowerCase().includes(query),
+        )
+      : products
+
+    return HttpResponse.json({ items: result })
+  }),
+
+  http.get('/api/products/:productId', ({ params }) => {
+    const product = products.find(({ id }) => id === params.productId)
+
+    if (!product) {
+      return HttpResponse.json(
+        { message: 'Product not found' },
+        { status: 404 },
+      )
+    }
+
+    return HttpResponse.json(product)
+  }),
+]
+```
+
+These handlers describe the API's behavior. They don't call the component, update React state, or know which query library the UI uses. The handler returns the shape and status the real endpoint is expected to return.
+
+Use the API contract as the source of truth for the mock shape. If the backend returns `{ items, nextCursor }`, don't quietly invent a different shape because it is more convenient for a component. A mock that drifts from the contract can make a broken integration look healthy.
+
+## 3. Enable mocks in local development
+
+Create the browser integration:
+
+```ts
+// src/mocks/browser.ts
+import { setupWorker } from 'msw/browser'
+import { handlers } from './handlers'
+
+export const worker = setupWorker(...handlers)
+```
+
+Then start it before mounting the application. With Vite, a small environment flag makes the choice explicit.
+
+```env
+# .env.development.local
+VITE_ENABLE_MOCKS=true
+```
+
+```tsx
+// src/main.tsx
+import { createRoot } from 'react-dom/client'
+import { App } from './App'
+
+async function bootstrap() {
+  if (
+    import.meta.env.DEV &&
+    import.meta.env.VITE_ENABLE_MOCKS === 'true'
+  ) {
+    const { worker } = await import('./mocks/browser')
+
+    await worker.start({ onUnhandledRequest: 'warn' })
+  }
+
+  createRoot(document.getElementById('root')!).render(<App />)
+}
+
+void bootstrap()
+```
+
+Waiting for `worker.start()` matters. Service Worker registration is asynchronous; mounting the app first can allow its initial requests to escape before MSW is ready.
+
+The `import.meta.env.DEV` check also prevents the browser worker from starting in a production build. Keep the mock flag off in environments that should use the real API, and verify that your deployment configuration does not enable a development-only path accidentally.
+
+During development, check the browser console for MSW's startup message and open the Network panel to inspect requests. If a request isn't matched, the warning is a useful signal that a handler may be missing or its URL doesn't match the application's request.
+
+## 4. Reuse the same handlers in tests
+
+The handlers shouldn't be duplicated for tests. Create the Node integration using the same array:
+
+```ts
+// src/mocks/node.ts
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+export const server = setupServer(...handlers)
+```
+
+Register it in the test setup file. The example below uses Vitest:
+
+```ts
+// src/test/setup.ts
+import '@testing-library/jest-dom/vitest'
+import { afterAll, afterEach, beforeAll } from 'vitest'
+import { server } from '../mocks/node'
+
+beforeAll(() => {
+  server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+  server.resetHandlers()
+})
+
+afterAll(() => {
+  server.close()
+})
+```
+
+```ts
+// vitest.config.ts
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+  },
+})
+```
+
+`resetHandlers()` is easy to overlook. Tests often override a handler to force a particular response; resetting after each test prevents that override from leaking into the next one. Using `onUnhandledRequest: 'error'` in tests is also a useful guard against an unexpected API call silently reaching a real service.
+
+## 5. Test the behavior that matters
+
+The real benefit comes from changing the response while leaving the application code alone. Say a product page normally receives a successful response, but we need to verify its error state. Override the handler for that test:
+
+```tsx
+import { http, HttpResponse } from 'msw'
+import { server } from '../mocks/node'
+import { render, screen } from '@testing-library/react'
+import { ProductList } from './ProductList'
+
+it('shows an error when the products request fails', async () => {
+  server.use(
+    http.get('/api/products', () => {
+      return HttpResponse.json(
+        { message: 'Service unavailable' },
+        { status: 500 },
+      )
+    }),
+  )
+
+  render(<ProductList />)
+
+  expect(await screen.findByRole('alert')).toHaveTextContent(
+    /could not load products/i,
+  )
+})
+```
+
+The component still sends its normal request. Only the response changes. The test can therefore focus on what a user sees instead of mocking internal functions or query hooks.
+
+Use the same technique for the scenarios your feature needs:
+
+| Scenario | Response to model |
+| --- | --- |
+| First load | A normal successful payload |
+| Empty state | `200` with an empty collection |
+| Missing resource | `404` with the API's error shape |
+| Session expired | `401` or `403` |
+| Server failure | `500` or `503` |
+| Slow endpoint | A controlled delay before returning the response |
+| Pagination or search | Different data based on query parameters |
+
+For loading-state tests, add a deliberate delay to the relevant handler and assert the loading UI before the response resolves. Keep that delay scoped to the scenario; adding latency to every request makes the suite slower without improving its coverage.
+
+The example uses React Testing Library's `render`, `screen`, and `toHaveTextContent` APIs. It assumes the test environment has `jsdom`, `@testing-library/react`, and `@testing-library/jest-dom` installed. Also note that Node's native `fetch` does not resolve browser-relative URLs such as `/api/products`; in a Node test, make sure your API client uses an absolute base URL (or an equivalent test configuration). The handler can still match the request by path.
+
+## Keep the mock setup maintainable
+
+A few conventions make the difference between a reliable mock layer and a pile of fixtures.
+
+### Organize by domain
+
+Start simple, but avoid a giant handlers file once the application has several domains. A structure like this scales without adding much ceremony:
+
+```text
+src/mocks/
+  handlers/
+    products.ts
+    account.ts
+    checkout.ts
+  browser.ts
+  node.ts
+  index.ts
+```
+
+Export a combined handler list from `index.ts`. Keep reusable fixtures near the domain they describe, and keep environment setup separate from request definitions.
+
+### Make the default response useful
+
+Default handlers should describe the most common, valid response for a feature. Keep special cases in test-level overrides. This makes the app useful when a developer starts it locally, while giving tests explicit control over failures and edge cases.
+
+### Don't hide missing handlers
+
+Choose an unhandled-request policy deliberately. A warning can be convenient in local development, where a team may still be adding endpoints. An error is usually better in tests, where unexpected network traffic should fail fast. Don't use a silent bypass if it would let a request accidentally depend on a live environment.
+
+### Keep production out of the mock path
+
+Start the browser worker only behind a development check and an explicit flag. Don't make the application choose between mocked and real data deep inside a component or data-access hook; that decision belongs at the development bootstrap boundary.
+
+### Keep mocks deterministic
+
+Avoid random IDs, time-dependent data, or fixtures that change between runs unless the test is specifically about those behaviors. Deterministic responses make failures reproducible and code review much easier.
+
+## What MSW doesn't replace
+
+MSW is excellent for frontend development and UI-level tests, but it doesn't prove that the real backend works. A passing test says the UI handled the response your handler returned; it doesn't prove the server returns the same payload, the database query is correct, or authentication works end to end.
+
+Keep a small set of tests against a real test environment where they add value. Use contract checks to catch disagreements between frontend assumptions and backend responses, and integration or end-to-end tests for workflows that cross the service boundary.
+
+Think of MSW as a way to remove an unnecessary dependency from day-to-day frontend work—not a way to avoid integration testing altogether.
+
+## A workflow that keeps moving
+
+When an endpoint is still in progress, agree on the request and response contract with the backend developer, write a handler for it, and build the UI against that handler. Cover the important states before the live endpoint arrives. When the backend is ready, turn off the development flag and run the same flows against the real service.
+
+The component code doesn't need to be rewritten, and the test handlers remain useful after the endpoint ships. That's the practical payoff: fewer blocked tasks, fewer ad hoc mocks to maintain, and more time spent on the behavior users will actually experience.
+
+## Further reading
+
+- [MSW quick start](https://mswjs.io/docs/quick-start)
+- [Browser integration](https://mswjs.io/guides/integrations/browser)
+- [MSW repository and examples](https://github.com/mswjs/msw)
