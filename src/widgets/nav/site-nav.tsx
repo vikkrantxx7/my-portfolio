@@ -48,6 +48,7 @@ export function SiteNav() {
   const active = useActiveSection(ids);
   const reduce = usePrefersReducedMotion();
   const [open, setOpen] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -203,12 +204,17 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <ResumeViewer
-                    triggerClassName={dockLinkCls()}
-                    onTriggerClick={() => setOpen(false)}
+                  <button
+                    type="button"
+                    aria-label="CV"
+                    onClick={() => {
+                      setOpen(false);
+                      setResumeOpen(true);
+                    }}
+                    className={dockLinkCls()}
                   >
                     <DockInner icon={FileDown} label="CV" />
-                  </ResumeViewer>
+                  </button>
                 </li>
               </ul>
             </motion.div>
@@ -234,6 +240,8 @@ export function SiteNav() {
           </button>
         </div>
       </div>
+      {/* Lives outside the menu so it survives the menu closing on open. */}
+      <ResumeViewer open={resumeOpen} onOpenChange={setResumeOpen} />
     </>
   );
 }
