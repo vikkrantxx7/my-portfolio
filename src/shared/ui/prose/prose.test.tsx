@@ -57,6 +57,7 @@ describe("Prose code highlighting", () => {
     const tokens = Array.from(pre?.querySelectorAll("span[style]") ?? []);
     const styles = tokens.map((t) => t.getAttribute("style") ?? "");
     expect(styles.some((s) => s.includes("--shiki-dark"))).toBe(true);
+    expect(styles.some((s) => s.includes("--shiki-light"))).toBe(true);
     expect(new Set(styles).size).toBeGreaterThan(1);
   });
 });
