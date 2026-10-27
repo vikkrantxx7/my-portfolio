@@ -6,7 +6,10 @@ import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion
 
 const sectionLink = cva(
   "relative block rounded-full px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-  { variants: { active: { true: "text-primary", false: "text-muted-foreground" } }, defaultVariants: { active: false } },
+  {
+    variants: { active: { true: "text-primary", false: "text-muted-foreground" } },
+    defaultVariants: { active: false },
+  },
 );
 
 interface SectionNavigationProps {
@@ -28,7 +31,12 @@ export function SectionNavigation({ items, active, onSelect, children }: Section
       if (!list || !link) return;
       const parent = list.getBoundingClientRect();
       const rect = link.getBoundingClientRect();
-      setPill({ x: rect.left - parent.left, y: rect.top - parent.top, width: rect.width, height: rect.height });
+      setPill({
+        x: rect.left - parent.left,
+        y: rect.top - parent.top,
+        width: rect.width,
+        height: rect.height,
+      });
     };
     measure();
     const observer = new ResizeObserver(measure);
@@ -42,11 +50,17 @@ export function SectionNavigation({ items, active, onSelect, children }: Section
         <AnimatePresence>
           {active && pill.width > 0 && (
             <motion.li
-              key="active-nav-pill" data-nav-pill aria-hidden
+              key="active-nav-pill"
+              data-nav-pill
+              aria-hidden
               initial={reduce ? false : { ...pill, x: pill.x - 14, opacity: 0 }}
               animate={{ ...pill, opacity: 1 }}
               {...(reduce ? {} : { exit: { x: pill.x - 14, opacity: 0 } })}
-              transition={{ type: "tween", duration: reduce ? 0 : 0.28, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{
+                type: "tween",
+                duration: reduce ? 0 : 0.28,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
               className="pointer-events-none absolute left-0 top-0 rounded-full border border-primary/25 bg-primary/10 shadow-xs"
             />
           )}
@@ -54,7 +68,12 @@ export function SectionNavigation({ items, active, onSelect, children }: Section
         {items.map((item) => (
           <NavigationMenu.Item key={item.id}>
             <NavigationMenu.Link asChild active={active === item.id}>
-              <a href={`#${item.id}`} onClick={onSelect(item.id)} aria-current={active === item.id ? "true" : undefined} className={sectionLink({ active: active === item.id })}>
+              <a
+                href={`#${item.id}`}
+                onClick={onSelect(item.id)}
+                aria-current={active === item.id ? "true" : undefined}
+                className={sectionLink({ active: active === item.id })}
+              >
                 <span className="relative">{item.label}</span>
               </a>
             </NavigationMenu.Link>

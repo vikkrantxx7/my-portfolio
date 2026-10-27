@@ -32,10 +32,14 @@ export function useActiveSection(ids: readonly string[]) {
       // Short final sections and bottom safe-area space can leave About below
       // the header even after scroll settles. Claim it only near the bottom
       // and once its heading is in the upper portion of the viewport.
-      if (maxScroll > 0 && lastId && last &&
+      if (
+        maxScroll > 0 &&
+        lastId &&
+        last &&
         (window.scrollY >= maxScroll - 2 ||
           (window.scrollY >= maxScroll - window.innerHeight * 0.25 &&
-            last.getBoundingClientRect().top <= window.innerHeight * 0.55)))
+            last.getBoundingClientRect().top <= window.innerHeight * 0.55))
+      )
         current = lastId;
       setActive(window.scrollY <= 1 ? null : current);
     };

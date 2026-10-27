@@ -82,7 +82,9 @@ it("keeps About selected when the document bottom prevents its full alignment", 
 });
 
 it("selects short About near the bottom even with trailing mobile space", async () => {
-  vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(window.innerHeight + 2200);
+  vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(
+    window.innerHeight + 2200,
+  );
   const { result } = renderHook(() => useActiveSection(ids));
   await moveTo(2100);
   act(() => window.dispatchEvent(new Event("scrollend")));
@@ -90,7 +92,9 @@ it("selects short About near the bottom even with trailing mobile space", async 
 });
 
 it("does not claim About while it is still below the final-section threshold", async () => {
-  vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(window.innerHeight + 2200);
+  vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(
+    window.innerHeight + 2200,
+  );
   const { result } = renderHook(() => useActiveSection(ids));
   await moveTo(1800);
   expect(result.current.active).toBe("experience");

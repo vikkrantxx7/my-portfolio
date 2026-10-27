@@ -7,25 +7,33 @@ const experience = { left: 520, right: 650, top: 18, height: 28 };
 
 it("emits from the avatar right border and absorbs at the first pill left border", () => {
   expect(getEnergyTransfer(avatar, work, "avatar", "pill")).toMatchObject({
-    from: { x: 52, y: 32 }, to: { x: 400, y: 32 }, edge: "left",
+    from: { x: 52, y: 32 },
+    to: { x: 400, y: 32 },
+    edge: "left",
   });
 });
 
 it("absorbs rightward transfers at the left pill border", () => {
   expect(getEnergyTransfer(work, experience, "pill", "pill")).toMatchObject({
-    from: { x: 480, y: 32 }, to: { x: 520, y: 32 }, edge: "left",
+    from: { x: 480, y: 32 },
+    to: { x: 520, y: 32 },
+    edge: "left",
   });
 });
 
 it("absorbs leftward transfers at the right pill border", () => {
   expect(getEnergyTransfer(experience, work, "pill", "pill")).toMatchObject({
-    from: { x: 520, y: 32 }, to: { x: 480, y: 32 }, edge: "right",
+    from: { x: 520, y: 32 },
+    to: { x: 480, y: 32 },
+    edge: "right",
   });
 });
 
 it("returns energy to the avatar right rim when the name is selected", () => {
   expect(getEnergyTransfer(work, avatar, "pill", "avatar")).toMatchObject({
-    from: { x: 400, y: 32 }, to: { x: 52, y: 32 }, edge: "avatar",
+    from: { x: 400, y: 32 },
+    to: { x: 52, y: 32 },
+    edge: "avatar",
   });
 });
 
