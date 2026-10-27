@@ -39,3 +39,4 @@
 - Component CSS lives beside its component, imported atop `src/styles.css` for flash-free SSR; global CSS keeps tokens, themes, base rules and shared utilities.
 - Profile-card rim geometry is isolated and measured locally for reuse without blocking controls; see nav rules.
 - Author new case-study bodies in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and render through shared `Prose` components to preserve the existing page shell; summaries and diagrams stay typed, and projects without MDX retain typed sections. Vite and Vitest share the compiler via `mdx.config.ts`.
+- Blog posts are MDX in `src/content/blog/`, registered and validated in `src/content/blog.ts`, rendered via shared `Prose`; `/blog` filters by URL `?tag=` — one MDX pipeline with case studies.

@@ -1,3 +1,4 @@
+import { blogPosts } from "@/content/blog";
 import { createFileRoute } from "@tanstack/react-router";
 import { getRouterInstance } from "@tanstack/react-start";
 import { content } from "@/content/data";
@@ -28,6 +29,19 @@ export const Route = createFileRoute("/sitemap.xml")({
             });
             const path = sitemapPathForLocation(router, location, routeId);
             if (path) entries.push({ path });
+          }
+        }
+        const blogRouteId = "/blog/$slug";
+        if (isSitemapRouteIncluded(router.routesById[blogRouteId])) {
+          for (const post of blogPosts) {
+            const location = router.buildLocation({
+              to: "/blog/$slug",
+              params: { slug: post.slug },
+              search: () => ({}),
+              hash: "",
+            });
+            const path = sitemapPathForLocation(router, location, blogRouteId);
+            if (path) entries.push({ path, lastmod: post.frontmatter.publishedAt });
           }
         }
         if (entries.length === 0) {
