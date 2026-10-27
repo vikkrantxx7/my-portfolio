@@ -17,4 +17,6 @@ export const site = {
   titleSuffix: name,
   notFoundDescription: `This project is not in ${name}'s portfolio.`,
   themeColor: "#080A0F",
+  /** Optional HTML resume shown in the viewer; remove to fall back to the PDF/images. */
+  resumeHtmlUrl: "/resume.html" as string | undefined,
 } as const;
