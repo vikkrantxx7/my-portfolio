@@ -3,7 +3,7 @@ import {
   Briefcase,
   ChevronLeft,
   ChevronRight,
-  FileDown,
+  FileText,
   GitCommitVertical,
   LayoutGrid,
   type LucideIcon,
