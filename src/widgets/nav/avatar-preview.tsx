@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { content } from "@/content/data";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import { ProfileCardRim } from "./profile-card-rim";
 
 const linkProps = { target: "_blank", rel: "noopener noreferrer" } as const;
 
@@ -44,8 +45,9 @@ export function AvatarPreview() {
             animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
             style={{ transformOrigin: "top left" }}
-            className="fixed top-4 left-4 z-[70] w-[min(18rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-primary/30 bg-card/90 shadow-glow backdrop-blur-xl focus:outline-none md:left-[max(1rem,calc((100vw-72rem)/2+4rem))]"
+            className="fixed top-4 left-4 z-[70] w-[min(18rem,calc(100vw-2rem))] rounded-2xl border border-primary/30 bg-card/90 shadow-glow backdrop-blur-xl focus:outline-none md:left-[max(1rem,calc((100vw-72rem)/2+4rem))]"
           >
+            <div className="overflow-hidden rounded-[inherit]">
             <div className="relative">
               {profile.avatarUrl && (
                 <img
@@ -75,6 +77,8 @@ export function AvatarPreview() {
               <p className="font-mono text-xs text-primary">{handle}</p>
               <p className="text-sm text-muted-foreground">{profile.role}</p>
             </div>
+            </div>
+            <ProfileCardRim reducedMotion={reduce} />
           </motion.div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
