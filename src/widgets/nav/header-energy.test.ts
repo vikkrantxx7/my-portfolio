@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { getEnergyTransfer, getLightningPoints, rimFalloff } from "./header-energy-geometry";
+import { getEnergyTransfer, getImpactBranches, getLightningPoints, rimFalloff } from "./header-energy-geometry";
 
 const avatar = { left: 20, right: 52, top: 16, height: 32 };
 const work = { left: 400, right: 480, top: 18, height: 28 };
@@ -70,4 +70,18 @@ it("border illumination peaks at centre and fades symmetrically toward the ends"
   expect(rimFalloff(1)).toBe(0);
   expect(rimFalloff(0.25)).toBeLessThan(rimFalloff(0.4));
   expect(rimFalloff(0.25)).toBeCloseTo(rimFalloff(0.75));
+});
+
+it("impact forks spread a little and land on the curved pill boundary in both directions", () => {
+  for (const flight of [getEnergyTransfer(avatar, work, "avatar", "pill"), getEnergyTransfer(experience, work, "pill", "pill")]) {
+    const branches = getImpactBranches(flight);
+    expect(branches).toHaveLength(2);
+    for (const branch of branches) {
+      const end = branch.at(-1);
+      if (!end) throw new Error("Missing impact endpoint");
+      expect(Math.abs(end.y - flight.to.y)).toBe(6);
+      const centreX = flight.rightward ? work.left + 14 : work.right - 14;
+      expect(Math.hypot(end.x - centreX, end.y - flight.to.y)).toBeCloseTo(14);
+    }
+  }
 });
