@@ -168,8 +168,8 @@
   mask-image:
     radial-gradient(
       circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
-      #000 0 52%,
-      transparent 80%
+      #000 calc(var(--burn-r) - 130px),
+      transparent var(--burn-r)
     ),
     url("/burn-noise.png");
   mask-size: auto, 480px;
@@ -190,8 +190,8 @@
   mask-image:
     radial-gradient(
       circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
-      transparent 0 42%,
-      #000 74%
+      transparent calc(var(--burn-r) - 130px),
+      #000 var(--burn-r)
     ),
     url("/burn-noise.png");
   animation-name: theme-burn-in-dark;
