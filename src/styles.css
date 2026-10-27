@@ -205,14 +205,21 @@
     cursor: pointer;
   }
 
-  /* Header name: soft halo in each letter's own colour on hover/focus. */
-  .header-name {
-    transition: text-shadow 0.35s ease;
+  /* Header name: soft halo in each letter's own colour, fading in on hover/focus.
+     The transition is declared on the letter spans too: text-shadow is inherited,
+     so only elements that declare it animate instead of snapping. */
+  .header-name,
+  .header-name span {
+    transition: text-shadow 0.5s ease;
   }
   .header-name:hover,
   .header-name:focus-visible {
-    text-shadow: 0 0 12px color-mix(in oklab, currentColor 40%, transparent);
+    text-shadow:
+      0 0 4px color-mix(in oklab, currentColor 65%, transparent),
+      0 0 14px color-mix(in oklab, currentColor 55%, transparent),
+      0 0 28px color-mix(in oklab, currentColor 35%, transparent);
   }
+
 
 
   @media (prefers-reduced-motion: reduce) {

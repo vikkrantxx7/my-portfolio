@@ -105,7 +105,7 @@ export function SiteNav() {
               href="#top"
               onClick={go("top")}
               aria-label={profile.name}
-              className="header-name flex flex-col leading-tight text-foreground"
+              className="header-name flex flex-col gap-1 leading-tight text-foreground"
             >
               <span className="font-semibold">
                 {profile.name.split(" ").map((part, index) => (
