@@ -44,3 +44,19 @@ describe("MDX prose", () => {
     expect(await screen.findByText("Planned")).toBeInTheDocument();
   });
 });
+
+describe("Prose code highlighting", () => {
+  it("colours fenced code by its language with light and dark themes", () => {
+    const { container } = render(
+      <Prose>
+        <Fixture />
+      </Prose>,
+    );
+    const pre = container.querySelector("pre[data-language='ts']");
+    expect(pre).not.toBeNull();
+    const tokens = Array.from(pre?.querySelectorAll("span[style]") ?? []);
+    const styles = tokens.map((t) => t.getAttribute("style") ?? "");
+    expect(styles.some((s) => s.includes("--shiki-dark"))).toBe(true);
+    expect(new Set(styles).size).toBeGreaterThan(1);
+  });
+});
