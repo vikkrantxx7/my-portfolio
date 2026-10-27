@@ -5,7 +5,7 @@ import { ProjectHeader } from "./project-header";
 
 describe("ProjectHeader", () => {
   it("offers a back link and a theme toggle", async () => {
-    await renderWithRouter(<ProjectHeader />);
+    await renderWithRouter(() => <ProjectHeader />);
     expect(await screen.findByRole("link", { name: /selected work/i })).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /switch to/i }).length).toBeGreaterThan(0);
   });
