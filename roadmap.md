@@ -31,3 +31,5 @@
 - [x] Home route loader resolves synchronously on client navigations (no RPC roundtrip delay project → home).
 - [x] Touch responsiveness: touch-action manipulation on dock/menu controls; keep mobile menubar consistent on resume viewer.
 - [x] Hide "Edit with Lovable" badge (done in project settings).
+- [x] Template: site config in `src/content`, no personal details elsewhere (tested).
+- [x] Template: rebrand colour notes; reusable lightning navigation; component styles beside components; TEMPLATE.md guide.

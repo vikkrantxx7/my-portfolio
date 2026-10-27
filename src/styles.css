@@ -2,6 +2,13 @@
 @import "tw-animate-css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
+@import "./features/theme-toggle/theme-transition.css";
+@import "./widgets/nav/header-energy.css";
+@import "./widgets/nav/dock-ignition.css";
+@import "./widgets/nav/dock-hint.css";
+@import "./features/expand-achievement/achievement-highlight.css";
+@import "./widgets/hero/hero.css";
+@import "./shared/ui/gradient-frame.css";
 @source "../src";
 
 @custom-variant dark (&:is(.dark *));
@@ -12,11 +19,13 @@
  * The @theme inline block maps CSS custom properties to Tailwind utility
  * classes (e.g. --color-primary -> bg-primary, text-primary).
  *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
+ * REBRANDING: every brand colour is defined exactly twice — once in :root
+ * (dark theme, the default) and once in .light (light theme). Change only
+ * those two blocks; components read tokens, never raw colours. Component
+ * effect styles live beside their components and are imported above.
  *
  * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 1. Add the variable to :root (dark value) and .light (light value)
  * 2. Register it in @theme inline as --color-<name>: var(--<name>)
  */
 
@@ -148,110 +157,6 @@
     0 4px 14px -2px oklch(0.3 0.02 265 / 18%);
 }
 
-.light .gradient-frame {
-  background: linear-gradient(oklch(1 0 0 / 0.92), oklch(0.97 0.005 265 / 0.9));
-}
-
-/* Theme change burns outward from the toggle: light incinerates, dark consumes. */
-@property --burn-r {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 0px;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-/* Incoming theme expands from the toggle with a wrinkled, paper-burn edge:
-   the radial front is intersected with a noise texture so it eats in jaggedly. */
-::view-transition-new(root) {
-  --burn-r: 0px;
-  mask-image:
-    radial-gradient(
-      circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
-      #000 calc(var(--burn-r) - 130px),
-      transparent var(--burn-r)
-    ),
-    url("/burn-noise.png");
-  mask-size: auto, 480px;
-  mask-composite: intersect;
-  -webkit-mask-composite: source-in;
-  animation: theme-burn-in var(--theme-transition) cubic-bezier(0.35, 0, 0.35, 1) forwards;
-}
-@keyframes theme-burn-in {
-  from {
-    --burn-r: 0px;
-  }
-  to {
-    --burn-r: 160vmax;
-  }
-}
-/* Dark runs in reverse: the burn front converges and the last light dies at the toggle. */
-[data-theme-burn="dark"]::view-transition-new(root) {
-  mask-image:
-    radial-gradient(
-      circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
-      transparent calc(var(--burn-r) - 130px),
-      #000 var(--burn-r)
-    ),
-    url("/burn-noise.png");
-  animation-name: theme-burn-in-dark;
-}
-@keyframes theme-burn-in-dark {
-  from {
-    --burn-r: 160vmax;
-  }
-  to {
-    --burn-r: 0px;
-  }
-}
-
-/* Outgoing theme folds away like ash. */
-::view-transition-old(root) {
-  animation: theme-burn-out var(--theme-transition) cubic-bezier(0.35, 0, 0.35, 1) forwards;
-}
-@keyframes theme-burn-out {
-  0% {
-    opacity: 1;
-    filter: none;
-    transform: none;
-  }
-  100% {
-    opacity: 0;
-    filter: blur(8px) brightness(1.6) saturate(1.8);
-    transform: scale(1.02) translateY(-6px);
-  }
-}
-
-/* Ember burst on the toggle at the burn origin. */
-[data-theme-burn] .theme-toggle {
-  animation: theme-ember var(--theme-transition) ease-out;
-}
-@keyframes theme-ember {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 80%, transparent);
-  }
-  60% {
-    box-shadow: 0 0 42px 10px color-mix(in oklab, var(--primary) 55%, transparent);
-  }
-  100% {
-    box-shadow: 0 0 0 0 transparent;
-  }
-}
-/* Keep the toggle live above the snapshots so its sun/moon motion is visible. */
-.theme-toggle {
-  view-transition-name: theme-toggle;
-}
-::view-transition-old(theme-toggle) {
-  display: none;
-}
-::view-transition-new(theme-toggle) {
-  animation: none;
-}
-
 @layer base {
   * {
     border-color: var(--color-border);
@@ -307,9 +212,6 @@
       0 0 48px color-mix(in oklab, currentColor 8%, transparent);
   }
 
-
-
-
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -327,253 +229,8 @@
   color: transparent;
 }
 
-.nav-energy-canvas { overflow: visible; }
-.nav-energy-stop-tail { stop-color: var(--secondary); stop-opacity: 0.15; }
-.nav-energy-stop-mid { stop-color: var(--primary); stop-opacity: 0.65; }
-.nav-energy-stop-head { stop-color: var(--primary); }
-.nav-energy-fused {
-  filter: drop-shadow(0 0 3px color-mix(in oklab, var(--primary) 65%, transparent)) drop-shadow(0 0 7px color-mix(in oklab, var(--primary) 30%, transparent));
-}
-.nav-energy-lightning {
-  fill: none;
-  stroke-width: 1.1;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-.nav-energy-rim {
-  fill: none;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-}
-.nav-energy-rim-bloom {
-  fill: none;
-  stroke-width: 4;
-  stroke-linecap: round;
-  filter: blur(2px);
-}
-
-.achievement-highlight {
-  background-color: color-mix(in oklab, var(--primary) 8%, transparent);
-  box-shadow:
-    inset 3px 0 var(--primary),
-    var(--glow-primary);
-  animation: achievement-highlight-fade 2s ease-out forwards;
-}
-
-@keyframes achievement-highlight-fade {
-  0%,
-  55% {
-    background-color: color-mix(in oklab, var(--primary) 8%, transparent);
-    box-shadow:
-      inset 3px 0 var(--primary),
-      var(--glow-primary);
-  }
-  to {
-    background-color: transparent;
-    box-shadow: inset 3px 0 transparent;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .achievement-highlight {
-    animation: none !important;
-  }
-}
-
-@utility hero-grid {
-  background-image:
-    linear-gradient(to right, var(--color-border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse at 50% 40%, black 30%, transparent 75%);
-  animation: hero-grid-drift 24s linear infinite;
-}
-
-@utility hero-bloom {
-  background: radial-gradient(
-    circle,
-    color-mix(in oklab, var(--primary) 18%, transparent) 0%,
-    color-mix(in oklab, var(--secondary) 12%, transparent) 35%,
-    transparent 65%
-  );
-  filter: blur(40px);
-  animation: hero-bloom-pulse 12s ease-in-out infinite alternate;
-}
-
-@keyframes hero-grid-drift {
-  to {
-    background-position: 56px 56px;
-  }
-}
-
-@keyframes hero-bloom-pulse {
-  from {
-    opacity: 0.6;
-    transform: translateX(-50%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) scale(1.05);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-grid,
-  .hero-bloom {
-    animation: none;
-  }
-}
-
-/* Animated gradient outline treatment (spinning conic border ring + glow). */
-@property --gf-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes gradient-frame-spin {
-  to {
-    --gf-angle: 360deg;
-  }
-}
-
-.gradient-frame {
-  /* Rainbow sweep anchored in the site palette: pink, violet, cyan, gold. */
-  --frame-1: oklch(0.72 0.24 330);
-  --frame-2: var(--secondary);
-  --frame-3: var(--primary);
-  --frame-4: oklch(0.87 0.14 90);
-
-  position: relative;
-  isolation: isolate;
-  border-color: transparent;
-  color: var(--color-foreground);
-  background: linear-gradient(oklch(0.17 0.03 252 / 0.85), oklch(0.14 0.03 252 / 0.82));
-}
-
-.gradient-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: conic-gradient(
-    from var(--gf-angle),
-    var(--frame-1),
-    var(--frame-2),
-    var(--frame-3),
-    var(--frame-4),
-    var(--frame-1)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  animation: gradient-frame-spin 5.5s linear infinite;
-  pointer-events: none;
-}
-
-.gradient-frame::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  border-radius: calc(var(--radius) + 8px);
-  pointer-events: none;
-  background: conic-gradient(
-    from var(--gf-angle),
-    color-mix(in oklab, var(--frame-1) 25%, transparent),
-    color-mix(in oklab, var(--frame-3) 25%, transparent),
-    transparent 62%
-  );
-  filter: blur(12px);
-  animation: gradient-frame-spin 5.5s linear infinite;
-  opacity: 0.8;
-  z-index: -1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gradient-frame::before,
-  .gradient-frame::after {
-    animation: none;
-  }
-}
-
-/* One sweep per menu mount. Masking keeps the pulse on the actual pill border. */
-@property --dock-ignition-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: true;
-}
-.dock-ignition {
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  pointer-events: none;
-  filter: var(--dock-ignition-glow);
-  animation: dock-ignite 0.95s ease-out both;
-}
-.dock-ignition-rim {
-  --dock-ignition-gradient: conic-gradient(from var(--dock-ignition-angle), transparent 0deg 245deg, color-mix(in oklab, var(--secondary) 45%, transparent) 280deg, var(--secondary) 308deg, var(--primary) 335deg, transparent 360deg);
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: var(--dock-ignition-gradient);
-  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
-  mask-composite: exclude;
-}
-@keyframes dock-ignite {
-  0% { --dock-ignition-angle: -90deg; opacity: 0; }
-  18% { opacity: 0.95; }
-  65% { opacity: 0.8; }
-  100% { --dock-ignition-angle: 270deg; opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .dock-ignition { display: none; animation: none; }
-}
-
-@keyframes dock-hint-left {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateX(-3px);
-    opacity: 1;
-  }
-}
-@keyframes dock-hint-right {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateX(3px);
-    opacity: 1;
-  }
-}
-.dock-hint-left {
-  animation: dock-hint-left 1.8s ease-in-out infinite;
-}
-.dock-hint-right {
-  animation: dock-hint-right 1.8s ease-in-out infinite;
-}
 @media (max-width: 767px) {
   body {
     padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .dock-hint-left,
-  .dock-hint-right {
-    animation: none;
   }
 }

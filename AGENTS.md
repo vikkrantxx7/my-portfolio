@@ -10,11 +10,10 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Subdirectories may have their own `AGENTS.md` (e.g. `src/widgets/nav`); read it before changing files there.
 - Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
 - Social banner media uses a CDN asset pointer and the favicon uses a small local public image, keeping share media lightweight and browser icon discovery reliable.
-- Section navigation replaces the hash with automatic scrolling disabled; on mobile, close the menu before measuring the scroll target and restore focus with preventScroll to avoid correction jumps.
-- Shared section scrolling treats `top` as document offset zero rather than the hero element, so return-to-top actions also clear scroll progress.
 - Document scroll is restored by the SSR inline script; skip only the first client restoration callback to avoid overwriting early user scrolling during hydration, while retaining later navigation and Back/Forward restoration.
 - Portfolio content is typed static data in `src/content` and must pass `validateContent` (no database in v1).
 - Reusable UI primitives live in `src/shared/ui` with `cva` variants; features/widgets follow simplified Feature-Sliced Design.
@@ -35,7 +34,6 @@
 - Offline service worker (vite-plugin-pwa generateSW, /sw.js) registers only via src/features/pwa/register-sw.ts, which refuses dev, iframes, Lovable preview hosts and ?sw=off — stale workers must never serve previews.
 - Interactive controls must read as clickable: a base-layer cursor rule plus `cursor-pointer` on the shared Button and the theme toggle; the header name link carries `header-name` so its hover glow resolves from `currentColor`, and because text-shadow is inherited the fade is declared on the letter spans too.
 - The resume opens in the in-app viewer (src/features/resume-viewer), never as a raw PDF navigation, so installed-PWA users keep a way back; its floating controls use fixed dark hex values (not tokens) because they float over the paper-white PDF, and the Paper/Dark viewing toggle (CSS invert filter) is independent of the site theme. The home route loader resolves synchronously on client navigations — the origin is only needed for SSR head tags.
-
 - Bottom toolbars share `dockBar`/`dockItem` cva styles in `src/shared/ui/dock.ts` (tone `fixed` for the resume over white paper) so sizes stay identical across pages.
-- Desktop sections use Radix `SectionNavigation` and one measured capsule. Bounded SVG lightning joins border centres and dissolves into gradients on actual border arcs, never branches; selection is immediate and reduced motion skips flights. Hold click selection until scroll settles/interruption; rAF tracking uses scroll margins and a near-bottom threshold.
-- Mobile dock ignition mounts with the menu: a pointer-transparent masked CSS border sweep, removed on completion; no looping, navigation delay or reduced-motion animation.
+- Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
+- Component-only CSS lives beside its component and is `@import`ed at the top of `src/styles.css` (not imported from the component) so it is part of the SSR stylesheet and paints without a flash; the global file keeps only tokens, themes, base rules and shared utilities.

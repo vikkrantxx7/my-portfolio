@@ -28,7 +28,13 @@ import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefe
 import { SectionNavigation } from "@/shared/ui/section-navigation";
 import { AvatarPreview } from "./avatar-preview";
 import { DockIgnition } from "./dock-ignition";
-import { HeaderEnergy } from "./header-energy";
+import { type EnergyTargetResolver, HeaderEnergy } from "./header-energy";
+
+/** Site nav endpoints: section pills by hash link, the avatar when no section is active. */
+const siteNavTargets: EnergyTargetResolver = (id, nav) => {
+  const element = nav.querySelector<HTMLElement>(id ? `a[href="#${id}"]` : "[data-avatar-frame]");
+  return element ? { element, kind: id ? "pill" : "avatar" } : null;
+};
 import { ScrollProgress } from "./scroll-progress";
 import { useActiveSection } from "./use-active-section";
 
@@ -133,7 +139,7 @@ export function SiteNav() {
             </SectionNavigation>
             <ThemeToggle />
           </div>
-          <HeaderEnergy active={active} navRef={navRef} />
+          <HeaderEnergy active={active} navRef={navRef} resolveTarget={siteNavTargets} />
         </nav>
         <ScrollProgress />
       </header>

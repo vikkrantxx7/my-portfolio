@@ -1,0 +1,100 @@
+/* Component styles; included from src/styles.css so they ship with the first paint. */
+/* Theme change burns outward from the toggle: light incinerates, dark consumes. */
+@property --burn-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Incoming theme expands from the toggle with a wrinkled, paper-burn edge:
+   the radial front is intersected with a noise texture so it eats in jaggedly. */
+::view-transition-new(root) {
+  --burn-r: 0px;
+  mask-image:
+    radial-gradient(
+      circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
+      #000 calc(var(--burn-r) - 130px),
+      transparent var(--burn-r)
+    ),
+    url("/burn-noise.png");
+  mask-size: auto, 480px;
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+  animation: theme-burn-in var(--theme-transition) cubic-bezier(0.35, 0, 0.35, 1) forwards;
+}
+@keyframes theme-burn-in {
+  from {
+    --burn-r: 0px;
+  }
+  to {
+    --burn-r: 160vmax;
+  }
+}
+/* Dark runs in reverse: the burn front converges and the last light dies at the toggle. */
+[data-theme-burn="dark"]::view-transition-new(root) {
+  mask-image:
+    radial-gradient(
+      circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
+      transparent calc(var(--burn-r) - 130px),
+      #000 var(--burn-r)
+    ),
+    url("/burn-noise.png");
+  animation-name: theme-burn-in-dark;
+}
+@keyframes theme-burn-in-dark {
+  from {
+    --burn-r: 160vmax;
+  }
+  to {
+    --burn-r: 0px;
+  }
+}
+
+/* Outgoing theme folds away like ash. */
+::view-transition-old(root) {
+  animation: theme-burn-out var(--theme-transition) cubic-bezier(0.35, 0, 0.35, 1) forwards;
+}
+@keyframes theme-burn-out {
+  0% {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(8px) brightness(1.6) saturate(1.8);
+    transform: scale(1.02) translateY(-6px);
+  }
+}
+
+/* Ember burst on the toggle at the burn origin. */
+[data-theme-burn] .theme-toggle {
+  animation: theme-ember var(--theme-transition) ease-out;
+}
+@keyframes theme-ember {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 80%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 42px 10px color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+/* Keep the toggle live above the snapshots so its sun/moon motion is visible. */
+.theme-toggle {
+  view-transition-name: theme-toggle;
+}
+::view-transition-old(theme-toggle) {
+  display: none;
+}
+::view-transition-new(theme-toggle) {
+  animation: none;
+}

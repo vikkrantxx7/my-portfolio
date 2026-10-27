@@ -1,0 +1,25 @@
+/* Component styles; included from src/styles.css so they ship with the first paint. */
+.nav-energy-canvas { overflow: visible; }
+.nav-energy-stop-tail { stop-color: var(--secondary); stop-opacity: 0.15; }
+.nav-energy-stop-mid { stop-color: var(--primary); stop-opacity: 0.65; }
+.nav-energy-stop-head { stop-color: var(--primary); }
+.nav-energy-fused {
+  filter: drop-shadow(0 0 3px color-mix(in oklab, var(--primary) 65%, transparent)) drop-shadow(0 0 7px color-mix(in oklab, var(--primary) 30%, transparent));
+}
+.nav-energy-lightning {
+  fill: none;
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.nav-energy-rim {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.nav-energy-rim-bloom {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: blur(2px);
+}

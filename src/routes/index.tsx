@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import ogBanner from "@/assets/og-banner.jpg.asset.json";
 import { content } from "@/content/data";
+import { site } from "@/content/site";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
 import { getRequestOrigin } from "@/shared/lib/origin.functions";
@@ -21,17 +22,15 @@ export const Route = createFileRoute("/")({
   loader: () => (typeof window === "undefined" ? { origin: getRequestOrigin() } : {}),
   head: ({ loaderData }) => ({
     meta: [
-      { title: "Vikrant Sharma — I build systems, not just screens" },
+      { title: site.homeTitle },
       {
         name: "description",
-        content:
-          "Lead fullstack engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
+        content: site.homeDescription,
       },
-      { property: "og:title", content: "Vikrant Sharma — I build systems, not just screens" },
+      { property: "og:title", content: site.homeTitle },
       {
         property: "og:description",
-        content:
-          "Lead fullstack engineer portfolio: frontend architecture, case studies and AI-assisted workflows.",
+        content: site.homeDescription,
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: pageUrl("/") },
