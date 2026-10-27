@@ -115,7 +115,7 @@ export function SiteNav() {
               href="#top"
               onClick={go("top")}
               aria-label={profile.name}
-              className="header-name flex flex-col gap-1 leading-tight text-foreground"
+              className="header-name flex shrink-0 flex-col gap-1 leading-tight whitespace-nowrap text-foreground"
             >
               <span className="header-glow font-semibold">
                 {profile.name.split(" ").map((part, index) => (
@@ -128,22 +128,23 @@ export function SiteNav() {
                   </span>
                 ))}
               </span>
-              <span className="font-mono text-[10px] font-normal uppercase tracking-[0.16em] text-muted-foreground">
+              <span className="hidden font-mono text-[10px] font-normal uppercase tracking-[0.16em] text-muted-foreground lg:block">
                 {profile.title}
               </span>
             </a>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5 lg:gap-6">
             <SectionNavigation items={NAV_SECTIONS} active={active} onSelect={go}>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-5 lg:gap-8">
                 <BlogLink
                   hasRouter={Boolean(router)}
                   className="block rounded-full px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   Blog
                 </BlogLink>
-                <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
-                  View Resume
+                <ResumeViewer triggerClassName="inline-flex touch-manipulation items-center justify-center rounded-md border border-primary/60 px-2.5 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10 lg:px-4">
+                  <FileText aria-hidden className="size-4 lg:hidden" />
+                  <span className="sr-only lg:not-sr-only">View Resume</span>
                 </ResumeViewer>
               </div>
             </SectionNavigation>

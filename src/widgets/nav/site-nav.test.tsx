@@ -92,6 +92,44 @@ describe("SiteNav", () => {
     expect(glow?.textContent).not.toContain("Lead Fullstack Engineer");
   });
 
+  it("keeps the name on a single line so it never spills onto the progress ribbon", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    expect(name).toHaveClass("whitespace-nowrap");
+    expect(name).toHaveClass("shrink-0");
+  });
+
+  it("shows the role line only where the header has room for it", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    const role = within(name).getByText("Lead Fullstack Engineer");
+    expect(role).toHaveClass("hidden");
+    expect(role).toHaveClass("lg:block");
+  });
+
+  it("keeps the resume trigger labelled while showing only its icon on narrow desktops", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    const trigger = within(nav).getByRole("button", { name: /resume/i });
+    expect(trigger.querySelector("svg")).not.toBeNull();
+    const label = within(trigger).getByText("View Resume");
+    expect(label).toHaveClass("sr-only");
+    expect(label).toHaveClass("lg:not-sr-only");
+  });
+
+  it("tightens the header gaps below the large breakpoint", () => {
+    const { container } = render(<SiteNav />);
+    const list = container.querySelector('[aria-label="Portfolio sections"] ul');
+    expect(list).not.toBeNull();
+    expect(list).toHaveClass("gap-5");
+    expect(list).toHaveClass("lg:gap-8");
+    const group = screen.getByRole("link", { name: "Blog" })?.closest("div");
+    expect(group).toHaveClass("gap-5");
+    expect(group).toHaveClass("lg:gap-8");
+  });
+
   it("AC2: smooth-scrolls to the section", async () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
