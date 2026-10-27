@@ -1,7 +1,7 @@
-import PrepforgeBody, { frontmatter as prepforgeFrontmatter } from "./case-studies/prepforge.mdx";
 import GitStatsBody, {
   frontmatter as gitStatsFrontmatter,
 } from "./case-studies/git-contributor-stats.mdx";
+import PrepforgeBody, { frontmatter as prepforgeFrontmatter } from "./case-studies/prepforge.mdx";
 import type { MdxCaseStudy } from "./mdx-case-study";
 
 /** MDX is the default for new case studies; unregistered projects use typed sections. */
