@@ -5,7 +5,8 @@ export const DARK_STYLE_ID = "resume-dark-view";
 
 const BASE_STYLE_ID = "resume-screen-view";
 // Screen-only breathing room; the PDF uses its own @page margins.
-const BASE_CSS = "@media screen { html { touch-action: pan-x pan-y; overscroll-behavior: contain; } body { padding: 24px 20px 120px !important; } }";
+const BASE_CSS =
+  "@media screen { html { touch-action: pan-x pan-y; overscroll-behavior: contain; } body { padding: 24px 20px 120px !important; } }";
 
 // Dark view reuses the PDF's colour-preserving filter on the frame itself, so it is
 // dark from the first paint (no white flash) and keeps the resume's accent colours.

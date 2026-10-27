@@ -29,20 +29,31 @@ export function bindResumeZoom(doc: Document, frame: HTMLIFrameElement, host: HT
     event.preventDefault();
     const rect = frame.getBoundingClientRect();
     const inside = event.currentTarget === doc;
-    zoom(wheelResumeScale(scale, event.deltaY, event.deltaMode),
+    zoom(
+      wheelResumeScale(scale, event.deltaY, event.deltaMode),
       inside ? event.clientX : event.clientX - rect.left,
-      inside ? event.clientY : event.clientY - rect.top);
+      inside ? event.clientY : event.clientY - rect.top,
+    );
   };
   const onTouch = (event: TouchEvent) => {
     const first = event.touches[0];
     const second = event.touches[1];
-    if (!first || !second) { pinch = undefined; return; }
+    if (!first || !second) {
+      pinch = undefined;
+      return;
+    }
     event.preventDefault();
     const distance = Math.hypot(second.clientX - first.clientX, second.clientY - first.clientY);
-    if (!pinch) { pinch = { distance, scale }; return; }
+    if (!pinch) {
+      pinch = { distance, scale };
+      return;
+    }
     if (!pinch.distance) return;
-    zoom(pinch.scale * distance / pinch.distance,
-      (first.clientX + second.clientX) / 2, (first.clientY + second.clientY) / 2);
+    zoom(
+      (pinch.scale * distance) / pinch.distance,
+      (first.clientX + second.clientX) / 2,
+      (first.clientY + second.clientY) / 2,
+    );
   };
   doc.addEventListener("wheel", onWheel, { passive: false });
   host.addEventListener("wheel", onWheel, { passive: false });

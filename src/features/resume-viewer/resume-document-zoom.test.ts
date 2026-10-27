@@ -18,7 +18,12 @@ describe("resume-only zoom", () => {
     const scroll = new WheelEvent("wheel", { deltaY: 100, cancelable: true });
     doc.dispatchEvent(scroll);
     expect(scroll.defaultPrevented).toBe(false);
-    const pinch = new WheelEvent("wheel", { deltaY: -100, ctrlKey: true, clientY: 200, cancelable: true });
+    const pinch = new WheelEvent("wheel", {
+      deltaY: -100,
+      ctrlKey: true,
+      clientY: 200,
+      cancelable: true,
+    });
     doc.dispatchEvent(pinch);
     expect(pinch.defaultPrevented).toBe(true);
     expect(Number(doc.body.style.zoom)).toBeCloseTo(Math.exp(0.15));
@@ -55,8 +60,14 @@ describe("resume-only zoom", () => {
       return event;
     };
     expect(touch("touchstart", [{ clientX: 10, clientY: 10 }]).defaultPrevented).toBe(false);
-    touch("touchstart", [{ clientX: 0, clientY: 10 }, { clientX: 100, clientY: 10 }]);
-    const move = touch("touchmove", [{ clientX: 0, clientY: 10 }, { clientX: 200, clientY: 10 }]);
+    touch("touchstart", [
+      { clientX: 0, clientY: 10 },
+      { clientX: 100, clientY: 10 },
+    ]);
+    const move = touch("touchmove", [
+      { clientX: 0, clientY: 10 },
+      { clientX: 200, clientY: 10 },
+    ]);
     expect(move.defaultPrevented).toBe(true);
     expect(doc.body.style.zoom).toBe("2");
     cleanup();
