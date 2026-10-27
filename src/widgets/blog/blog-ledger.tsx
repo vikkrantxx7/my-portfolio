@@ -58,7 +58,7 @@ export function BlogLedger({ posts, tag }: { posts: BlogPost[]; tag: string }) {
                 key={post.slug}
                 className="group relative flex flex-col gap-2 border-b border-border py-5 transition-colors hover:bg-primary/5 md:table-row"
               >
-                <td className="font-mono text-xs text-muted-foreground md:py-5 md:pr-6 md:align-top">
+                <td className="whitespace-nowrap font-mono text-xs text-muted-foreground md:py-5 md:pr-6 md:align-top">
                   <time dateTime={post.frontmatter.publishedAt}>{post.frontmatter.publishedAt}</time>
                 </td>
                 <td className="md:py-5 md:pr-6">
@@ -80,7 +80,7 @@ export function BlogLedger({ posts, tag }: { posts: BlogPost[]; tag: string }) {
                     ))}
                   </span>
                 </td>
-                <td className="font-mono text-xs text-muted-foreground md:py-5 md:text-right md:align-top">
+                <td className="whitespace-nowrap font-mono text-xs text-muted-foreground md:py-5 md:text-right md:align-top">
                   {post.frontmatter.readingMinutes} min
                 </td>
               </tr>
