@@ -24,16 +24,27 @@ describe("theme", () => {
     expect(document.documentElement.classList.contains("dark")).toBe(true);
   });
 
-  it("syncs the browser bar colour (theme-color) with the theme", () => {
+  const barColor = () =>
+    [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map((m) => m.content);
+
+  it("syncs the browser bar colour (theme-color) with the theme via a single fresh tag", () => {
     const meta = document.createElement("meta");
     meta.name = "theme-color";
     meta.content = "#080A0F";
     document.head.appendChild(meta);
     applyTheme("light");
-    expect(meta.content).toBe("#F6F7FB");
+    expect(barColor()).toEqual(["#F6F7FB"]);
+    // iOS latches the original element, so it must be replaced, not mutated.
+    expect(meta.isConnected).toBe(false);
     applyTheme("dark");
-    expect(meta.content).toBe("#080A0F");
-    meta.remove();
+    expect(barColor()).toEqual(["#080A0F"]);
+  });
+
+  it("pre-paint script creates the bar tag for the saved theme (head tags render after it)", () => {
+    for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.remove();
+    localStorage.setItem("theme", "light");
+    new Function(THEME_SCRIPT)();
+    expect(barColor()).toEqual(["#F6F7FB"]);
   });
 
 
