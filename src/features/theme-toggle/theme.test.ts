@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { applyTheme, contrastRatio, parseTheme, switchTheme } from "./theme";
+import { applyTheme, contrastRatio, parseTheme, switchTheme, THEME_SCRIPT } from "./theme";
 
 afterEach(() => {
   document.documentElement.className = "";
@@ -103,11 +103,10 @@ describe("theme", () => {
     (document as any).startViewTransition = start;
 
     switchTheme("dark", false, { x: 10, y: 10 });
-    expect(meta.content).toBe("#080A0F");
+    expect(barColor()).toEqual(["#080A0F"]);
     runCallback();
     await Promise.resolve();
-    expect(meta.content).toBe("#080A0F");
-    meta.remove();
+    expect(barColor()).toEqual(["#080A0F"]);
   });
 });
 
