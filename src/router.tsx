@@ -21,7 +21,6 @@ export const getRouter = () => {
     scrollRestoration: () => shouldRestoreScroll(typeof window === "undefined"),
     // Page changes and back/forward restore jump instantly; in-page section links glide smoothly.
     scrollRestorationBehavior: "instant",
-    defaultPreloadStaleTime: 0,
   });
 
   return router;
