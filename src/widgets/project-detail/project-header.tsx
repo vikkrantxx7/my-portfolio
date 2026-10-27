@@ -9,12 +9,12 @@ export function ProjectHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 hidden border-b border-border bg-background/70 backdrop-blur-xl md:block">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16">
           <ProjectBackLink />
           <ThemeToggle />
         </div>
       </header>
-      <div className="fixed top-4 right-4 z-50 md:hidden">
+      <div className="fixed top-3 right-6 z-50 md:hidden">
         <ThemeToggle />
       </div>
     </>
