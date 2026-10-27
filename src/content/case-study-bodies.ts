@@ -5,6 +5,6 @@ import PrepforgeBody, { frontmatter as prepforgeFrontmatter } from "./case-studi
 export const caseStudyBodies: Partial<Record<string, MdxCaseStudy>> = {
   prepforge: {
     Body: PrepforgeBody,
-    frontmatter: prepforgeFrontmatter as MdxCaseStudy["frontmatter"],
+    frontmatter: prepforgeFrontmatter as unknown as MdxCaseStudy["frontmatter"],
   },
 };

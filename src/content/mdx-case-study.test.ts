@@ -24,7 +24,7 @@ describe("MDX case study frontmatter", () => {
     ).toContain("Source path must be repository-relative: https://evil.dev/a");
   });
   it("ships a valid PrepForge MDX case study", () => {
-    const prepforge = caseStudyBodies.prepforge;
+    const prepforge = caseStudyBodies["prepforge"];
     expect(prepforge).toBeDefined();
     expect(validateMdxCaseStudy(prepforge?.frontmatter)).toEqual([]);
   });
