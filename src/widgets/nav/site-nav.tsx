@@ -3,7 +3,7 @@ import {
   Briefcase,
   ChevronLeft,
   ChevronRight,
-  FileDown,
+  FileText,
   GitCommitVertical,
   LayoutGrid,
   type LucideIcon,
@@ -141,7 +141,7 @@ export function SiteNav() {
             ))}
             <li>
               <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
-                Resume PDF
+                View Resume
               </ResumeViewer>
             </li>
           </ul>
@@ -213,7 +213,7 @@ export function SiteNav() {
                     }}
                     className={dockLinkCls()}
                   >
-                    <DockInner icon={FileDown} label="CV" />
+                    <DockInner icon={FileText} label="CV" />
                   </button>
                 </li>
               </ul>

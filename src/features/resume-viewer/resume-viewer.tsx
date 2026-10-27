@@ -10,11 +10,11 @@ import {
 import { content } from "@/content/data";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import { dockBar, dockItem } from "@/shared/ui/dock";
 import { saveResume } from "./save-resume";
 import "./resume-viewer.css";
 
-const dockButton =
-  "flex min-h-11 min-w-11 touch-manipulation flex-col items-center justify-center gap-0.5 rounded-full px-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[#9299AA] transition hover:text-[#62F4E0] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62F4E0]";
+const dockButton = dockItem({ tone: "fixed" });
 
 /**
  * In-app resume viewer. Opens the PDF in a full-screen dialog so installed-PWA
@@ -119,7 +119,7 @@ export function ResumeViewer({
               data-resume-dock
               className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]"
             >
-              <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-[#62F4E0]/30 bg-[#080A0F]/90 px-2 shadow-[0_0_24px_-4px_rgba(98,244,224,0.5)] backdrop-blur-xl">
+              <div className={dockBar({ tone: "fixed" })}>
                 <DialogPrimitive.Close aria-label="Back to portfolio" className={dockButton}>
                   <ArrowLeft aria-hidden className="size-5 text-[#62F4E0]" />
                   <span>Back</span>
@@ -131,7 +131,7 @@ export function ResumeViewer({
                   className={cn(dockButton, "md:hidden")}
                 >
                   <ZoomOut aria-hidden className="size-5 text-[#62F4E0]" />
-                  <span>Less</span>
+                  <span>Out</span>
                 </button>
                 <button
                   type="button"
@@ -140,7 +140,7 @@ export function ResumeViewer({
                   className={cn(dockButton, "md:hidden")}
                 >
                   <ZoomIn aria-hidden className="size-5 text-[#62F4E0]" />
-                  <span>More</span>
+                  <span>In</span>
                 </button>
                 <button
                   type="button"
