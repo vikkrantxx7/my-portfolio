@@ -24,17 +24,28 @@ describe("theme", () => {
     expect(document.documentElement.classList.contains("dark")).toBe(true);
   });
 
-  it("uses a view transition wave when supported", () => {
+  it("burns from the toggle origin when view transitions are supported", () => {
+    const start = vi.fn((cb: () => void) => cb());
+    // biome-ignore lint/suspicious/noExplicitAny: stub
+    (document as any).startViewTransition = start;
+    switchTheme("light", false, { x: 1024, y: 40 });
+    expect(start).toHaveBeenCalledOnce();
+    expect(document.documentElement.dataset["themeBurn"]).toBe("light");
+    expect(document.documentElement.style.getPropertyValue("--burn-x")).toBe("1024px");
+    expect(document.documentElement.style.getPropertyValue("--burn-y")).toBe("40px");
+    switchTheme("dark", false, { x: 1024, y: 40 });
+    expect(document.documentElement.dataset["themeBurn"]).toBe("dark");
+    switchTheme("light", false);
+    expect(document.documentElement.classList.contains("light")).toBe(true);
+  });
+
+  it("falls back to a default origin near the top-right toggle", () => {
     const start = vi.fn((cb: () => void) => cb());
     // biome-ignore lint/suspicious/noExplicitAny: stub
     (document as any).startViewTransition = start;
     switchTheme("light", false);
-    expect(start).toHaveBeenCalledOnce();
-    expect(document.documentElement.dataset["themeWave"]).toBe("ltr");
-    switchTheme("dark", false);
-    expect(document.documentElement.dataset["themeWave"]).toBe("rtl");
-    switchTheme("light", false);
-    expect(document.documentElement.classList.contains("light")).toBe(true);
+    expect(document.documentElement.style.getPropertyValue("--burn-x")).toMatch(/px$/);
+    expect(document.documentElement.style.getPropertyValue("--burn-y")).toMatch(/px$/);
   });
 
   it("switches instantly when reduced motion is requested", () => {
