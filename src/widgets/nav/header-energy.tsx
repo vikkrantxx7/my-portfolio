@@ -29,7 +29,10 @@ function LiquidFlight({ flight }: { flight: Flight }) {
       times: [0, 0.4, 1],
       ease: "easeInOut",
     });
-    return () => { animation.stop(); glow.stop(); };
+    return () => {
+      animation.stop();
+      glow.stop();
+    };
   }, [flight, progress, absorption]);
   const shape = useTransform(progress, (p) => {
     const { x, y, radius: r, tail } = getLiquidFrame(flight, p);
@@ -69,20 +72,24 @@ function LiquidFlight({ flight }: { flight: Flight }) {
         </linearGradient>
       </defs>
       <g className="nav-energy-fused">
-      <motion.path d={shape} fill={`url(#${gradientId})`} className="nav-energy-liquid" />
-      <motion.path
-        d={borderArc(flight.source, flight.rightward, flight.sourceKind === "avatar")}
-        className="nav-energy-rim"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.65, 0.65, 0] }}
-        transition={{ duration: flight.duration + 0.35, times: [0, 0.3, 0.5, 1], ease: "easeInOut" }}
-      />
-      <motion.path
-        data-energy-edge={flight.edge}
-        d={borderArc(flight.destination, !flight.rightward, flight.destinationKind === "avatar")}
-        className="nav-energy-rim"
-        style={{ opacity: absorption }}
-      />
+        <motion.path d={shape} fill={`url(#${gradientId})`} className="nav-energy-liquid" />
+        <motion.path
+          d={borderArc(flight.source, flight.rightward, flight.sourceKind === "avatar")}
+          className="nav-energy-rim"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.65, 0.65, 0] }}
+          transition={{
+            duration: flight.duration + 0.35,
+            times: [0, 0.3, 0.5, 1],
+            ease: "easeInOut",
+          }}
+        />
+        <motion.path
+          data-energy-edge={flight.edge}
+          d={borderArc(flight.destination, !flight.rightward, flight.destinationKind === "avatar")}
+          className="nav-energy-rim"
+          style={{ opacity: absorption }}
+        />
       </g>
     </motion.svg>
   );
