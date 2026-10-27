@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { findPost } from "@/content/blog";
+import { blogPosts, findPost } from "@/content/blog";
 import { site } from "@/content/site";
 import { pageUrl } from "@/shared/lib/seo";
 import { buttonVariants } from "@/shared/ui/button";
