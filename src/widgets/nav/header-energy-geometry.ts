@@ -34,12 +34,20 @@ export function getEnergyTransfer(
   } as const;
 }
 
-export function getLiquidFrame(flight: ReturnType<typeof getEnergyTransfer>, progress: number) {
+export function rimFalloff(position: number) {
+  return Math.max(0, 1 - Math.abs(position * 2 - 1)) ** 2;
+}
+
+export function getLightningPoints(flight: ReturnType<typeof getEnergyTransfer>, progress: number) {
   const p = Math.min(1, Math.max(0, progress));
-  return {
-    x: flight.from.x + (flight.to.x - flight.from.x) * p,
-    y: flight.from.y + (flight.to.y - flight.from.y) * p,
-    radius: (flight.destination.height / 2) * (0.25 + 0.75 * p),
-    tail: flight.tail * Math.sin((Math.PI * p) / 2),
-  };
+  const segments = Math.max(4, Math.ceil(flight.distance / 18));
+  return Array.from({ length: segments + 1 }, (_, index) => {
+    const t = index / segments;
+    const offset = index === 0 || index === segments ? 0 :
+      Math.sin(index * 2.399 + flight.distance * 0.017) * Math.min(3.5, flight.distance * 0.08) * Math.sin(Math.PI * t);
+    return {
+      x: flight.from.x + (flight.to.x - flight.from.x) * t * p,
+      y: flight.from.y + (flight.to.y - flight.from.y) * t * p + offset * p,
+    };
+  });
 }

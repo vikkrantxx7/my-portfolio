@@ -1,7 +1,7 @@
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { type RefObject, useId, useLayoutEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
-import { type EnergyRect, getEnergyTransfer, getLiquidFrame } from "./header-energy-geometry";
+import { type EnergyRect, getEnergyTransfer, getLightningPoints, rimFalloff } from "./header-energy-geometry";
 
 type Flight = ReturnType<typeof getEnergyTransfer> & { key: number };
 
@@ -14,7 +14,7 @@ function borderArc(rect: EnergyRect, right: boolean, avatar: boolean) {
   return `M ${inner} ${rect.top} A ${radius} ${radius} 0 0 ${sweep} ${x} ${rect.top + radius} L ${x} ${bottom - radius} A ${radius} ${radius} 0 0 ${sweep} ${inner} ${bottom}`;
 }
 
-function LiquidFlight({ flight }: { flight: Flight }) {
+function LightningFlight({ flight }: { flight: Flight }) {
   const progress = useMotionValue(0);
   const absorption = useMotionValue(0);
   const gradientId = useId().replace(/:/g, "");
@@ -24,8 +24,8 @@ function LiquidFlight({ flight }: { flight: Flight }) {
       ease: [0.25, 0.1, 0.25, 1],
     });
     const glow = animate(absorption, [0, 0.65, 0], {
-      delay: flight.duration * 0.96,
-      duration: 0.7,
+      delay: flight.duration * 0.8,
+      duration: 0.65,
       times: [0, 0.4, 1],
       ease: "easeInOut",
     });
@@ -35,15 +35,9 @@ function LiquidFlight({ flight }: { flight: Flight }) {
     };
   }, [flight, progress, absorption]);
   const shape = useTransform(progress, (p) => {
-    const { x, y, radius: r, tail } = getLiquidFrame(flight, p);
-    const dir = flight.rightward ? 1 : -1;
-    const tip = x + dir * r;
-    const rear = x - dir * tail;
-    const neck = x - dir * tail * 0.26;
-    const thickness = 3 + Math.sin(p * Math.PI) * 3;
-    // Concave fork follows the capsule's rounded nose, rather than a detached bar.
-    const sweep = flight.rightward ? 0 : 1;
-    return `M ${rear} ${y} C ${neck} ${y - thickness} ${x - dir * r} ${y - thickness} ${tip} ${y - r} A ${r} ${r} 0 0 ${sweep} ${x} ${y} A ${r} ${r} 0 0 ${sweep} ${tip} ${y + r} C ${x - dir * r} ${y + thickness} ${neck} ${y + thickness} ${rear} ${y} Z`;
+    return getLightningPoints(flight, p).map((point, index) =>
+      `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`,
+    ).join(" ");
   });
   return (
     <motion.svg
@@ -70,14 +64,25 @@ function LiquidFlight({ flight }: { flight: Flight }) {
           <stop offset="0.55" className="nav-energy-stop-mid" />
           <stop offset="1" className="nav-energy-stop-head" />
         </linearGradient>
+        {([flight.source, flight.destination] as const).map((rect, index) => (
+          <linearGradient key={index} id={`${gradientId}-rim-${index}`} x1="0" x2="0"
+            y1={rect.top} y2={rect.top + rect.height} gradientUnits="userSpaceOnUse">
+            {[0, 0.15, 0.3, 0.4, 0.5, 0.6, 0.7, 0.85, 1].map((position) => (
+              <stop key={position} offset={position} className="nav-energy-stop-head" stopOpacity={rimFalloff(position)} />
+            ))}
+          </linearGradient>
+        ))}
       </defs>
       <g className="nav-energy-fused">
-        <motion.path d={shape} fill={`url(#${gradientId})`} className="nav-energy-liquid" />
+        <motion.path d={shape} stroke={`url(#${gradientId})`} className="nav-energy-lightning"
+          initial={{ opacity: 0 }} animate={{ opacity: [0, 0.85, 0.85, 0] }}
+          transition={{ duration: flight.duration + 0.28, times: [0, 0.2, 0.72, 1], ease: "easeInOut" }} />
         <motion.path
           d={borderArc(flight.source, flight.rightward, flight.sourceKind === "avatar")}
           className="nav-energy-rim"
+          stroke={`url(#${gradientId}-rim-0)`}
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.65, 0.65, 0] }}
+          animate={{ opacity: [0, 0.95, 0.95, 0] }}
           transition={{
             duration: flight.duration + 0.35,
             times: [0, 0.3, 0.5, 1],
@@ -88,6 +93,7 @@ function LiquidFlight({ flight }: { flight: Flight }) {
           data-energy-edge={flight.edge}
           d={borderArc(flight.destination, !flight.rightward, flight.destinationKind === "avatar")}
           className="nav-energy-rim"
+          stroke={`url(#${gradientId}-rim-1)`}
           style={{ opacity: absorption }}
         />
       </g>
@@ -143,5 +149,5 @@ export function HeaderEnergy({
       key: ++serial.current,
     });
   }, [active, reduce, navRef]);
-  return flight && !reduce ? <LiquidFlight key={flight.key} flight={flight} /> : null;
+  return flight && !reduce ? <LightningFlight key={flight.key} flight={flight} /> : null;
 }
