@@ -112,6 +112,8 @@
     0 0 18px 2px color-mix(in oklab, var(--primary) 55%, transparent),
     0 0 42px 10px color-mix(in oklab, var(--primary) 26%, transparent);
   --gradient-accent: linear-gradient(90deg, var(--primary), var(--secondary));
+  --nav-energy-gradient: linear-gradient(90deg, transparent, color-mix(in oklab, var(--secondary) 65%, transparent) 38%, var(--primary) 90%, var(--foreground));
+  --nav-energy-glow: 0 0 5px var(--primary), 0 0 14px color-mix(in oklab, var(--secondary) 65%, transparent);
 }
 
 /* Light theme: deeper teal/violet keep WCAG AA on cool paper; glows become soft shadows. */
@@ -322,6 +324,26 @@
   background-image: var(--gradient-accent);
   background-clip: text;
   color: transparent;
+}
+
+.nav-energy-streak {
+  position: absolute;
+  top: -1px;
+  height: 2px;
+  border-radius: 100%;
+  background: var(--nav-energy-gradient);
+  box-shadow: var(--nav-energy-glow);
+  filter: blur(0.5px);
+}
+.nav-energy-right { right: 0; }
+.nav-energy-left { left: 0; transform: rotate(180deg); }
+.nav-energy-impact {
+  width: 4px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: var(--nav-energy-glow);
+  filter: blur(1px);
 }
 
 .achievement-highlight {
