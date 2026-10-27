@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
-- Subdirectories may have their own `AGENTS.md` (e.g. `src/widgets/nav`); read it before changing files there.
+- Subdirectories may have their own `AGENTS.md` (e.g. `src/widgets/nav`, `src/features/resume-viewer`); read it before changing files there.
 - Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
 - Social banner media uses a CDN asset pointer and the favicon uses a small local public image, keeping share media lightweight and browser icon discovery reliable.
@@ -33,10 +33,8 @@
 - Theme is a `light`/`dark` class on the document root, set pre-paint by an inline script and toggled by the theme-toggle feature (View Transition paper-burn: light radiates from the toggle, dark converges into it; wrinkled edge via burn-noise.png mask, skipped for reduced motion); all colours come from tokens so both themes stay in sync.
 - Offline service worker (vite-plugin-pwa generateSW, /sw.js) registers only via src/features/pwa/register-sw.ts, which refuses dev, iframes, Lovable preview hosts and ?sw=off — stale workers must never serve previews.
 - Interactive controls must read as clickable: a base-layer cursor rule plus `cursor-pointer` on the shared Button and the theme toggle; the header name link carries `header-name` so its hover glow resolves from `currentColor`, and because text-shadow is inherited the fade is declared on the letter spans too.
-- The resume opens in the in-app viewer (src/features/resume-viewer), never as a raw PDF navigation; it shows the HTML resume (`site.resumeHtmlUrl`, sandboxed frame with injected screen/dark styles) and falls back to the PDF/images if absent or broken, while Save always downloads the PDF, so installed-PWA users keep a way back; its floating controls use fixed dark hex values (not tokens) because they float over the paper-white PDF, and the Paper/Dark viewing toggle (CSS invert filter) is independent of the site theme. The home route loader resolves synchronously on client navigations — the origin is only needed for SSR head tags.
 - Bottom toolbars share `dockBar`/`dockItem` cva styles in `src/shared/ui/dock.ts` (tone `fixed` for the resume over white paper) so sizes stay identical across pages.
 - Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
 - Component CSS lives beside its component, imported atop `src/styles.css` for flash-free SSR; global CSS keeps tokens, themes, base rules and shared utilities.
 - Profile-card rim geometry is isolated and measured locally for reuse without blocking controls; see nav rules.
-- HTML resume zoom uses same-origin document-local CSS zoom with native non-passive gesture listeners; iframe events cannot reach a parent transform wrapper, and native document scrolling/text selection must remain intact.
 - Case studies may be authored in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and rendered through shared `Prose` components; the MDX compiler is shared by Vite and Vitest via `mdx.config.ts`. Projects without an MDX body keep typed sections.
