@@ -6,13 +6,9 @@ const BASE_STYLE_ID = "resume-screen-view";
 // Screen-only breathing room; the PDF uses its own @page margins.
 const BASE_CSS = "@media screen { body { padding: 24px 20px 120px !important; } }";
 
-// Fixed hex on purpose: this styles the isolated resume document, not the site.
-const DARK_CSS = `
-html, body { background: #0E1118 !important; }
-body, body * { color: #E6E9F0 !important; border-color: #2A3140 !important; }
-a, h2, h3 { color: #62F4E0 !important; }
-.competency-tag { background: #1A2030 !important; color: #E6E9F0 !important; }
-`;
+// Dark view reuses the PDF's colour-preserving filter on the frame itself, so it is
+// dark from the first paint (no white flash) and keeps the resume's accent colours.
+const DARK_CSS = "html { background: #fff; }";
 
 /** Renders the HTML resume (same source as the PDF) in an isolated, script-free frame. */
 export function ResumeHtmlDocument({
@@ -66,7 +62,7 @@ export function ResumeHtmlDocument({
         applyDark();
       }}
       onError={onFail}
-      className="mx-auto block size-full max-w-[230mm]"
+      className={`mx-auto block size-full max-w-[230mm] bg-white ${dark ? "resume-frame--dark" : ""}`}
     />
   );
 }
