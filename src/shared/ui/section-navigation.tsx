@@ -5,7 +5,7 @@ import { type MouseEvent, type ReactNode, useLayoutEffect, useRef, useState } fr
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 
 const sectionLink = cva(
-  "relative block rounded-full px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+  "relative block rounded-full px-2.5 py-1.5 font-mono text-xs uppercase tracking-[0.18em] transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring lg:px-3",
   {
     variants: { active: { true: "text-primary", false: "text-muted-foreground" } },
     defaultVariants: { active: false },
@@ -46,7 +46,7 @@ export function SectionNavigation({ items, active, onSelect, children }: Section
 
   return (
     <NavigationMenu.Root aria-label="Portfolio sections" className="hidden md:block">
-      <NavigationMenu.List ref={listRef} className="relative flex items-center gap-8">
+      <NavigationMenu.List ref={listRef} className="relative flex items-center gap-5 lg:gap-8">
         <AnimatePresence>
           {active && pill.width > 0 && (
             <motion.li
