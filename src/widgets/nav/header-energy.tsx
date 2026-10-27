@@ -113,7 +113,7 @@ export function HeaderEnergy({
     const origin = nav.getBoundingClientRect();
     const local = (rect: DOMRect) => ({
       left: rect.left - origin.left,
-      right: rect.right - origin.left,
+      right: rect.left + rect.width - origin.left,
       top: rect.top - origin.top,
       height: rect.height,
     });
