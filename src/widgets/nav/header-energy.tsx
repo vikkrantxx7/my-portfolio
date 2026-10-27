@@ -118,7 +118,7 @@ export const dataAttributeTargets: EnergyTargetResolver = (key, container) => {
   if (key === null) return null;
   const element = container.querySelector<HTMLElement>(`[data-energy-target="${CSS.escape(key)}"]`);
   if (!element) return null;
-  return { element, kind: element.dataset.energyShape === "circle" ? "avatar" : "pill" };
+  return { element, kind: element.dataset["energyShape"] === "circle" ? "avatar" : "pill" };
 };
 
 /**
