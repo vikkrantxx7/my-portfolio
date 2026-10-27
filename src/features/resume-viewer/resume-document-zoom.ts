@@ -17,7 +17,7 @@ export function bindResumeZoom(doc: Document, frame: HTMLIFrameElement, host: HT
     const previous = scale;
     scale = clampScale(next);
     if (width) doc.body.style.width = `${width}px`;
-    doc.body.style.setProperty("zoom", String(scale));
+    doc.body.style.zoom = String(scale);
     const ratio = scale / previous;
     scroller.scrollLeft = (scroller.scrollLeft + x) * ratio - x;
     scroller.scrollTop = (scroller.scrollTop + y) * ratio - y;
