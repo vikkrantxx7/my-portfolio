@@ -35,6 +35,7 @@
 - Interactive controls must read as clickable: a base-layer cursor rule plus `cursor-pointer` on the shared Button and the theme toggle; the header name link carries `header-name` so its hover glow resolves from `currentColor`, and because text-shadow is inherited the fade is declared on the letter spans too.
 - Bottom toolbars share `dockBar`/`dockItem` cva styles in `src/shared/ui/dock.ts` (tone `fixed` for the resume over white paper) so sizes stay identical across pages.
 - Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
+- Google ownership verification is configured with site identity and rendered in the root SSR head so Google can verify the published homepage without client scripts.
 - Component CSS lives beside its component, imported atop `src/styles.css` for flash-free SSR; global CSS keeps tokens, themes, base rules and shared utilities.
 - Profile-card rim geometry is isolated and measured locally for reuse without blocking controls; see nav rules.
 - Author new case-study bodies in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and render through shared `Prose` components to preserve the existing page shell; summaries and diagrams stay typed, and projects without MDX retain typed sections. Vite and Vitest share the compiler via `mdx.config.ts`.
