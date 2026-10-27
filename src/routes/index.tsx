@@ -16,7 +16,9 @@ import { CareerTimeline } from "@/widgets/timeline/timeline";
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
   validateSearch: validateProjectSearch,
-  loader: async () => ({ origin: await getRequestOrigin() }),
+  // The origin only matters for SSR head tags (og:image). On client navigations
+  // resolve synchronously so project → home never waits on a server roundtrip.
+  loader: () => (typeof window === "undefined" ? { origin: getRequestOrigin() } : {}),
   head: ({ loaderData }) => ({
     meta: [
       { title: "Vikrant Sharma — I build systems, not just screens" },

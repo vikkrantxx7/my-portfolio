@@ -6,7 +6,7 @@ import { prefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { adjacentProjects } from "./project-pager";
 
 const item =
-  "flex min-h-12 min-w-14 flex-col items-center justify-center gap-1 rounded-full px-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex min-h-12 min-w-14 touch-manipulation flex-col items-center justify-center gap-1 rounded-full px-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 const glow = "size-5 text-primary drop-shadow-[0_0_8px_var(--color-primary)]";
 
 function Inner({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
