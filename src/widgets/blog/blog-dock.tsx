@@ -27,13 +27,21 @@ function Disabled({ children }: { children: ReactNode }) {
   );
 }
 
-function DockShell({ label, children }: { label: string; children: ReactNode }) {
+function DockShell({
+  label,
+  size = "full",
+  children,
+}: {
+  label: string;
+  size?: "full" | "compact";
+  children: ReactNode;
+}) {
   return (
     <nav
       aria-label={label}
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
     >
-      <div className={dockBar()}>{children}</div>
+      <div className={dockBar({ size })}>{children}</div>
     </nav>
   );
 }
@@ -95,7 +103,7 @@ export function BlogArticleDock({ posts, slug }: { posts: BlogPost[]; slug: stri
 
 export function BlogIndexDock() {
   return (
-    <DockShell label="Blog controls">
+    <DockShell label="Blog controls" size="compact">
       <Link to="/" aria-label="Back to home" className={item}>
         <Inner icon={House} label="Home" />
       </Link>
