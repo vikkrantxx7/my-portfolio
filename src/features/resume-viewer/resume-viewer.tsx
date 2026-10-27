@@ -24,7 +24,7 @@ export function ResumeViewer({
 }: {
   /** Trigger content. Omit to control the viewer externally with no trigger. */
   children?: ReactNode;
-  triggerClassName?: string;
+  triggerClassName?: string | undefined;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
