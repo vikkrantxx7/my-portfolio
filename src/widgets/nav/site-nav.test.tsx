@@ -212,6 +212,16 @@ describe("SiteNav", () => {
     expect(within(dialog).getByRole("link", { name: "Work" })).toBeInTheDocument();
   });
 
+  it("removes the tap delay on dock controls", async () => {
+    const user = userEvent.setup();
+    render(<SiteNav />);
+    const toggle = screen.getByRole("button", { name: /open menu/i });
+    expect(toggle).toHaveClass("touch-manipulation");
+    await user.click(toggle);
+    const dialog = screen.getByRole("dialog", { name: /menu/i });
+    expect(within(dialog).getByRole("link", { name: "Work" })).toHaveClass("touch-manipulation");
+  });
+
   it("mounts the scroll progress ribbon at the bottom of the sticky header", () => {
     render(<SiteNav />);
     const header = screen.getByRole("banner");
