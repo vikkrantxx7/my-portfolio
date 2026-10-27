@@ -326,24 +326,19 @@
   color: transparent;
 }
 
-.nav-energy-streak {
-  position: absolute;
-  top: -1px;
-  height: 2px;
-  border-radius: 100%;
-  background: var(--nav-energy-gradient);
-  box-shadow: var(--nav-energy-glow);
-  filter: blur(0.5px);
+.nav-energy-canvas { overflow: visible; }
+.nav-energy-stop-tail { stop-color: var(--secondary); stop-opacity: 0.15; }
+.nav-energy-stop-mid { stop-color: var(--primary); stop-opacity: 0.65; }
+.nav-energy-stop-head { stop-color: var(--primary); }
+.nav-energy-liquid {
+  filter: drop-shadow(0 0 4px var(--primary));
 }
-.nav-energy-right { right: 0; }
-.nav-energy-left { left: 0; transform: rotate(180deg); }
-.nav-energy-impact {
-  width: 4px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--primary);
-  box-shadow: var(--nav-energy-glow);
-  filter: blur(1px);
+.nav-energy-rim {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px var(--primary));
 }
 
 .achievement-highlight {
