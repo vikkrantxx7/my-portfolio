@@ -40,7 +40,7 @@ export async function renderWithRouter(ui: () => ReactNode) {
     component: () => <h1>Blog article</h1>,
   });
   const router = createRouter({
-    routeTree: rootRoute.addChildren([home, project]),
+    routeTree: rootRoute.addChildren([home, project, blog, blogPost]),
     history: createMemoryHistory({ initialEntries: ["/"] }),
   });
   const result = render(<RouterProvider router={router} />);
