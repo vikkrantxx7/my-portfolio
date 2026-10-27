@@ -69,6 +69,7 @@
 }
 
 :root {
+  --theme-transition: 1.7s;
   --radius: 0.75rem;
   /* Void #080A0F, Surface #11151D, Cyan #62F4E0, Violet #9B87FF, Text #F4F6FA, Muted #9299AA */
   --background: oklch(0.145 0.01 260);
@@ -175,7 +176,7 @@
   mask-size: auto, 480px;
   mask-composite: intersect;
   -webkit-mask-composite: source-in;
-  animation: theme-burn-in 1.7s cubic-bezier(0.35, 0, 0.35, 1) forwards;
+  animation: theme-burn-in var(--theme-transition) cubic-bezier(0.35, 0, 0.35, 1) forwards;
 }
 @keyframes theme-burn-in {
   from {
@@ -207,7 +208,7 @@
 
 /* Outgoing theme folds away like ash. */
 ::view-transition-old(root) {
-  animation: theme-burn-out 1.7s cubic-bezier(0.35, 0, 0.35, 1) forwards;
+  animation: theme-burn-out var(--theme-transition) cubic-bezier(0.35, 0, 0.35, 1) forwards;
 }
 @keyframes theme-burn-out {
   0% {
@@ -224,7 +225,7 @@
 
 /* Ember burst on the toggle at the burn origin. */
 [data-theme-burn] .theme-toggle {
-  animation: theme-ember 1.7s ease-out;
+  animation: theme-ember var(--theme-transition) ease-out;
 }
 @keyframes theme-ember {
   0% {
