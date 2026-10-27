@@ -79,7 +79,7 @@ export function ResumeViewer({
                   limitToBounds
                   doubleClick={{ mode: "toggle", step: 0.8 }}
                   wheel={{ step: 0.1 }}
-                  onTransformed={(_ref, s) => {
+                  onTransform={(_ref, s) => {
                     const h = pagesRef.current?.offsetHeight ?? 0;
                     if (h) setPage(-s.positionY / s.scale > h / 2 - 200 ? 2 : 1);
                   }}

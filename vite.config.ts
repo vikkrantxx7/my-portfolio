@@ -24,7 +24,7 @@ export default defineConfig({
         outDir: "dist/client",
         devOptions: { enabled: false },
         workbox: {
-          globPatterns: ["**/*.{js,css,woff2,png,jpg,svg,pdf}"],
+          globPatterns: ["**/*.{js,css,woff2,png,jpg,svg,pdf,webp}"],
           navigateFallback: null,
           cleanupOutdatedCaches: true,
           runtimeCaching: [
