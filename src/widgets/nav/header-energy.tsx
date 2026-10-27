@@ -16,14 +16,21 @@ function borderArc(rect: EnergyRect, right: boolean, avatar: boolean) {
 
 function LiquidFlight({ flight }: { flight: Flight }) {
   const progress = useMotionValue(0);
+  const absorption = useMotionValue(0);
   const gradientId = useId().replace(/:/g, "");
   useLayoutEffect(() => {
     const animation = animate(progress, 1, {
       duration: flight.duration,
       ease: [0.25, 0.1, 0.25, 1],
     });
-    return () => animation.stop();
-  }, [flight, progress]);
+    const glow = animate(absorption, [0, 0.65, 0], {
+      delay: flight.duration * 0.96,
+      duration: 0.7,
+      times: [0, 0.4, 1],
+      ease: "easeInOut",
+    });
+    return () => { animation.stop(); glow.stop(); };
+  }, [flight, progress, absorption]);
   const shape = useTransform(progress, (p) => {
     const { x, y, radius: r, tail } = getLiquidFrame(flight, p);
     const dir = flight.rightward ? 1 : -1;
@@ -35,8 +42,6 @@ function LiquidFlight({ flight }: { flight: Flight }) {
     const sweep = flight.rightward ? 0 : 1;
     return `M ${rear} ${y} C ${neck} ${y - thickness} ${x - dir * r} ${y - thickness} ${tip} ${y - r} A ${r} ${r} 0 0 ${sweep} ${x} ${y} A ${r} ${r} 0 0 ${sweep} ${tip} ${y + r} C ${x - dir * r} ${y + thickness} ${neck} ${y + thickness} ${rear} ${y} Z`;
   });
-  // The rim only receives light when the liquid actually reaches it.
-  const absorption = useTransform(progress, [0, 0.96, 1], [0, 0, 0.85]);
   return (
     <motion.svg
       aria-hidden
@@ -45,8 +50,8 @@ function LiquidFlight({ flight }: { flight: Flight }) {
       initial={{ opacity: 1 }}
       animate={{ opacity: [1, 1, 0] }}
       transition={{
-        duration: flight.duration + 0.45,
-        times: [0, flight.duration / (flight.duration + 0.45), 1],
+        duration: flight.duration + 0.7,
+        times: [0, flight.duration / (flight.duration + 0.7), 1],
       }}
     >
       <defs>
@@ -69,8 +74,8 @@ function LiquidFlight({ flight }: { flight: Flight }) {
         d={borderArc(flight.source, flight.rightward, flight.sourceKind === "avatar")}
         className="nav-energy-rim"
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 1, 0] }}
-        transition={{ duration: flight.duration + 0.2, times: [0, 0.08, 0.45, 1] }}
+        animate={{ opacity: [0, 0.65, 0.65, 0] }}
+        transition={{ duration: flight.duration + 0.35, times: [0, 0.3, 0.5, 1], ease: "easeInOut" }}
       />
       <motion.path
         data-energy-edge={flight.edge}

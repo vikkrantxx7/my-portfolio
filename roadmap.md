@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [ ] Seamlessly blend liquid trail into the border; soften highlights and build/fade them gradually.
 - [x] Fix short About-section tracking without overriding deliberate navigation (TDD).
 - [x] Share desktop section navigation and add directional avatar/pill streak emission, absorption and reduced-motion handling (TDD).
 - [x] Clear the active highlight on return to top and synchronize one non-overshooting pill with clicked targets and manual scrolling (TDD).
