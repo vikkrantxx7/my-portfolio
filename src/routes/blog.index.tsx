@@ -12,7 +12,7 @@ const description =
 export const Route = createFileRoute("/blog/")({
   staticData: { sitemap: true },
   validateSearch: (search: Record<string, unknown>): { tag?: string } =>
-    typeof search.tag === "string" && search.tag ? { tag: search.tag } : {},
+    typeof search["tag"] === "string" && search["tag"] ? { tag: search["tag"] } : {},
   head: () => ({
     meta: [
       { title },

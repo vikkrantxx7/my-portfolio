@@ -1,3 +1,4 @@
+import { blogPosts } from "@/content/blog";
 import { createFileRoute } from "@tanstack/react-router";
 import { getRouterInstance } from "@tanstack/react-start";
 import { content } from "@/content/data";
