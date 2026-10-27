@@ -10,7 +10,7 @@ import {
   User,
   X,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   type AnchorHTMLAttributes,
   type KeyboardEvent,
@@ -90,7 +90,7 @@ export function SiteNav() {
 
   const linkCls = (id: string) =>
     cn(
-      "font-mono text-xs uppercase tracking-[0.18em] transition-colors hover:text-primary focus-visible:outline-none focus-visible:text-primary",
+      "relative rounded-full px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] transition-colors hover:text-primary focus-visible:outline-none focus-visible:text-primary",
       active === id ? "text-primary" : "text-muted-foreground",
     );
 
