@@ -19,9 +19,8 @@ export function ProfileCardRim({ reducedMotion }: { reducedMotion: boolean }) {
     return () => observer.disconnect();
   }, []);
 
-  const points = getFilamentPoints(size.width, size.height, 20)
-    .map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`)
-    .join(" ");
+  const points = toPointList(getFilamentPoints(size.width, size.height, 20));
+  const sparks = getCornerSparks(size.width, size.height);
 
   return (
     <svg
@@ -45,6 +44,34 @@ export function ProfileCardRim({ reducedMotion }: { reducedMotion: boolean }) {
         <polyline className="profile-card-rim-filament" points={points} />
         <polyline className="profile-card-rim-core" points={points} />
       </g>
+      {sparks.map((spark, index) => {
+        const sparkId = `${gradientId}-spark-${index}`;
+        const start = spark[0];
+        const end = spark.at(-1)!;
+        const color = index === 0 ? "var(--primary)" : "var(--secondary)";
+        return (
+          <g key={sparkId}>
+            <linearGradient
+              id={sparkId}
+              gradientUnits="userSpaceOnUse"
+              x1={start.x}
+              y1={start.y}
+              x2={end.x}
+              y2={end.y}
+            >
+              <stop offset="0" stopColor={color} stopOpacity="0.85" />
+              <stop offset="0.55" stopColor={color} stopOpacity="0.35" />
+              <stop offset="1" stopColor={color} stopOpacity="0" />
+            </linearGradient>
+            <polyline
+              className="profile-card-rim-spark"
+              data-spark={index === 0 ? "a" : "b"}
+              points={toPointList(spark)}
+              stroke={`url(#${sparkId})`}
+            />
+          </g>
+        );
+      })}
     </svg>
   );
 }
