@@ -135,7 +135,21 @@ export function SiteNav() {
                   aria-current={active === s.id ? "true" : undefined}
                   className={linkCls(s.id)}
                 >
-                  {s.label}
+                  <AnimatePresence>
+                    {active === s.id && (
+                      <motion.span
+                        data-nav-pill
+                        layoutId="active-nav-pill"
+                        initial={reduce ? false : { x: -14, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={reduce ? undefined : { x: -14, opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                        aria-hidden
+                        className="absolute inset-0 rounded-full border border-primary/25 bg-primary/10 shadow-xs"
+                      />
+                    )}
+                  </AnimatePresence>
+                  <span className="relative">{s.label}</span>
                 </a>
               </li>
             ))}
