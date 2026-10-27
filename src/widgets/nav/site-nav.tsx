@@ -57,8 +57,9 @@ export function SiteNav() {
 
   useLayoutEffect(() => {
     const measure = () => {
+      if (!active) return;
       const list = desktopRef.current;
-      const link = list?.querySelector<HTMLElement>('a[aria-current="true"]');
+      const link = list?.querySelector<HTMLElement>(`a[href="#${active}"]`);
       if (!list || !link) return;
       const parent = list.getBoundingClientRect();
       const rect = link.getBoundingClientRect();

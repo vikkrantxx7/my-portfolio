@@ -1,5 +1,5 @@
 # Portfolio — Current requests
-- [ ] Clear the active highlight on return to top and synchronize one non-overshooting pill with clicked targets and manual scrolling (TDD).
+- [x] Clear the active highlight on return to top and synchronize one non-overshooting pill with clicked targets and manual scrolling (TDD).
 - [x] SEO Review: add a router-derived sitemap with public case studies and reference it in crawler rules.
 - [x] Fix header name navigation to absolute page top, clear the progress trail, and colour V cyan / S violet.
 - [x] Replace relative canonical and Open Graph page addresses with self-referencing primary-domain URLs; add regression tests and verify rendered tags.
