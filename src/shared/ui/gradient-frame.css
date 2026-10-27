@@ -1,0 +1,82 @@
+/* Component styles; included from src/styles.css so they ship with the first paint. */
+/* Animated gradient outline treatment (spinning conic border ring + glow). */
+@property --gf-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes gradient-frame-spin {
+  to {
+    --gf-angle: 360deg;
+  }
+}
+
+.gradient-frame {
+  /* Rainbow sweep anchored in the site palette: pink, violet, cyan, gold. */
+  --frame-1: oklch(0.72 0.24 330);
+  --frame-2: var(--secondary);
+  --frame-3: var(--primary);
+  --frame-4: oklch(0.87 0.14 90);
+
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  color: var(--color-foreground);
+  background: linear-gradient(oklch(0.17 0.03 252 / 0.85), oklch(0.14 0.03 252 / 0.82));
+}
+
+.gradient-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--gf-angle),
+    var(--frame-1),
+    var(--frame-2),
+    var(--frame-3),
+    var(--frame-4),
+    var(--frame-1)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: gradient-frame-spin 5.5s linear infinite;
+  pointer-events: none;
+}
+
+.gradient-frame::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: calc(var(--radius) + 8px);
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--gf-angle),
+    color-mix(in oklab, var(--frame-1) 25%, transparent),
+    color-mix(in oklab, var(--frame-3) 25%, transparent),
+    transparent 62%
+  );
+  filter: blur(12px);
+  animation: gradient-frame-spin 5.5s linear infinite;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-frame::before,
+  .gradient-frame::after {
+    animation: none;
+  }
+}
+
+.light .gradient-frame {
+  background: linear-gradient(oklch(1 0 0 / 0.92), oklch(0.97 0.005 265 / 0.9));
+}
