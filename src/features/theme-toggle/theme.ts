@@ -15,14 +15,19 @@ export function readTheme(): Theme {
 /** Browser chrome colour (iOS status bar / Safari toolbar) per theme; matches the page background tokens. */
 export const THEME_BAR_COLORS: Record<Theme, string> = { dark: "#080A0F", light: "#F6F7FB" };
 
+/** Paints the browser chrome (iOS status bar / Safari toolbar) to match the theme. */
+export function syncBrowserBar(theme: Theme) {
+  for (const m of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
+    m.content = THEME_BAR_COLORS[theme];
+  }
+}
+
 export function applyTheme(theme: Theme) {
   const root = document.documentElement;
   root.classList.toggle("light", theme === "light");
   root.classList.toggle("dark", theme === "dark");
   root.style.colorScheme = theme;
-  for (const m of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
-    m.content = THEME_BAR_COLORS[theme];
-  }
+  syncBrowserBar(theme);
   try {
     localStorage.setItem(THEME_KEY, theme);
   } catch {
@@ -41,13 +46,26 @@ export interface BurnOrigin {
  */
 export function switchTheme(theme: Theme, reduceMotion: boolean, origin?: BurnOrigin) {
   const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+  // Update the bar immediately: some iOS Safari builds ignore theme-color
+  // changes made while a view transition is running, leaving the top bar in
+  // the previous theme until reload.
+  syncBrowserBar(theme);
   if (reduceMotion || typeof doc.startViewTransition !== "function") return applyTheme(theme);
   const root = document.documentElement;
   root.dataset["themeBurn"] = theme;
   const o = origin ?? { x: window.innerWidth - 44, y: 44 };
   root.style.setProperty("--burn-x", `${o.x}px`);
   root.style.setProperty("--burn-y", `${o.y}px`);
-  doc.startViewTransition(() => applyTheme(theme));
+  const transition = doc.startViewTransition(() => applyTheme(theme)) as
+    | { finished?: Promise<unknown> }
+    | undefined;
+  // Re-sync once the burn settles in case the browser dropped the mid-transition update.
+  transition?.finished
+    ? ({} as never)
+    : undefined;
+  transition?.finished
+    ?.catch(() => undefined)
+    .then(() => syncBrowserBar(theme));
 }
 
 /** Inline pre-paint script: applies the saved theme before first paint. */
