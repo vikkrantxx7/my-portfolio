@@ -35,3 +35,5 @@
 - [x] Hide "Edit with Lovable" badge (done in project settings).
 - [x] Template: site config in `src/content`, no personal details elsewhere (tested).
 - [x] Template: rebrand colour notes; reusable lightning navigation; component styles beside components; TEMPLATE.md guide.
+
+- [x] PrepForge case study MDX proof of concept (M1–M5)

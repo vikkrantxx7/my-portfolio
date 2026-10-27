@@ -39,3 +39,4 @@
 - Component CSS lives beside its component, imported atop `src/styles.css` for flash-free SSR; global CSS keeps tokens, themes, base rules and shared utilities.
 - Profile-card rim geometry is isolated and measured locally for reuse without blocking controls; see nav rules.
 - HTML resume zoom uses same-origin document-local CSS zoom with native non-passive gesture listeners; iframe events cannot reach a parent transform wrapper, and native document scrolling/text selection must remain intact.
+- Case studies may be authored in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and rendered through shared `Prose` components; the MDX compiler is shared by Vite and Vitest via `mdx.config.ts`. Projects without an MDX body keep typed sections.
