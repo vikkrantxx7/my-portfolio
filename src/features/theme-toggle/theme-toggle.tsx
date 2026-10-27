@@ -6,9 +6,15 @@ import { readTheme, switchTheme, THEME_TRANSITION_SECONDS, type Theme } from "./
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("dark");
+  // Icons only animate after the stored theme has been synced, so remounts
+  // (e.g. returning from a project page) never replay a moon-to-sun arc.
+  const [synced, setSynced] = useState(false);
   const reduce = usePrefersReducedMotion();
 
-  useEffect(() => setTheme(readTheme()), []);
+  useEffect(() => {
+    setTheme(readTheme());
+    setSynced(true);
+  }, []);
 
   const next: Theme = theme === "dark" ? "light" : "dark";
   const Icon = theme === "light" ? Sun : Moon;
@@ -27,7 +33,7 @@ export function ThemeToggle() {
       }}
       className="theme-toggle relative flex size-10 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border bg-card/60 text-primary shadow-glow transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <AnimatePresence initial={false} custom={d}>
+      <AnimatePresence initial={false} custom={d} mode={synced ? "sync" : "popLayout"}>
         <motion.span
           key={theme}
           data-icon={theme === "light" ? "sun" : "moon"}
