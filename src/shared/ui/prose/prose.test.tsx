@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { renderWithRouter } from "@/test/render-with-router";
 import Fixture, { frontmatter } from "./fixture.test.mdx";
@@ -46,12 +46,12 @@ describe("MDX prose", () => {
 });
 
 describe("Prose code highlighting", () => {
-  it("colours fenced code by its language with light and dark themes", () => {
-    const { container } = render(
+  it("colours fenced code by its language with light and dark themes", async () => {
+    const { container } = await renderWithRouter(() => (
       <Prose>
         <Fixture />
-      </Prose>,
-    );
+      </Prose>
+    ));
     const pre = container.querySelector("pre[data-language='ts']");
     expect(pre).not.toBeNull();
     const tokens = Array.from(pre?.querySelectorAll("span[style]") ?? []);
