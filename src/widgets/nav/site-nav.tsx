@@ -16,6 +16,7 @@ import {
   type AnchorHTMLAttributes,
   type KeyboardEvent,
   type MouseEvent,
+  type ReactNode,
   useEffect,
   useRef,
   useState,
@@ -135,12 +136,12 @@ export function SiteNav() {
           <div className="flex items-center gap-6">
             <SectionNavigation items={NAV_SECTIONS} active={active} onSelect={go}>
               <div className="flex items-center gap-8">
-                <Link
-                  to="/blog"
+                <BlogLink
+                  hasRouter={Boolean(router)}
                   className="block rounded-full px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   Blog
-                </Link>
+                </BlogLink>
                 <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
                   View Resume
                 </ResumeViewer>
@@ -209,9 +210,9 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <Link to="/blog" className={dockLinkCls()}>
+                  <BlogLink hasRouter={Boolean(router)} className={dockLinkCls()}>
                     <DockInner icon={PenLine} label="Blog" />
-                  </Link>
+                  </BlogLink>
                 </li>
                 <li>
                   <button
@@ -284,6 +285,29 @@ function DockInner({
       />
       <span className="font-mono text-[10px] uppercase tracking-[0.14em]">{label}</span>
     </>
+  );
+}
+
+/** In-app link to the blog; isolated widget renders (no router) degrade to a plain link. */
+function BlogLink({
+  hasRouter,
+  className,
+  children,
+}: {
+  hasRouter: boolean;
+  className: string;
+  children: ReactNode;
+}) {
+  if (!hasRouter)
+    return (
+      <a href="/blog" className={className}>
+        {children}
+      </a>
+    );
+  return (
+    <Link to="/blog" className={className}>
+      {children}
+    </Link>
   );
 }
 
