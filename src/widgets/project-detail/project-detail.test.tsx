@@ -23,3 +23,29 @@ describe("Project case study", () => {
     );
   });
 });
+
+describe("MDX case study body", () => {
+  it("renders PrepForge from MDX with the same sections and an embedded diagram", () => {
+    const project = content.projects.find((p) => p.slug === "prepforge");
+    if (!project) throw new Error("PrepForge required");
+    render(<ProjectDetail project={project} />);
+    for (const name of [
+      "Overview",
+      "System design",
+      "Decisions",
+      "Implementation",
+      "Results and learnings",
+    ])
+      expect(screen.getByRole("heading", { level: 2, name })).toHaveAttribute("id");
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Links and source evidence" }),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps typed sections for projects without an MDX body", () => {
+    const project = content.projects.find((p) => p.slug !== "prepforge");
+    if (!project) throw new Error("Second project required");
+    render(<ProjectDetail project={project} />);
+    expect(screen.getByRole("heading", { level: 2, name: "Overview" })).not.toHaveAttribute("id");
+  });
+});

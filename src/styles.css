@@ -122,17 +122,27 @@
     0 0 18px 2px color-mix(in oklab, var(--primary) 55%, transparent),
     0 0 42px 10px color-mix(in oklab, var(--primary) 26%, transparent);
   --gradient-accent: linear-gradient(90deg, var(--primary), var(--secondary));
-  --nav-energy-gradient: linear-gradient(90deg, transparent, color-mix(in oklab, var(--secondary) 65%, transparent) 38%, var(--primary) 90%, var(--foreground));
-  --nav-energy-glow: 0 0 5px var(--primary), 0 0 14px color-mix(in oklab, var(--secondary) 65%, transparent);
-  --dock-ignition-glow: drop-shadow(0 0 3px color-mix(in oklab, var(--primary) 70%, transparent)) drop-shadow(0 0 8px color-mix(in oklab, var(--secondary) 50%, transparent));
+  --nav-energy-gradient: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--secondary) 65%, transparent) 38%,
+    var(--primary) 90%,
+    var(--foreground)
+  );
+  --nav-energy-glow:
+    0 0 5px var(--primary), 0 0 14px color-mix(in oklab, var(--secondary) 65%, transparent);
+  --dock-ignition-glow: drop-shadow(0 0 3px color-mix(in oklab, var(--primary) 70%, transparent))
+    drop-shadow(0 0 8px color-mix(in oklab, var(--secondary) 50%, transparent));
   --profile-rim-core: var(--foreground);
-  --profile-rim-glow: drop-shadow(0 0 3px var(--primary)) drop-shadow(0 0 7px color-mix(in oklab, var(--secondary) 60%, transparent));
+  --profile-rim-glow: drop-shadow(0 0 3px var(--primary))
+    drop-shadow(0 0 7px color-mix(in oklab, var(--secondary) 60%, transparent));
 }
 
 /* Light theme: deeper teal/violet keep WCAG AA on cool paper; glows become soft shadows. */
 .light {
   --profile-rim-core: color-mix(in oklab, var(--primary) 65%, var(--secondary));
-  --profile-rim-glow: drop-shadow(0 0 2px color-mix(in oklab, var(--primary) 40%, transparent)) drop-shadow(0 0 5px color-mix(in oklab, var(--secondary) 30%, transparent));
+  --profile-rim-glow: drop-shadow(0 0 2px color-mix(in oklab, var(--primary) 40%, transparent))
+    drop-shadow(0 0 5px color-mix(in oklab, var(--secondary) 30%, transparent));
   --background: oklch(0.977 0.005 265); /* #F6F7FB */
   --foreground: oklch(0.18 0.025 265); /* #0E1220 */
   --card: oklch(1 0 0);
@@ -157,9 +167,7 @@
     0 1px 2px oklch(0.3 0.02 265 / 8%),
     0 6px 18px -6px color-mix(in oklab, var(--primary) 22%, transparent);
   --glow-violet: 0 8px 24px -8px color-mix(in oklab, var(--secondary) 22%, transparent);
-  --glow-halo:
-    0 0 0 3px var(--background),
-    0 4px 14px -2px oklch(0.3 0.02 265 / 18%);
+  --glow-halo: 0 0 0 3px var(--background), 0 4px 14px -2px oklch(0.3 0.02 265 / 18%);
 }
 
 @layer base {

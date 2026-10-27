@@ -1,4 +1,5 @@
 ## Navigation rules
+
 - Profile card charge is a decorative measured SVG with deterministic rounded-perimeter geometry and brightness-only CSS shimmer, keeping content interactive and reduced motion static. Two faint spark lines escape opposite corners (top-left cyan, bottom-right violet), gradient-fading outward with the same deterministic geometry and staggered shimmer.
 - Section navigation replaces the hash with automatic scrolling disabled; on mobile, close the menu before measuring the scroll target and restore focus with preventScroll to avoid correction jumps.
 - Shared section scrolling treats `top` as document offset zero rather than the hero element, so return-to-top actions also clear scroll progress.

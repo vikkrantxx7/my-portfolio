@@ -59,7 +59,10 @@ interface UpdateDeps {
 }
 
 /** Look for new deploys when the app is reopened, and reload once a new version takes over. */
-export function watchForUpdates(reg: { update: () => Promise<unknown> | unknown }, deps: UpdateDeps) {
+export function watchForUpdates(
+  reg: { update: () => Promise<unknown> | unknown },
+  deps: UpdateDeps,
+) {
   deps.doc.addEventListener("visibilitychange", () => {
     if (deps.doc.visibilityState === "visible") void Promise.resolve(reg.update()).catch(() => {});
   });

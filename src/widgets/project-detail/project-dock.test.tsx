@@ -55,4 +55,3 @@ describe("ProjectDock", () => {
     expect(screen.getByRole("button", { name: /back to top/i })).toHaveClass("touch-manipulation");
   });
 });
-

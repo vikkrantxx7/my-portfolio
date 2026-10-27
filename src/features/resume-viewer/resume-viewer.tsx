@@ -79,10 +79,7 @@ export function ResumeViewer({
             {/* Fixed document tones (not tokens): the reading area must match the paper
                 sheet itself. Dark view matches the colour-preserving inverted paper. */}
             <div
-              className={cn(
-                "relative min-h-0 flex-1",
-                darkView ? "bg-[#0d0d0d]" : "bg-white",
-              )}
+              className={cn("relative min-h-0 flex-1", darkView ? "bg-[#0d0d0d]" : "bg-white")}
               data-resume-vignette
             >
               {useHtml && site.resumeHtmlUrl ? (

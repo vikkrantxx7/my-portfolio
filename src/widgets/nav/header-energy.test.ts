@@ -45,7 +45,10 @@ it("avatar transfers travel farther and last longer than tab hops", () => {
 });
 
 it("lightning starts and ends on the measured border centres in both directions", () => {
-  for (const flight of [getEnergyTransfer(avatar, work, "avatar", "pill"), getEnergyTransfer(work, avatar, "pill", "avatar")]) {
+  for (const flight of [
+    getEnergyTransfer(avatar, work, "avatar", "pill"),
+    getEnergyTransfer(work, avatar, "pill", "avatar"),
+  ]) {
     const points = getLightningPoints(flight, 1);
     expect(points[0]).toEqual(flight.from);
     expect(points.at(-1)).toEqual(flight.to);
@@ -73,10 +76,17 @@ it("border illumination peaks at centre and fades symmetrically toward the ends"
 });
 
 it("the lightning dissolves toward the contact point without detached branches", () => {
-  for (const flight of [getEnergyTransfer(avatar, work, "avatar", "pill"), getEnergyTransfer(experience, work, "pill", "pill")]) {
+  for (const flight of [
+    getEnergyTransfer(avatar, work, "avatar", "pill"),
+    getEnergyTransfer(experience, work, "pill", "pill"),
+  ]) {
     const halfway = getLightningPoints(flight, 1, 0.5);
     expect(halfway[0]?.x).toBeCloseTo((flight.from.x + flight.to.x) / 2);
     expect(halfway.at(-1)).toEqual(flight.to);
-    expect(getLightningPoints(flight, 1, 1).every(point => point.x === flight.to.x && point.y === flight.to.y)).toBe(true);
+    expect(
+      getLightningPoints(flight, 1, 1).every(
+        (point) => point.x === flight.to.x && point.y === flight.to.y,
+      ),
+    ).toBe(true);
   }
 });

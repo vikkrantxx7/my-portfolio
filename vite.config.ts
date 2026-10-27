@@ -6,6 +6,7 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { VitePWA } from "vite-plugin-pwa";
+import { mdxPlugin } from "./mdx.config";
 
 export default defineConfig({
   tanstackStart: {
@@ -15,6 +16,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [
+      mdxPlugin(),
       VitePWA({
         strategies: "generateSW",
         registerType: "autoUpdate",
@@ -41,7 +43,8 @@ export default defineConfig({
               options: { cacheName: "pages", networkTimeoutSeconds: 4 },
             },
             {
-              urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith("/assets/"),
+              urlPattern: ({ url, sameOrigin }) =>
+                sameOrigin && url.pathname.startsWith("/assets/"),
               handler: "CacheFirst",
               options: { cacheName: "assets", expiration: { maxEntries: 120 } },
             },
