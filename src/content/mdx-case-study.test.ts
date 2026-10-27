@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { caseStudyBodies } from "./case-study-bodies";
+import { content } from "./data";
 import { validateMdxCaseStudy } from "./mdx-case-study";
 
 const valid = {
@@ -27,5 +28,24 @@ describe("MDX case study frontmatter", () => {
     const prepforge = caseStudyBodies["prepforge"];
     expect(prepforge).toBeDefined();
     expect(validateMdxCaseStudy(prepforge?.frontmatter)).toEqual([]);
+  });
+  it("ships git-contributor-stats in MDX with its repository metadata and evidence", () => {
+    const study = caseStudyBodies["git-contributor-stats"];
+    expect(study).toBeDefined();
+    expect(typeof study?.Body).toBe("function");
+    expect(study?.frontmatter.repository).toBe(
+      "https://github.com/vikkrantxx7/git-contributor-stats",
+    );
+    expect(study?.frontmatter.status).toBe("Package v2.2.0 · MIT");
+    expect(validateMdxCaseStudy(study?.frontmatter)).toEqual([]);
+    const project = content.projects.find((item) => item.slug === "git-contributor-stats");
+    expect(study?.frontmatter.sources).toEqual(project?.caseStudy.sources);
+  });
+  it("registers a valid MDX body for every current case study", () => {
+    for (const project of content.projects) {
+      const study = caseStudyBodies[project.slug];
+      expect(study, project.slug).toBeDefined();
+      expect(validateMdxCaseStudy(study?.frontmatter), project.slug).toEqual([]);
+    }
   });
 });
