@@ -77,4 +77,13 @@ describe("BlogIndexDock", () => {
     expect(dock).toHaveClass("pointer-events-none");
     expect(dock.firstElementChild).toHaveClass("pointer-events-auto");
   });
+
+  it("hugs the two buttons instead of stretching a full-width pill", async () => {
+    await renderWithRouter(() => <BlogIndexDock />);
+    const dock = await screen.findByRole("navigation", { name: /blog controls/i });
+    const pill = dock.firstElementChild;
+    if (!pill) throw new Error("Missing dock pill");
+    expect(pill.className).not.toContain("w-full");
+    expect(pill.className).toContain("justify-center");
+  });
 });
