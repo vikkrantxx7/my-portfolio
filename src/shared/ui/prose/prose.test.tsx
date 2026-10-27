@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { renderWithRouter } from "@/test/render-with-router";
 import Fixture, { frontmatter } from "./fixture.test.mdx";
