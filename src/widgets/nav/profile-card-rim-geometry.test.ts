@@ -33,27 +33,33 @@ describe("profile card filament", () => {
 
 describe("corner sparks", () => {
   it("emits two fading lines originating near opposite corners", () => {
-    const sparks = getCornerSparks(288, 390);
-    expect(sparks).toHaveLength(2);
-    const [topLeft, bottomRight] = sparks;
+    const [topLeft, bottomRight] = getCornerSparks(288, 390);
+    if (!topLeft || !bottomRight) throw new Error("expected two sparks");
+    const topLeftOrigin = topLeft[0];
+    const topLeftEnd = topLeft.at(-1);
+    const bottomRightOrigin = bottomRight[0];
+    const bottomRightEnd = bottomRight.at(-1);
+    if (!topLeftOrigin || !topLeftEnd || !bottomRightOrigin || !bottomRightEnd)
+      throw new Error("expected non-empty sparks");
     // Each origin hugs its card corner, inside the rim's corner-arc zone.
-    expect(Math.hypot(topLeft[0].x, topLeft[0].y)).toBeLessThan(10);
-    expect(Math.hypot(bottomRight[0].x - 288, bottomRight[0].y - 390)).toBeLessThan(10);
+    expect(Math.hypot(topLeftOrigin.x, topLeftOrigin.y)).toBeLessThan(10);
+    expect(Math.hypot(bottomRightOrigin.x - 288, bottomRightOrigin.y - 390)).toBeLessThan(10);
     // Each line escapes the card and fades away from it.
-    expect(topLeft.at(-1)!.x).toBeLessThan(0);
-    expect(topLeft.at(-1)!.y).toBeLessThan(0);
-    expect(bottomRight.at(-1)!.x).toBeGreaterThan(288);
-    expect(bottomRight.at(-1)!.y).toBeGreaterThan(390);
+    expect(topLeftEnd.x).toBeLessThan(0);
+    expect(topLeftEnd.y).toBeLessThan(0);
+    expect(bottomRightEnd.x).toBeGreaterThan(288);
+    expect(bottomRightEnd.y).toBeGreaterThan(390);
     // The escape is net-outward even with the shimmer wobble.
-    expect(Math.hypot(topLeft.at(-1)!.x, topLeft.at(-1)!.y)).toBeGreaterThan(
-      Math.hypot(topLeft[0].x, topLeft[0].y) + 16,
+    expect(Math.hypot(topLeftEnd.x, topLeftEnd.y)).toBeGreaterThan(
+      Math.hypot(topLeftOrigin.x, topLeftOrigin.y) + 16,
     );
   });
 
   it("keeps spark escapes inside a short, restrained reach", () => {
     for (const points of getCornerSparks(288, 390)) {
       const first = points[0];
-      const last = points.at(-1)!;
+      const last = points.at(-1);
+      if (!first || !last) throw new Error("expected non-empty spark");
       expect(Math.hypot(last.x - first.x, last.y - first.y)).toBeLessThan(44);
     }
   });
