@@ -259,7 +259,7 @@ function DockInner({
 }: {
   icon: LucideIcon;
   label: string;
-  active?: boolean;
+  active?: boolean | undefined;
 }) {
   return (
     <>
