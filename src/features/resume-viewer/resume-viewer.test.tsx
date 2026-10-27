@@ -63,6 +63,21 @@ describe("ResumeViewer", () => {
     expect(screen.queryByRole("dialog", { name: /resume/i })).toBeNull();
   });
 
+  it("shows both resume pages as a zoomable mobile reader", async () => {
+    renderViewer();
+    await userEvent.click(screen.getByRole("button", { name: /view resume/i }));
+    const dialog = screen.getByRole("dialog", { name: /resume/i });
+    const reader = dialog.querySelector("[data-resume-reader]");
+    expect(reader).not.toBeNull();
+    const pages = within(reader as HTMLElement).getAllByRole("img");
+    expect(pages.map((p) => p.getAttribute("src"))).toEqual([
+      "/resume/page-1.webp",
+      "/resume/page-2.webp",
+    ]);
+    expect(within(dialog).getByRole("button", { name: /zoom in/i })).toBeInTheDocument();
+    expect(within(dialog).getByRole("button", { name: /zoom out/i })).toBeInTheDocument();
+  });
+
   it("applies the caller's trigger styling", () => {
     renderViewer("custom-trigger");
     expect(screen.getByRole("button", { name: /view resume/i })).toHaveClass("custom-trigger");
