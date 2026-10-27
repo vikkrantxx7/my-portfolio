@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { getEnergyTransfer } from "./header-energy-geometry";
+import { getEnergyTransfer, getLiquidFrame } from "./header-energy-geometry";
 
 const avatar = { left: 20, right: 52, top: 16, height: 32 };
 const work = { left: 400, right: 480, top: 18, height: 28 };
@@ -42,4 +42,17 @@ it("avatar transfers travel farther and last longer than tab hops", () => {
   const flight = getEnergyTransfer(avatar, experience, "avatar", "pill");
   expect(flight.distance).toBeGreaterThan(hop.distance);
   expect(flight.duration).toBeGreaterThan(hop.duration);
+});
+
+it("long liquid transfers touch the destination border and wrap its full height", () => {
+  const flight = getEnergyTransfer(avatar, work, "avatar", "pill");
+  const frame = getLiquidFrame(flight, 1);
+  expect(frame.x).toBe(400);
+  expect(frame.y).toBe(32);
+  expect(frame.radius).toBe(14);
+});
+
+it("leftward liquid transfers touch the right border without an offset", () => {
+  const flight = getEnergyTransfer(experience, work, "pill", "pill");
+  expect(getLiquidFrame(flight, 1).x).toBe(480);
 });
