@@ -19,7 +19,6 @@ describe("content model", () => {
     expect(content.profile.title).toBe("Lead Fullstack Engineer");
   });
 
-
   it("reports duplicate experience ids", () => {
     const broken = { ...content, experiences: [exp, exp] };
     expect(validateContent(broken)).toContain(`Duplicate experience id: ${exp.id}`);

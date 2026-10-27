@@ -11,6 +11,8 @@ import { content } from "@/content/data";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { dockBar, dockItem } from "@/shared/ui/dock";
+import { site } from "@/content/site";
+import { ResumeHtmlDocument } from "./resume-html-document";
 import { readResumeDark, writeResumeDark } from "./resume-theme";
 import { saveResume } from "./save-resume";
 import "./resume-viewer.css";
@@ -51,6 +53,8 @@ export function ResumeViewer({
       writeResumeDark(next);
       return next;
     });
+  const [htmlFailed, setHtmlFailed] = useState(false);
+  const useHtml = Boolean(site.resumeHtmlUrl) && !htmlFailed;
   const [page, setPage] = useState(1);
   const zoomRef = useRef<ReactZoomPanPinchContentRef>(null);
   const pagesRef = useRef<HTMLDivElement>(null);
@@ -72,58 +76,69 @@ export function ResumeViewer({
             <DialogPrimitive.Title className="sr-only">
               Resume — {profile.name}
             </DialogPrimitive.Title>
-            <div className="relative min-h-0 flex-1" data-resume-vignette>
-              <iframe
-                title={`${profile.name} — Resume`}
-                src={profile.resumeUrl}
-                className={cn(
-                  "hidden size-full bg-white md:block",
-                  darkView && "resume-frame--dark",
-                )}
-              />
-              <div data-resume-reader className="absolute inset-0 md:hidden">
-                <TransformWrapper
-                  ref={zoomRef}
-                  minScale={1}
-                  maxScale={4}
-                  initialScale={1}
-                  limitToBounds
-                  doubleClick={{ mode: "toggle", step: 0.8 }}
-                  wheel={{ step: 0.1 }}
-                  onTransform={(_ref, s) => {
-                    const h = pagesRef.current?.offsetHeight ?? 0;
-                    if (h) setPage(-s.positionY / s.scale > h / 2 - 200 ? 2 : 1);
-                  }}
-                >
-                  <TransformComponent
-                    wrapperStyle={{ width: "100%", height: "100%", touchAction: "none" }}
-                    contentStyle={{ width: "100%" }}
-                  >
-                    <div
-                      ref={pagesRef}
-                      className={cn(
-                        "flex w-full flex-col gap-3 bg-[#080A0F] p-3 pb-28",
-                        darkView && "resume-frame--dark",
-                      )}
+            <div className="relative min-h-0 flex-1 bg-white" data-resume-vignette>
+              {useHtml && site.resumeHtmlUrl ? (
+                <ResumeHtmlDocument
+                  src={site.resumeHtmlUrl}
+                  title={`${profile.name} — Resume`}
+                  dark={darkView}
+                  onFail={() => setHtmlFailed(true)}
+                />
+              ) : (
+                <>
+                  <iframe
+                    title={`${profile.name} — Resume`}
+                    src={profile.resumeUrl}
+                    className={cn(
+                      "hidden size-full bg-white md:block",
+                      darkView && "resume-frame--dark",
+                    )}
+                  />
+                  <div data-resume-reader className="absolute inset-0 md:hidden">
+                    <TransformWrapper
+                      ref={zoomRef}
+                      minScale={1}
+                      maxScale={4}
+                      initialScale={1}
+                      limitToBounds
+                      doubleClick={{ mode: "toggle", step: 0.8 }}
+                      wheel={{ step: 0.1 }}
+                      onTransform={(_ref, s) => {
+                        const h = pagesRef.current?.offsetHeight ?? 0;
+                        if (h) setPage(-s.positionY / s.scale > h / 2 - 200 ? 2 : 1);
+                      }}
                     >
-                      {[1, 2].map((n) => (
-                        <img
-                          key={n}
-                          src={`/resume/page-${n}.webp`}
-                          alt={`Resume page ${n} of 2`}
-                          width={1818}
-                          height={2573}
-                          draggable={false}
-                          className="h-auto w-full select-none rounded-sm bg-white shadow-lg"
-                        />
-                      ))}
-                    </div>
-                  </TransformComponent>
-                </TransformWrapper>
-                <span className="pointer-events-none absolute top-3 right-3 rounded-full bg-[#080A0F]/85 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[#9299AA]">
-                  Page {page} of 2
-                </span>
-              </div>
+                      <TransformComponent
+                        wrapperStyle={{ width: "100%", height: "100%", touchAction: "none" }}
+                        contentStyle={{ width: "100%" }}
+                      >
+                        <div
+                          ref={pagesRef}
+                          className={cn(
+                            "flex w-full flex-col gap-3 bg-[#080A0F] p-3 pb-28",
+                            darkView && "resume-frame--dark",
+                          )}
+                        >
+                          {[1, 2].map((n) => (
+                            <img
+                              key={n}
+                              src={`/resume/page-${n}.webp`}
+                              alt={`Resume page ${n} of 2`}
+                              width={1818}
+                              height={2573}
+                              draggable={false}
+                              className="h-auto w-full select-none rounded-sm bg-white shadow-lg"
+                            />
+                          ))}
+                        </div>
+                      </TransformComponent>
+                    </TransformWrapper>
+                    <span className="pointer-events-none absolute top-3 right-3 rounded-full bg-[#080A0F]/85 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[#9299AA]">
+                      Page {page} of 2
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
             <nav
               aria-label="Resume controls"
@@ -139,7 +154,7 @@ export function ResumeViewer({
                   type="button"
                   aria-label="Zoom out"
                   onClick={() => zoomRef.current?.zoomOut(0.5)}
-                  className={cn(dockButton, "md:hidden")}
+                  className={cn(dockButton, "md:hidden", useHtml && "hidden")}
                 >
                   <ZoomOut aria-hidden className="size-5 text-[#62F4E0]" />
                   <span>Out</span>
@@ -148,7 +163,7 @@ export function ResumeViewer({
                   type="button"
                   aria-label="Zoom in"
                   onClick={() => zoomRef.current?.zoomIn(0.5)}
-                  className={cn(dockButton, "md:hidden")}
+                  className={cn(dockButton, "md:hidden", useHtml && "hidden")}
                 >
                   <ZoomIn aria-hidden className="size-5 text-[#62F4E0]" />
                   <span>In</span>

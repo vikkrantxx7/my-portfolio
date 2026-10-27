@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikrant Sharma — CV</title>
+<style>
+  /* Themeable tokens (#1837): overridable via config/profile.yml `style:`, which
+     the PDF pipeline injects as a later :root block. Defaults below reproduce the
+     original hardcoded values, so a profile without a `style:` block is unchanged. */
+  :root {
+    --accent-color: hsl(187 74% 32%);
+    --secondary-color: hsl(270, 70%, 45%);
+    --font-family: "Liberation Sans", 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif;
+    --font-size: 11px;
+    /* Matches generate-pdf.mjs's PDF_PAGE_MARGIN — the actual PDF page margin
+       comes from the later @page rule injectPrintPageCss appends (which reads
+       this same variable), so this default must match it exactly. */
+    --page-margin: 0.6in;
+  }
+  @page { margin: var(--page-margin); }
+
+  /* ATS-safe typography (#font-extraction fix):
+     The bundled variable woff2 fonts (Space Grotesk / DM Sans) render with
+     glyph advances that make PDF text extractors inject spurious spaces inside
+     words (e.g. "SUM M ARY", "Germ any") — which corrupts ATS keyword parsing.
+     This template's job is clean machine-readable parsing, so we use a standard
+     static system sans stack instead. Verified clean via pypdf text extraction.
+     The lang="ja" rules reuse this Latin base stack (with a CJK fallback added);
+     the lang="ar" rules below intentionally define their own Arabic stack. */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Setting this on every element covers headings and
+       competency tags too. Required ligatures (rlig) stay on, so Arabic shaping
+       is unaffected. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    line-height: 1.45;
+    color: #1a1a2e;
+    background: #ffffff;
+    padding: 0;
+    margin: 0;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 2px 0;
+  }
+
+  /* === HEADER === */
+  .header {
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: var(--font-family);
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .header-gradient {
+    height: 2px;
+    background: linear-gradient(to right, var(--accent-color), var(--secondary-color));
+    border-radius: 1px;
+    margin-bottom: 10px;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-family: var(--font-family);
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: #555;
+  }
+
+  .contact-row a {
+    color: #555;
+    text-decoration: none;
+  }
+
+  .contact-row .separator {
+    color: #ccc;
+  }
+
+  /* === OPTIONAL PROFILE PHOTO (opt-in, DACH/European markets — #264) ===
+     Off by default: with no candidate.photo the  slot is empty, no
+     <img> is emitted, and the layout is byte-identical to a photoless CV.
+     When opted in (candidate.photo in config/profile.yml) the photo floats into
+     the top corner and the header/summary text wraps beside it. Photos are
+     penalized by US/UK/many-market ATS, so this is never on by default. */
+  .cv-photo {
+    float: right;
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    margin: 0 0 8px 14px;
+    border-radius: 3px;
+    border: 1px solid #e2e2e2;
+  }
+
+  .cv-photo--rounded { border-radius: 8px; }
+  .cv-photo--circle { border-radius: 50%; aspect-ratio: 1; height: 80px; }
+  .cv-photo--square { border-radius: 0; aspect-ratio: 1; height: 80px; }
+
+  /* === SECTIONS === */
+  .section {
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    font-family: var(--font-family);
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-color);
+    border-bottom: 1.5px solid #e2e2e2;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  /* === PROFESSIONAL SUMMARY === */
+  .summary-text {
+    font-size: var(--font-size);
+    line-height: 1.6;
+    color: #2f2f2f;
+  }
+
+  .summary-text strong {
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* === CORE COMPETENCIES === */
+  .competencies-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .competency-tag {
+    font-family: var(--font-family);
+    font-size: 10px;
+    font-weight: 700;
+    color: hsl(187, 74%, 20%);
+    background: hsl(187, 55%, 85%);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid hsl(187, 50%, 65%);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* === WORK EXPERIENCE === */
+  .job {
+    margin-bottom: 14px;
+  }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .job-company {
+    font-family: var(--font-family);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--secondary-color);
+  }
+
+  .job-period {
+    font-size: 10.5px;
+    color: #777;
+    white-space: nowrap;
+  }
+
+  .job-role {
+    font-size: var(--font-size);
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .job-location {
+    font-size: 10px;
+    color: #888;
+  }
+
+  .job ul {
+    padding-left: 18px;
+    margin-top: 6px;
+  }
+
+  .job li {
+    font-size: 10px;
+    line-height: 1.55;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .job li strong {
+    font-weight: 600;
+  }
+
+  /* === PROJECTS === */
+  .project {
+    margin-bottom: 12px;
+  }
+
+  .project-title {
+    font-family: var(--font-family);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--secondary-color);
+  }
+
+  .project-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .project-title a:hover {
+    text-decoration: underline;
+  }
+
+  .project-badge {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--accent-color);
+    background: hsl(187, 40%, 95%);
+    padding: 1px 6px;
+    border-radius: 2px;
+    margin-left: 6px;
+  }
+
+  .project-desc {
+    font-size: 10.5px;
+    color: #444;
+    margin-top: 3px;
+    line-height: 1.55;
+  }
+
+  .project-tech {
+    font-size: 9.5px;
+    color: #888;
+    margin-top: 3px;
+  }
+
+  /* === EDUCATION === */
+  .edu-item {
+    margin-bottom: 8px;
+  }
+
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .edu-title {
+    font-weight: 600;
+    font-size: var(--font-size);
+    color: #333;
+  }
+
+  .edu-sep {
+    color: #aaa;
+    font-weight: 400;
+    margin: 0 2px;
+  }
+
+  .edu-org {
+    color: var(--secondary-color);
+    font-weight: 500;
+  }
+
+  .edu-year {
+    font-size: 10px;
+    color: #777;
+    white-space: nowrap;
+  }
+
+  .edu-location {
+    font-size: 10px;
+    color: #888;
+  }
+
+  .edu-desc {
+    font-size: 10px;
+    color: #666;
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+
+  /* === CERTIFICATIONS === */
+  .cert-table {
+    display: table;
+    width: 100%;
+  }
+
+  .cert-item {
+    display: table-row;
+  }
+
+  .cert-item > * {
+    display: table-cell;
+    vertical-align: baseline;
+    padding-bottom: 6px;
+  }
+
+  .cert-title {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .cert-title a {
+    color: var(--secondary-color);
+    text-decoration: none;
+  }
+
+  .cert-title a:hover {
+    text-decoration: underline;
+  }
+
+  .cert-org {
+    color: var(--secondary-color);
+    white-space: nowrap;
+  }
+
+  .cert-year {
+    font-size: 10px;
+    color: #777;
+    white-space: nowrap;
+    text-align: right;
+    width: 44px;
+  }
+
+  /* === AWARDS === */
+  /* Same table model as certifications (title / issuer / year on one baseline),
+     under its own class names so a template pack can restyle awards without
+     dragging certifications along. */
+  .award-table {
+    display: table;
+    width: 100%;
+  }
+
+  .award-item {
+    display: table-row;
+  }
+
+  .award-item > * {
+    display: table-cell;
+    vertical-align: baseline;
+    padding-bottom: 6px;
+  }
+
+  .award-title {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .award-org {
+    color: var(--secondary-color);
+    white-space: nowrap;
+  }
+
+  .award-year {
+    font-size: 10px;
+    color: #777;
+    white-space: nowrap;
+    text-align: right;
+    width: 44px;
+  }
+
+  /* === INTERESTS === */
+  .interests-line {
+    font-size: 10.5px;
+    color: #444;
+  }
+
+  /* === SKILLS === */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .skill-item {
+    font-size: 10.5px;
+    color: #444;
+  }
+
+  .skill-category {
+    font-weight: 600;
+    color: #333;
+    font-size: 10.5px;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Keep a small right gutter for the print box. Right-aligned content
+       (job periods, education years) right-aligns to the content-box edge,
+       and the rightmost glyph's side bearing can spill ~1px past it and get
+       clipped by Chromium's print clip. A plain `.page` padding is reset to 0
+       here for print, which is why padding set outside @media print has no
+       effect; restoring a right gutter inside the print rule fixes it without
+       re-centering the page or hard-coding a per-format max-width. See #1341. */
+    .page {
+      padding: 0 0.18in 0 0;
+    }
+  }
+
+  /* === PAGE BREAK CONTROL === */
+  /* Only avoid breaking small atomic units (a cert row, an education line, the
+     header, a single competency or skill).  Sections and multi-bullet roles are
+     allowed to flow across a page boundary so content packs tight instead of
+     jumping wholesale and leaving large bottom gaps. */
+  .header,
+  .edu-item,
+  .cert-item,
+  .competency-tag,
+  .skill-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Keep a heading attached to the content that follows it, so headings are not
+     orphaned at the bottom of a page. */
+  .section-title,
+  .job-company,
+  .job-role,
+  .job-location,
+  .edu-location,
+  .project-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Keep a project's tech line attached to the description above it.  A project
+     may still split across pages, but not at the one opportunity that strands a
+     bare "Python | github.com/..." line at the top of the next page with no
+     title or description to identify it. */
+  .project-tech {
+    break-before: avoid;
+    page-break-before: avoid;
+  }
+
+  /* === RTL (Arabic) Support === */
+  html[lang="ar"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .header h1,
+  html[lang="ar"] .section-title,
+  html[lang="ar"] .job-company,
+  html[lang="ar"] .project-title,
+  html[lang="ar"] .competency-tag,
+  html[lang="ar"] .skill-category {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .header-gradient {
+    background: linear-gradient(to left, var(--accent-color), var(--secondary-color));
+  }
+
+  html[lang="ar"] .job ul {
+    padding-right: 18px;
+    padding-left: 0;
+  }
+
+  html[lang="ar"] .project-badge {
+    margin-right: 6px;
+    margin-left: 0;
+  }
+
+  html[lang="ar"] .cert-year {
+    text-align: left;
+  }
+
+  html[lang="ar"] .cert-table {
+    direction: rtl;
+  }
+
+  html[lang="ar"] .cv-photo {
+    float: left;
+    margin: 0 14px 8px 0;
+  }
+
+  /* === CJK (Japanese) font fallback === */
+  /* The bundled webfonts are Latin-only (see #951). Without a CJK fallback,
+     Japanese text renders as tofu (□) in headless Chromium on any system
+     without a CJK system font (Linux/CI, minimal containers). The Latin brand
+     fonts are kept first so ASCII still uses Space Grotesk / DM Sans, then the
+     browser's per-glyph fallback picks the first installed CJK face for kana
+     and kanji. Mirrors the lang="ar" precedent above. */
+  html[lang="ja"] body {
+    font-family: var(--font-family), 'Hiragino Sans',
+      'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP',
+      'Noto Sans JP', Meiryo, 'MS PGothic', sans-serif;
+  }
+
+  html[lang="ja"] .header h1,
+  html[lang="ja"] .section-title,
+  html[lang="ja"] .job-company,
+  html[lang="ja"] .project-title,
+  html[lang="ja"] .competency-tag,
+  html[lang="ja"] .skill-category {
+   font-family: var(--font-family), 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', sans-serif;
+  }
+
+  /* === Simplified Chinese typography ===
+     Keep Latin-capable system fonts first for stable ATS extraction, then use
+     platform-native and open-source Simplified Chinese faces for Han glyphs.
+     Explicit line-breaking prevents mixed Chinese/English tokens and Chinese
+     punctuation from producing clipped or awkward PDF lines. */
+  html[lang="zh-CN"] body,
+  html[lang="zh"] body {
+    font-family: var(--font-family), 'PingFang SC',
+      'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC',
+      'Noto Sans SC', 'Source Han Sans SC', sans-serif;
+    line-break: strict;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  html[lang="zh-CN"] .header h1,
+  html[lang="zh-CN"] .section-title,
+  html[lang="zh-CN"] .job-company,
+  html[lang="zh-CN"] .project-title,
+  html[lang="zh-CN"] .contact-row,
+  html[lang="zh-CN"] .competency-tag,
+  html[lang="zh-CN"] .skill-category,
+  html[lang="zh"] .header h1,
+  html[lang="zh"] .section-title,
+  html[lang="zh"] .job-company,
+  html[lang="zh"] .project-title,
+  html[lang="zh"] .contact-row,
+  html[lang="zh"] .competency-tag,
+  html[lang="zh"] .skill-category {
+    font-family: var(--font-family), 'PingFang SC',
+      'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC',
+      'Noto Sans SC', 'Source Han Sans SC', sans-serif;
+  }
+
+  /* === Korean typography ===
+     modes/ko/ ships as a supported locale, but no rule matched html[lang="ko"],
+     so a Korean CV fell back to the Latin-only stack and Hangul rendered via
+     whatever the PDF engine happened to substitute. Same shape as the ja and
+     zh blocks above: Latin-capable faces first for stable ATS extraction, then
+     platform-native and open-source Korean faces for Hangul glyphs. */
+  html[lang="ko"] body {
+    font-family: var(--font-family), 'Apple SD Gothic Neo',
+      'Malgun Gothic', 'Noto Sans CJK KR',
+      'Noto Sans KR', 'Nanum Gothic', sans-serif;
+    line-break: strict;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  html[lang="ko"] .header h1,
+  html[lang="ko"] .section-title,
+  html[lang="ko"] .job-company,
+  html[lang="ko"] .project-title,
+  html[lang="ko"] .contact-row,
+  html[lang="ko"] .competency-tag,
+  html[lang="ko"] .skill-category {
+    font-family: var(--font-family), 'Apple SD Gothic Neo',
+      'Malgun Gothic', 'Noto Sans CJK KR',
+      'Noto Sans KR', 'Nanum Gothic', sans-serif;
+  }
+
+  /* === Traditional Chinese typography ===
+     modes/zh-TW/ ships as a supported locale. html[lang="zh"] does not match
+     lang="zh-TW", so it needs its own rule — and it must use TC faces, not the
+     Simplified stack above, which substitutes the wrong glyph forms.
+     var(--font-family) leads (profile override / Latin :root default), then the
+     TC faces sit in the font list itself — NOT in var()'s fallback slot, which
+     is dead because :root always defines --font-family. Same shape as
+     templates/ats/cv-template.ats.html. (The ja/zh-CN/ko blocks above still use
+     the older `var(--font-family, …)` form and have the same dead-slot bug —
+     out of scope here, tracked separately.) */
+  html[lang="zh-TW"] body {
+    font-family: var(--font-family), 'PingFang TC',
+      'Microsoft JhengHei', 'Noto Sans CJK TC',
+      'Noto Sans TC', 'Source Han Sans TC', sans-serif;
+    line-break: strict;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  html[lang="zh-TW"] .header h1,
+  html[lang="zh-TW"] .section-title,
+  html[lang="zh-TW"] .job-company,
+  html[lang="zh-TW"] .project-title,
+  html[lang="zh-TW"] .contact-row,
+  html[lang="zh-TW"] .competency-tag,
+  html[lang="zh-TW"] .skill-category {
+    font-family: var(--font-family), 'PingFang TC',
+      'Microsoft JhengHei', 'Noto Sans CJK TC',
+      'Noto Sans TC', 'Source Han Sans TC', sans-serif;
+  }
+
+  html[lang="zh-CN"] .summary-text,
+  html[lang="zh"] .summary-text,
+  html[lang="zh-CN"] .job li,
+  html[lang="zh"] .job li {
+    line-height: 1.7;
+  }
+
+  html[lang="zh-CN"] .section-title,
+  html[lang="zh"] .section-title {
+    letter-spacing: 0.03em;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Vikrant Sharma</h1>
+    <div class="header-gradient"></div>
+    <div class="contact-row">
+      <a href="mailto:sharma.vikkrant@gmail.com">sharma.vikkrant@gmail.com</a>
+      <span class="separator">|</span>
+      <a href="https://linkedin.com/in/vikrant-sharma-001">linkedin.com/in/vikrant-sharma-001</a>
+      <span class="separator">|</span>
+      <a href="https://github.com/vikkrantxx7">github.com/vikkrantxx7</a>
+      <span class="separator">|</span>
+      <span>Gurgaon, Haryana, India</span>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL SUMMARY -->
+  <div class="section">
+    <div class="section-title">Professional Summary</div>
+    <div class="summary-text">Lead Fullstack Engineer with 13 years building web applications across frontend and backend. At adidas, designed and built a <strong>GraphQL BFF</strong> using <strong>Node.js</strong> and <strong>Fastify</strong> — including schema design, resolvers, and backend service integration. Built the <strong>React</strong> micro-frontend that consumes it, containerized both with <strong>Docker</strong>, and deployed to <strong>Kubernetes</strong>. Led technical direction as repository code owner, doing code reviews and setting engineering standards. Reduced JavaScript/CSS output by <strong>~50%</strong> through <strong>Rspack</strong> optimization. Drove <strong>100% team adoption</strong> of <strong>AI-assisted development</strong> (<strong>GitHub Copilot</strong>, <strong>SpecKit</strong>), cutting development effort by <strong>~40%</strong>. Strong track record in requirement analysis, production support, and translating architectural vision into working systems.</div>
+  </div>
+
+  <!-- CORE COMPETENCIES -->
+  <div class="section">
+    <div class="section-title">Core Competencies</div>
+    <div class="competencies-grid">
+      <span class="competency-tag">Fullstack Development (React + Node.js + TypeScript)</span>
+      <span class="competency-tag">GraphQL BFF &amp; REST API Design</span>
+      <span class="competency-tag">Micro-frontend Architecture</span>
+      <span class="competency-tag">Performance Optimization</span>
+      <span class="competency-tag">Docker &amp; Kubernetes Deployment</span>
+      <span class="competency-tag">Team Leadership &amp; Code Reviews</span>
+      <span class="competency-tag">AI-Assisted Development</span>
+    </div>
+  </div>
+
+  <!-- WORK EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">Work Experience</div>
+    <div class="job">
+  <div class="job-header">
+    <span class="job-company">adidas</span>
+    <span class="job-period">Dec 2021 – Present</span>
+  </div>
+  <div class="job-role">Software Engineer II (Manager Band)</div>
+  
+  
+  <ul>
+    <li>Designed and built a <strong>GraphQL BFF (Backend for Frontend)</strong> from scratch using <strong>Node.js</strong> and <strong>Fastify</strong>. Designed the schema and resolvers to aggregate multiple backend services into one frontend-optimized API. This simplified data fetching for the <strong>React</strong> frontend and decoupled it from direct backend dependencies.</li>
+    <li>Built the <strong>React</strong> micro-frontend (<strong>TypeScript</strong>) that consumes the BFF. Delivered product features across core user journeys for an internal product management application. Implemented high-performance data grids using <strong>AG Grid</strong> for large tabular datasets with sorting and filtering.</li>
+    <li>Containerized both the GraphQL BFF and the React frontend with <strong>Docker</strong>, then deployed them to <strong>Kubernetes</strong>. Set up <strong>CI/CD pipelines</strong> using <strong>GitHub Actions</strong>.</li>
+    <li>Set up the frontend architecture using <strong>Feature-Sliced Design (FSD v2)</strong> and <strong>Webpack Module Federation</strong> for a greenfield micro-frontend. Defined project structure, engineering standards, and architectural guidelines that the team adopted.</li>
+    <li>Reduced emitted JavaScript and CSS by <strong>~50%</strong>, and image assets by <strong>90%</strong>, through <strong>Rspack</strong> chunk optimization, cache groups, and dependency management. Improved cache reuse and load performance.</li>
+    <li>Led technical direction as repository code owner. Did extensive <strong>code reviews</strong> (applying <strong>OWASP Top 10</strong> security awareness), <strong>mentored engineers</strong>, and set the standards the team builds against.</li>
+    <li>Set a <strong>95% automated test-coverage threshold</strong> with <strong>GitHub Actions</strong> quality gates. Owned build health across <strong>SonarQube</strong> checks, linting, and coverage gates.</li>
+    <li>Handled <strong>production issues</strong> and did <strong>root-cause analyses (RCAs)</strong> for the application.</li>
+    <li>Drove <strong>100% team adoption</strong> of <strong>AI-assisted development workflows</strong> (<strong>SpecKit</strong> and <strong>GitHub Copilot</strong>), delivering <strong>~40% reduction in development effort</strong>. Presented at internal AI Hackathon.</li>
+    <li>Introduced modern tooling including <strong>Rspack</strong>, <strong>Vitest</strong>, <strong>Biome</strong>, <strong>TanStack Router</strong>, <strong>TanStack Query</strong>, <strong>TanStack Form</strong>, and <strong>Zustand</strong>. Kept the stack up to date to prevent technical debt.</li>
+  </ul>
+</div>
+  <div class="job">
+  <div class="job-header">
+    <span class="job-company">UKG</span>
+    <span class="job-period">Jun 2019 – Nov 2021</span>
+  </div>
+  <div class="job-role">Lead Software Engineer</div>
+  
+  
+  <ul>
+    <li>Led frontend development on UKG&#39;s <strong>B2B SaaS</strong> HR, Payroll, and Workforce Management platform. Built accessible, responsive <strong>React</strong> interfaces aligned with <strong>WebAIM</strong> and <strong>WAI-ARIA</strong> standards. Mentored backend engineers on <strong>React</strong> and frontend best practices.</li>
+    <li>Was an early adopter of <strong>SurveyJS&#39;s beta React library</strong>. Identified bugs and compatibility issues, gave feedback directly to SurveyJS developers to improve the React implementation.</li>
+    <li>Optimized <strong>Webpack</strong> configuration and applied <strong>code-splitting</strong> for efficient bundling. Profiled applications to identify performance bottlenecks and monitored <strong>Web Vitals</strong>.</li>
+    <li>Worked with cross-functional stakeholders to design and deliver <strong>reusable UI solutions</strong>, keeping consistency across the application.</li>
+    <li>Strengthened quality through peer <strong>code reviews</strong>, <strong>Jenkins CI/CD</strong> pipelines, and <strong>SonarQube</strong> analysis.</li>
+  </ul>
+</div>
+  <div class="job">
+  <div class="job-header">
+    <span class="job-company">Infosys</span>
+    <span class="job-period">Sep 2013 – May 2019</span>
+  </div>
+  <div class="job-role">Technology Analyst</div>
+  
+  
+  <ul>
+    <li>Built a responsive, mobile-first e-commerce web application using <strong>JavaScript</strong>, <strong>React</strong>, <strong>Redux</strong>, <strong>HTML5</strong>, and <strong>CSS3</strong>. Made sure the experience was consistent across desktop and mobile.</li>
+    <li>Integrated <strong>Google Maps API</strong> for location-based functionality, including an interactive mini-map.</li>
+    <li>Built reusable frontend components and features. Used <strong>Redux</strong> for state management and <strong>React Developer Tools</strong> for performance troubleshooting.</li>
+    <li>Worked with cross-functional teams to translate functional requirements into scalable web features.</li>
+  </ul>
+</div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title">Projects</div>
+    <div class="project">
+  <div class="project-title"><a href="https://github.com/vikkrantxx7/prepforge">PrepForge</a><span class="project-badge">Open Source</span></div>
+  <div class="project-desc">Building an open-source interview prep platform with progress tracking and spaced repetition. Built the backend from scratch using a layered **Controller → Service → Repository** architecture: a **Fastify REST API** and a **GraphQL API** with **DataLoader** batching, **JWT authentication**, **Zod validation**, and **PostgreSQL** via **Drizzle ORM**.</div>
+  <div class="project-tech">Next.js, Node.js, Fastify, REST, GraphQL, PostgreSQL, Drizzle ORM, TypeScript</div>
+</div>
+  <div class="project">
+  <div class="project-title"><a href="https://github.com/vikkrantxx7/git-contributor-stats">git-contributor-stats</a><span class="project-badge">npm Package</span></div>
+  <div class="project-desc">Built and published a **TypeScript-based Node.js CLI** and library for Git repository contributor and activity analytics. Includes commit statistics, change metrics, charts, reports, and multiple output formats. Architected a **modular, tree-shakeable package structure** with subpath exports. Exposed both CLI and programmatic APIs with configurable filtering, automated tests, **Changesets**, and **GitHub Actions** workflows.</div>
+  <div class="project-tech">TypeScript, Node.js, Vite, Vitest, Biome, GitHub Actions</div>
+</div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-title">Education</div>
+    <div class="edu-item">
+  <div class="edu-header">
+    <div class="edu-title">Bachelor of Technology <span class="edu-sep">|</span> <span class="edu-org">Invertis Institute</span></div>
+    <div class="edu-year">2012</div>
+  </div>
+  <div class="edu-location">India</div>
+  <div class="edu-desc">Electronics and Communication Engineering</div>
+</div>
+  </div>
+
+  <!-- CERTIFICATIONS -->
+  <div class="section">
+    <div class="section-title">Certifications</div>
+    <div class="cert-table"><div class="cert-item">
+  <span class="cert-title"><a href="https://www.udacity.com/certificate/e/b787afa6-6287-11e8-a4e4-7f301fa45959">Frontend Web Development Nanodegree</a></span>
+  <span class="cert-org">Udacity — Google Scholarship Recipient</span>
+  <span class="cert-year">2018</span>
+</div></div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title">Skills</div>
+    <div class="skills-grid">
+<div class="skill-item"><span class="skill-category">Frontend: </span>React, TypeScript, JavaScript (ES6+), React Hooks, HTML5, CSS3, Sass, Tailwind CSS, Responsive Web Design, AG Grid</div>
+<div class="skill-item"><span class="skill-category">Backend &amp; APIs: </span>Node.js, Fastify, GraphQL (Schema Design, Resolvers, DataLoader), REST API Design, JWT Authentication, Zod Validation, PostgreSQL, Drizzle ORM</div>
+<div class="skill-item"><span class="skill-category">Architecture: </span>Fullstack Architecture, Micro-frontends, Webpack Module Federation, Feature-Sliced Design (FSD v2), BFF (Backend for Frontend)</div>
+<div class="skill-item"><span class="skill-category">State Management: </span>Redux, Redux Toolkit, Zustand, TanStack Query, TanStack Form, TanStack Router</div>
+<div class="skill-item"><span class="skill-category">Performance: </span>Rspack, Webpack, Code Splitting, Web Vitals, Cache Optimization, Bundle Optimization</div>
+<div class="skill-item"><span class="skill-category">Testing &amp; Quality: </span>Vitest, Jest, React Testing Library, MSW (Mock Service Worker), SonarQube, Unit Testing, Integration Testing</div>
+<div class="skill-item"><span class="skill-category">DevOps &amp; Deployment: </span>Docker, Kubernetes, GitHub Actions, Jenkins, CI/CD Pipelines, Git, GitHub</div>
+<div class="skill-item"><span class="skill-category">Accessibility: </span>WAI-ARIA, WebAIM, WCAG AA, Semantic HTML</div>
+<div class="skill-item"><span class="skill-category">AI-Assisted Development: </span>GitHub Copilot, SpecKit, AI-Augmented Workflows</div>
+<div class="skill-item"><span class="skill-category">Leadership &amp; Collaboration: </span>Code Reviews, Mentoring, Technical Direction, Requirement Analysis, Production Support, Root-Cause Analysis</div>
+  </div>
+  </div>
+
+  <!-- END -->
+
+</div>
+</body>
+</html>
