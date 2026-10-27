@@ -37,3 +37,38 @@ export function getFilamentPoints(width: number, height: number, radius: number)
   if (first) points.push(first);
   return points;
 }
+
+const SPARK_REACH = 36;
+
+/**
+ * Two faint spark lines escaping opposite corners (top-left, bottom-right),
+ * fading away from the card. Deterministic wobble, none before measurement.
+ */
+export function getCornerSparks(width: number, height: number): Point[][] {
+  if (width <= 0 || height <= 0) return [];
+  const inset = 1.2;
+  const reach = Math.min(SPARK_REACH, Math.min(width, height) * 0.16);
+  const make = (origin: Point, direction: Point, wobbleSeed: number): Point[] => {
+    const points: Point[] = [];
+    const steps = 9;
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const wobble = Math.sin((i + wobbleSeed) * 1.7) * 1.6 * (1 - t);
+      points.push({
+        x: origin.x + direction.x * t * reach - direction.y * wobble,
+        y: origin.y + direction.y * t * reach + direction.x * wobble,
+      });
+    }
+    return points;
+  };
+  const near = 1.5;
+  const diagonal = Math.SQRT1_2;
+  return [
+    make({ x: inset + near, y: inset + near }, { x: -diagonal, y: -diagonal }, 0),
+    make(
+      { x: width - inset - near, y: height - inset - near },
+      { x: diagonal, y: diagonal },
+      5,
+    ),
+  ];
+}

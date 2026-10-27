@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [x] Add two faint shimmer sparks originating near opposite card corners and fading away (TDD geometry tests; verified in preview).
 - [x] Add a contained electrostatic filament around the entire profile card with faint shimmer; verified themes, narrow screens, reduced motion, GitHub hit target and Escape dismissal (6 focused tests pass).
 - [x] Add a momentary cyan/violet border ignition when the mobile dock opens; verified repeat opening, immediate navigation, both themes and reduced motion (40 navigation tests pass).
 - [x] Remove trident-like impact forks; dissolve lightning into expanding, visible border illumination on the pill and avatar.
