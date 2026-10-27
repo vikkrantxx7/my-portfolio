@@ -32,7 +32,7 @@ describe("ThemeToggle", () => {
   it("animates its icon for the same duration as the theme burn transition", () => {
     // The sun/moon arc must read its speed from the same constant the burn CSS uses.
     const css = readFileSync(
-      path.resolve(__dirname, "../../../styles.css"),
+      path.resolve(__dirname, "../../../src/styles.css"),
       "utf8",
     );
     expect(css).toContain(`--theme-transition: ${THEME_TRANSITION_SECONDS}s`);
