@@ -145,6 +145,8 @@ describe("SiteNav", () => {
   });
 
   it("slides the pill to the newly active link", async () => {
+    // Reduced motion: exit is skipped so the old pill unmounts immediately.
+    setReducedMotion(true);
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
     act(() => {
