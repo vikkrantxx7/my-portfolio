@@ -27,8 +27,16 @@ export function useActiveSection(ids: readonly string[]) {
       // The final section may be too short to reach its scroll-margin. At the
       // document bottom it still owns the highlight instead of the prior tab.
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (maxScroll > 0 && window.scrollY >= maxScroll - 2)
-        current = key.split(",").at(-1) ?? current;
+      const lastId = key.split(",").at(-1);
+      const last = lastId ? document.getElementById(lastId) : null;
+      // Short final sections and bottom safe-area space can leave About below
+      // the header even after scroll settles. Claim it only near the bottom
+      // and once its heading is in the upper portion of the viewport.
+      if (maxScroll > 0 && lastId && last &&
+        (window.scrollY >= maxScroll - 2 ||
+          (window.scrollY >= maxScroll - window.innerHeight * 0.25 &&
+            last.getBoundingClientRect().top <= window.innerHeight * 0.55)))
+        current = lastId;
       setActive(window.scrollY <= 1 ? null : current);
     };
     const finish = () => {
