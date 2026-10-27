@@ -1,6 +1,17 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// These tests cover the PDF/image fallback; the HTML view has its own tests.
+const siteMock = vi.hoisted(() => ({ resumeHtmlUrl: undefined as string | undefined }));
+vi.mock("@/content/site", async (orig) => {
+  const real = (await orig()) as { site: object };
+  return {
+    site: new Proxy(real.site, {
+      get: (t, k) => (k === "resumeHtmlUrl" ? siteMock.resumeHtmlUrl : Reflect.get(t, k)),
+    }),
+  };
+});
 import { ResumeViewer } from "./resume-viewer";
 
 function renderViewer(triggerClassName?: string) {
@@ -79,5 +90,19 @@ describe("ResumeViewer", () => {
   it("applies the caller's trigger styling", () => {
     renderViewer("custom-trigger");
     expect(screen.getByRole("button", { name: /view resume/i })).toHaveClass("custom-trigger");
+  });
+
+  it("shows the HTML resume and hides zoom when an HTML version is configured", async () => {
+    siteMock.resumeHtmlUrl = "/resume.html";
+    renderViewer();
+    await userEvent.click(screen.getByRole("button", { name: /view resume/i }));
+    const dialog = screen.getByRole("dialog", { name: /resume/i });
+    expect(dialog.querySelector('iframe[src="/resume.html"]')).not.toBeNull();
+    expect(dialog.querySelector("[data-resume-reader]")).toBeNull();
+    expect(within(dialog).getByRole("link", { name: /download pdf/i })).toHaveAttribute(
+      "href",
+      "/resume.pdf",
+    );
+    siteMock.resumeHtmlUrl = undefined;
   });
 });
