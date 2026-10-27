@@ -19,11 +19,13 @@
  * The @theme inline block maps CSS custom properties to Tailwind utility
  * classes (e.g. --color-primary -> bg-primary, text-primary).
  *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
+ * REBRANDING: every brand colour is defined exactly twice — once in :root
+ * (dark theme, the default) and once in .light (light theme). Change only
+ * those two blocks; components read tokens, never raw colours. Component
+ * effect styles live beside their components and are imported above.
  *
  * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 1. Add the variable to :root (dark value) and .light (light value)
  * 2. Register it in @theme inline as --color-<name>: var(--<name>)
  */
 
