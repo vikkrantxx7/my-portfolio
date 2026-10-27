@@ -21,6 +21,7 @@ import {
 } from "react";
 import { content } from "@/content/data";
 import { replaceHash } from "@/features/deep-link/deep-link";
+import { ResumeViewer } from "@/features/resume-viewer/resume-viewer";
 import { ThemeToggle } from "@/features/theme-toggle/theme-toggle";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
@@ -138,13 +139,9 @@ export function SiteNav() {
               </li>
             ))}
             <li>
-              <a
-                href={profile.resumeUrl}
-                download={profile.resumeFileName}
-                className="rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10"
-              >
+              <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
                 Resume PDF
-              </a>
+              </ResumeViewer>
             </li>
           </ul>
           <ThemeToggle />
@@ -206,12 +203,12 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <DockLink
-                    href={profile.resumeUrl}
-                    download={profile.resumeFileName}
-                    icon={FileDown}
-                    label="CV"
-                  />
+                  <ResumeViewer
+                    triggerClassName={dockLinkCls()}
+                    onTriggerClick={() => setOpen(false)}
+                  >
+                    <DockInner icon={FileDown} label="CV" />
+                  </ResumeViewer>
                 </li>
               </ul>
             </motion.div>
@@ -223,7 +220,7 @@ export function SiteNav() {
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => (open ? close() : setOpen(true))}
-            className="pointer-events-auto relative z-10 flex h-12 items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
+            className="pointer-events-auto relative z-10 flex h-12 touch-manipulation items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
           >
             {open ? (
               <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
@@ -241,25 +238,23 @@ export function SiteNav() {
   );
 }
 
-function DockLink({
+const dockLinkCls = (active?: boolean) =>
+  cn(
+    "flex min-h-12 min-w-12 touch-manipulation flex-col items-center justify-center gap-1 rounded-xl px-1 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+    active ? "text-primary" : "text-muted-foreground",
+  );
+
+function DockInner({
   icon: Icon,
   label,
   active,
-  ...props
-}: AnchorHTMLAttributes<HTMLAnchorElement> & {
+}: {
   icon: LucideIcon;
   label: string;
   active?: boolean;
 }) {
   return (
-    <a
-      {...props}
-      aria-current={active ? "true" : undefined}
-      className={cn(
-        "flex min-h-12 min-w-12 flex-col items-center justify-center gap-1 rounded-xl px-1 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
-        active ? "text-primary" : "text-muted-foreground",
-      )}
-    >
+    <>
       <Icon
         aria-hidden
         className={cn(
@@ -270,6 +265,23 @@ function DockLink({
         )}
       />
       <span className="font-mono text-[10px] uppercase tracking-[0.14em]">{label}</span>
+    </>
+  );
+}
+
+function DockLink({
+  icon,
+  label,
+  active,
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement> & {
+  icon: LucideIcon;
+  label: string;
+  active?: boolean;
+}) {
+  return (
+    <a {...props} aria-current={active ? "true" : undefined} className={dockLinkCls(active)}>
+      <DockInner icon={icon} label={label} active={active} />
     </a>
   );
 }
