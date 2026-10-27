@@ -1,6 +1,6 @@
 # Portfolio — Current requests
 - [x] Keep the case-study back link as "← Selected work" and switch project cards to a tighter two-column grid from `md` (cards max ~564px; verified at 1280/820/390).
-- [ ] Header name block wraps to two lines and overlaps the progress ribbon between ~768–900px (desktop nav shown but too little room); awaiting user go-ahead to fix.
+- [x] Stop the header name wrapping over the progress ribbon between 768–1023px: name never wraps, role line and the "View Resume" label appear only from `lg` up (icon-only resume button below), gaps tightened below `lg` (25 nav tests; verified at 768/820/871/900/1024/1280).
 - [x] Finish Google Search Console: connected account confirmed, ownership tag published and verified, root property confirmed as siteOwner, existing sitemap submitted and downloaded by Google (3 URLs; 0 errors and warnings).
 - [x] Migrate git-contributor-stats to MDX with the existing layout and evidence; document MDX as the default for upcoming case studies (228 tests pass; verified navigation, citations, diagram and both themes).
 - [x] Add two faint shimmer sparks originating near opposite card corners and fading away (TDD geometry tests; verified in preview).
