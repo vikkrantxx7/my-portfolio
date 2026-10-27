@@ -17,11 +17,18 @@ export function ProfileCardRim({ reducedMotion }: { reducedMotion: boolean }) {
   }, []);
 
   const points = getFilamentPoints(size.width, size.height, 20)
-    .map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
+    .map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`)
+    .join(" ");
 
   return (
-    <svg ref={ref} aria-hidden="true" focusable="false" className="profile-card-rim" data-shimmer={!reducedMotion}
-      viewBox={`0 0 ${size.width || 1} ${size.height || 1}`}>
+    <svg
+      ref={ref}
+      aria-hidden="true"
+      focusable="false"
+      className="profile-card-rim"
+      data-shimmer={!reducedMotion}
+      viewBox={`0 0 ${size.width || 1} ${size.height || 1}`}
+    >
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="var(--primary)" />

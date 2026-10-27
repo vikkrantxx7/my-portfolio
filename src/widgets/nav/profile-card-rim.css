@@ -34,11 +34,20 @@
 }
 
 @keyframes profile-charge-hum {
-  0%, 100% { opacity: 0.87; }
-  47% { opacity: 1; }
-  73% { opacity: 0.92; }
+  0%,
+  100% {
+    opacity: 0.87;
+  }
+  47% {
+    opacity: 1;
+  }
+  73% {
+    opacity: 0.92;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .profile-card-rim[data-shimmer="true"] { animation: none; }
+  .profile-card-rim[data-shimmer="true"] {
+    animation: none;
+  }
 }

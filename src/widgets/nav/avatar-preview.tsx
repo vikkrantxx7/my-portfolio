@@ -48,35 +48,35 @@ export function AvatarPreview() {
             className="fixed top-4 left-4 z-[70] w-[min(18rem,calc(100vw-2rem))] rounded-2xl border border-primary/30 bg-card/90 shadow-glow backdrop-blur-xl focus:outline-none md:left-[max(1rem,calc((100vw-72rem)/2+4rem))]"
           >
             <div className="overflow-hidden rounded-[inherit]">
-            <div className="relative">
-              {profile.avatarUrl && (
-                <img
-                  src={profile.avatarUrl}
-                  alt={profile.name}
-                  width={288}
-                  height={288}
-                  className="aspect-square w-full object-cover"
-                />
-              )}
-              <a
-                href={profile.links.github}
-                {...linkProps}
-                aria-label="Open GitHub profile in a new tab"
-                className="absolute top-3 right-3 grid size-9 place-items-center rounded-full border border-primary/40 bg-background/80 text-primary shadow-halo backdrop-blur-md transition hover:scale-110 hover:brightness-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <Github
-                  aria-hidden
-                  className="size-[18px] drop-shadow-[0_0_8px_var(--color-primary)]"
-                />
-              </a>
-            </div>
-            <div className="space-y-1 p-4">
-              <DialogPrimitive.Title className="font-semibold text-foreground">
-                {profile.name}
-              </DialogPrimitive.Title>
-              <p className="font-mono text-xs text-primary">{handle}</p>
-              <p className="text-sm text-muted-foreground">{profile.role}</p>
-            </div>
+              <div className="relative">
+                {profile.avatarUrl && (
+                  <img
+                    src={profile.avatarUrl}
+                    alt={profile.name}
+                    width={288}
+                    height={288}
+                    className="aspect-square w-full object-cover"
+                  />
+                )}
+                <a
+                  href={profile.links.github}
+                  {...linkProps}
+                  aria-label="Open GitHub profile in a new tab"
+                  className="absolute top-3 right-3 grid size-9 place-items-center rounded-full border border-primary/40 bg-background/80 text-primary shadow-halo backdrop-blur-md transition hover:scale-110 hover:brightness-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <Github
+                    aria-hidden
+                    className="size-[18px] drop-shadow-[0_0_8px_var(--color-primary)]"
+                  />
+                </a>
+              </div>
+              <div className="space-y-1 p-4">
+                <DialogPrimitive.Title className="font-semibold text-foreground">
+                  {profile.name}
+                </DialogPrimitive.Title>
+                <p className="font-mono text-xs text-primary">{handle}</p>
+                <p className="text-sm text-muted-foreground">{profile.role}</p>
+              </div>
             </div>
             <ProfileCardRim reducedMotion={reduce} />
           </motion.div>

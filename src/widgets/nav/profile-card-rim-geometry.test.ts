@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import { getFilamentPoints } from "./profile-card-rim-geometry";
 
 describe("profile card filament", () => {
-  it.each([[288, 390], [248, 420]])("contains the full perimeter at %sx%s", (width, height) => {
+  it.each([
+    [288, 390],
+    [248, 420],
+  ])("contains the full perimeter at %sx%s", (width, height) => {
     const points = getFilamentPoints(width, height, 20);
     expect(points.length).toBeGreaterThan(100);
     expect(points[0]).toEqual(points.at(-1));

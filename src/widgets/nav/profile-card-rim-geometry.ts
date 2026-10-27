@@ -8,17 +8,18 @@ export function getFilamentPoints(width: number, height: number, radius: number)
   const points: Point[] = [];
   const add = (x: number, y: number, nx: number, ny: number) => {
     const i = points.length;
-    const charge = (Math.sin(i * 2.39) * 0.48 + Math.sin(i * 0.83) * 0.22);
+    const charge = Math.sin(i * 2.39) * 0.48 + Math.sin(i * 0.83) * 0.22;
     points.push({ x: x + nx * charge, y: y + ny * charge });
   };
   const line = (x1: number, y1: number, x2: number, y2: number, nx: number, ny: number) => {
     const steps = Math.ceil(Math.hypot(x2 - x1, y2 - y1) / 4);
-    for (let i = 0; i < steps; i++) add(x1 + (x2 - x1) * i / steps, y1 + (y2 - y1) * i / steps, nx, ny);
+    for (let i = 0; i < steps; i++)
+      add(x1 + ((x2 - x1) * i) / steps, y1 + ((y2 - y1) * i) / steps, nx, ny);
   };
   const arc = (cx: number, cy: number, start: number) => {
-    const steps = Math.ceil(r * Math.PI / 8);
+    const steps = Math.ceil((r * Math.PI) / 8);
     for (let i = 0; i < steps; i++) {
-      const a = start + (Math.PI / 2) * i / steps;
+      const a = start + ((Math.PI / 2) * i) / steps;
       add(cx + r * Math.cos(a), cy + r * Math.sin(a), Math.cos(a), Math.sin(a));
     }
   };
