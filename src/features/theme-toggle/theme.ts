@@ -12,11 +12,17 @@ export function readTheme(): Theme {
   return document.documentElement.classList.contains("light") ? "light" : "dark";
 }
 
+/** Browser chrome colour (iOS status bar / Safari toolbar) per theme; matches the page background tokens. */
+export const THEME_BAR_COLORS: Record<Theme, string> = { dark: "#080A0F", light: "#F6F7FB" };
+
 export function applyTheme(theme: Theme) {
   const root = document.documentElement;
   root.classList.toggle("light", theme === "light");
   root.classList.toggle("dark", theme === "dark");
   root.style.colorScheme = theme;
+  for (const m of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
+    m.content = THEME_BAR_COLORS[theme];
+  }
   try {
     localStorage.setItem(THEME_KEY, theme);
   } catch {

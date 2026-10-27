@@ -24,6 +24,19 @@ describe("theme", () => {
     expect(document.documentElement.classList.contains("dark")).toBe(true);
   });
 
+  it("syncs the browser bar colour (theme-color) with the theme", () => {
+    const meta = document.createElement("meta");
+    meta.name = "theme-color";
+    meta.content = "#080A0F";
+    document.head.appendChild(meta);
+    applyTheme("light");
+    expect(meta.content).toBe("#F6F7FB");
+    applyTheme("dark");
+    expect(meta.content).toBe("#080A0F");
+    meta.remove();
+  });
+
+
   it("burns from the toggle origin when view transitions are supported", () => {
     const start = vi.fn((cb: () => void) => cb());
     // biome-ignore lint/suspicious/noExplicitAny: stub
