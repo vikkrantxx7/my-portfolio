@@ -1,5 +1,7 @@
 export type Theme = "dark" | "light";
 export const THEME_KEY = "theme";
+/** Shared speed of the paper-burn theme transition; the sun/moon icon arc matches it. */
+export const THEME_TRANSITION_SECONDS = 1.7;
 
 export function parseTheme(value: string | null | undefined): Theme {
   return value === "light" ? "light" : "dark";
