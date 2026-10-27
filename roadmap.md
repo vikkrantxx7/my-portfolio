@@ -19,7 +19,7 @@
 - [x] Theme switcher (top right, sun/moon arc motion) with an accessible light palette (TDD).
 - [x] Theme change sweeps across the page as a left-to-right wave.
 - [x] PWA: installable + offline (published site only).
-- [ ] In-app resume viewer modal (vignette corners, Paper/Dark viewing toggle independent of site theme, always-dark floating controls) — fixes PWA resume trap.
-- [ ] Home route loader resolves synchronously on client navigations (no RPC roundtrip delay project → home).
-- [ ] Touch responsiveness: touch-action manipulation on dock/menu controls; keep mobile menubar consistent on resume viewer.
+- [x] In-app resume viewer modal (vignette corners, Paper/Dark viewing toggle independent of site theme, always-dark floating controls) — fixes PWA resume trap.
+- [x] Home route loader resolves synchronously on client navigations (no RPC roundtrip delay project → home).
+- [x] Touch responsiveness: touch-action manipulation on dock/menu controls; keep mobile menubar consistent on resume viewer.
 - [x] Hide "Edit with Lovable" badge (done in project settings).
