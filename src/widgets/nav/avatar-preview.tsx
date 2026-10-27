@@ -17,6 +17,7 @@ export function AvatarPreview() {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Trigger
+        data-avatar-frame
         aria-label="View profile photo"
         className="relative grid size-8 cursor-zoom-in place-items-center overflow-hidden rounded-md border border-primary/50 font-mono text-xs text-primary shadow-glow transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
