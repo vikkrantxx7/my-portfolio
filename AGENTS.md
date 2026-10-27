@@ -37,3 +37,4 @@
 - Bottom toolbars share `dockBar`/`dockItem` cva styles in `src/shared/ui/dock.ts` (tone `fixed` for the resume over white paper) so sizes stay identical across pages.
 - Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
 - Component-only CSS lives beside its component and is `@import`ed at the top of `src/styles.css` (not imported from the component) so it is part of the SSR stylesheet and paints without a flash; the global file keeps only tokens, themes, base rules and shared utilities.
+- HTML resume zoom uses same-origin document-local CSS zoom with native non-passive gesture listeners; iframe events cannot reach a parent transform wrapper, and native document scrolling/text selection must remain intact.
