@@ -24,6 +24,10 @@ export function useActiveSection(ids: readonly string[]) {
         const margin = Number.parseFloat(getComputedStyle(el).scrollMarginTop) || 96;
         if (el.getBoundingClientRect().top <= margin + 1) current = id;
       }
+      // The final section may be too short to reach its scroll-margin. At the
+      // document bottom it still owns the highlight instead of the prior tab.
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll > 0 && window.scrollY >= maxScroll - 2) current = key.split(",").at(-1) ?? current;
       setActive(window.scrollY <= 1 ? null : current);
     };
     const finish = () => {

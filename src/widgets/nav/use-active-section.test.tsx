@@ -66,3 +66,12 @@ it("resumes manual section tracking when the user interrupts click scrolling", a
   act(() => window.dispatchEvent(new Event("wheel")));
   expect(result.current.active).toBe("work");
 });
+
+it("keeps About selected when the document bottom prevents its full alignment", async () => {
+  vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(window.innerHeight + 1800);
+  const { result } = renderHook(() => useActiveSection(ids));
+  act(() => result.current.select("about"));
+  await moveTo(1800);
+  act(() => window.dispatchEvent(new Event("scrollend")));
+  expect(result.current.active).toBe("about");
+});
