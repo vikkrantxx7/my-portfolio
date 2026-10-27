@@ -10,6 +10,12 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     context: { queryClient },
+    // Fetch route chunks as soon as a link is hovered/focused/touched so the
+    // first navigation to a page feels instant instead of waiting on a
+    // code-split chunk download at click time.
+    defaultPreload: "intent",
+    defaultPreloadDelay: 50,
+    defaultPreloadStaleTime: 0,
     // The SSR inline script already restores the document; a late hydration
     // pass must not overwrite scrolling started while assets were downloading.
     scrollRestoration: () => shouldRestoreScroll(typeof window === "undefined"),
