@@ -2,7 +2,7 @@ import { Moon, Sun } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
-import { readTheme, switchTheme, type Theme } from "./theme";
+import { readTheme, switchTheme, THEME_TRANSITION_SECONDS, type Theme } from "./theme";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("dark");
@@ -43,7 +43,11 @@ export function ThemeToggle() {
           initial="enter"
           animate={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
           exit="leave"
-          transition={reduce ? { duration: 0.15 } : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={
+            reduce
+              ? { duration: 0.15 }
+              : { duration: THEME_TRANSITION_SECONDS, ease: [0.35, 0, 0.35, 1] }
+          }
         >
           <Icon aria-hidden className="size-5" />
         </motion.span>
