@@ -39,7 +39,7 @@ export function getLiquidFrame(flight: ReturnType<typeof getEnergyTransfer>, pro
   return {
     x: flight.from.x + (flight.to.x - flight.from.x) * p,
     y: flight.from.y + (flight.to.y - flight.from.y) * p,
-    radius: flight.destination.height / 2 * (0.25 + 0.75 * p),
-    tail: flight.tail * Math.sin(Math.PI * p / 2),
+    radius: (flight.destination.height / 2) * (0.25 + 0.75 * p),
+    tail: flight.tail * Math.sin((Math.PI * p) / 2),
   };
 }
