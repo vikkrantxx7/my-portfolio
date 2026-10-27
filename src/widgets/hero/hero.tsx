@@ -1,5 +1,5 @@
 import { content } from "@/content/data";
-import { cn } from "@/lib/utils";
+import { ResumeViewer } from "@/features/resume-viewer/resume-viewer";
 import { scrollToSection } from "@/shared/lib/use-prefers-reduced-motion";
 import { Button, buttonVariants } from "@/shared/ui/button";
 
@@ -34,13 +34,9 @@ export function Hero() {
           <Button size="lg" variant="frame" onClick={() => scrollToSection("work")}>
             Explore my work ↘
           </Button>
-          <a
-            href={profile.resumeUrl}
-            download={profile.resumeFileName}
-            className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}
-          >
-            Download resume ↗
-          </a>
+          <ResumeViewer triggerClassName={buttonVariants({ variant: "ghost", size: "lg" })}>
+            View resume ↗
+          </ResumeViewer>
         </div>
       </div>
     </section>

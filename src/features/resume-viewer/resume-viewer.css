@@ -1,0 +1,19 @@
+/* Resume viewer: fixed dark chrome (floats over a paper-white PDF). */
+
+/* Dark viewing mode: invert the rendered PDF, then re-hue so it reads as
+   a dark document rather than a photo negative. */
+.resume-frame--dark {
+  filter: invert(0.92) hue-rotate(180deg) contrast(1.05) brightness(0.95);
+}
+
+/* Vignette corners matching the void background, so the bright PDF edges
+   blend into the dark viewer frame. */
+[data-resume-vignette]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 120px 32px rgb(8 10 15 / 0.85),
+    inset 0 0 28px 8px rgb(8 10 15 / 0.7);
+}
