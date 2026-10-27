@@ -19,23 +19,27 @@ const dockButton =
 export function ResumeViewer({
   children,
   triggerClassName,
-  onTriggerClick,
+  open: controlledOpen,
+  onOpenChange,
 }: {
-  children: ReactNode;
+  /** Trigger content. Omit to control the viewer externally with no trigger. */
+  children?: ReactNode;
   triggerClassName?: string;
-  /** Runs before the viewer opens (e.g. close the mobile menu first). */
-  onTriggerClick?: () => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const { profile } = content;
   const reduce = usePrefersReducedMotion();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = onOpenChange ?? setInternalOpen;
   const [darkView, setDarkView] = useState(false);
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
-      <DialogPrimitive.Trigger className={triggerClassName} onClick={onTriggerClick}>
-        {children}
-      </DialogPrimitive.Trigger>
+      {children != null && (
+        <DialogPrimitive.Trigger className={triggerClassName}>{children}</DialogPrimitive.Trigger>
+      )}
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-md data-[state=open]:animate-in data-[state=open]:fade-in-0" />
         <DialogPrimitive.Content asChild aria-describedby={undefined}>
