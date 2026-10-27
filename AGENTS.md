@@ -40,3 +40,4 @@
 - Profile-card rim geometry is isolated and measured locally for reuse without blocking controls; see nav rules.
 - Author new case-study bodies in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and render through shared `Prose` components to preserve the existing page shell; summaries and diagrams stay typed, and projects without MDX retain typed sections. Vite and Vitest share the compiler via `mdx.config.ts`.
 - Blog posts are MDX in `src/content/blog/`, registered and validated in `src/content/blog.ts`, rendered via shared `Prose`; `/blog` filters by URL `?tag=` — one MDX pipeline with case studies.
+- MDX code blocks are highlighted at build time by Shiki (rehype-pretty-code in `mdx.config.ts`) with dual light/dark themes switched by the root theme class in `src/shared/ui/prose/code-highlight.css`, so no highlighter ships to the browser.
