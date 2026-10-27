@@ -222,7 +222,7 @@ describe("SiteNav", () => {
       within(right)
         .getAllByRole("link")
         .map((l) => l.textContent),
-    ).toEqual(["About"]);
+    ).toEqual(["About", "Blog"]);
     const cv = within(right).getByRole("button", { name: "CV" });
     await user.click(cv);
     expect(screen.getByRole("dialog", { name: /resume/i })).toBeInTheDocument();
