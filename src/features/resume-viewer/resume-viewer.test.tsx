@@ -4,9 +4,7 @@ import { describe, expect, it } from "vitest";
 import { ResumeViewer } from "./resume-viewer";
 
 function renderViewer(triggerClassName?: string) {
-  return render(
-    <ResumeViewer triggerClassName={triggerClassName}>View resume</ResumeViewer>,
-  );
+  return render(<ResumeViewer triggerClassName={triggerClassName}>View resume</ResumeViewer>);
 }
 
 describe("ResumeViewer", () => {
