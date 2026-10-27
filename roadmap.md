@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [x] Match impact illumination to the source and add a small lightning spread touching the curved border; verify both directions.
 - [x] Replace the liquid trail with thin irregular lightning and centre-weighted gradual border illumination; test and verify both directions.
 - [x] Seamlessly blend liquid trail into the border; soften highlights and build/fade them gradually.
 - [x] Fix short About-section tracking without overriding deliberate navigation (TDD).

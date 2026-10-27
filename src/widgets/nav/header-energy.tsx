@@ -1,7 +1,7 @@
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { type RefObject, useId, useLayoutEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
-import { type EnergyRect, getEnergyTransfer, getLightningPoints, rimFalloff } from "./header-energy-geometry";
+import { type EnergyRect, getEnergyTransfer, getImpactBranches, getLightningPoints, rimFalloff } from "./header-energy-geometry";
 
 type Flight = ReturnType<typeof getEnergyTransfer> & { key: number };
 
@@ -23,10 +23,10 @@ function LightningFlight({ flight }: { flight: Flight }) {
       duration: flight.duration,
       ease: [0.25, 0.1, 0.25, 1],
     });
-    const glow = animate(absorption, [0, 0.65, 0], {
+    const glow = animate(absorption, [0, 0.95, 0.95, 0], {
       delay: flight.duration * 0.8,
       duration: 0.65,
-      times: [0, 0.4, 1],
+      times: [0, 0.3, 0.48, 1],
       ease: "easeInOut",
     });
     return () => {
@@ -45,11 +45,6 @@ function LightningFlight({ flight }: { flight: Flight }) {
       className="nav-energy-canvas pointer-events-none absolute inset-0 hidden size-full md:block"
       data-header-energy
       initial={{ opacity: 1 }}
-      animate={{ opacity: [1, 1, 0] }}
-      transition={{
-        duration: flight.duration + 0.7,
-        times: [0, flight.duration / (flight.duration + 0.7), 1],
-      }}
     >
       <defs>
         <linearGradient
@@ -74,6 +69,12 @@ function LightningFlight({ flight }: { flight: Flight }) {
         ))}
       </defs>
       <g className="nav-energy-fused">
+        {getImpactBranches(flight).map((points, index) => (
+          <motion.path key={index} data-energy-impact
+            d={points.map((point, i) => `${i === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ")}
+            stroke={`url(#${gradientId})`} className="nav-energy-lightning"
+            style={{ opacity: absorption }} />
+        ))}
         <motion.path d={shape} stroke={`url(#${gradientId})`} className="nav-energy-lightning"
           initial={{ opacity: 0 }} animate={{ opacity: [0, 0.85, 0.85, 0] }}
           transition={{ duration: flight.duration + 0.28, times: [0, 0.2, 0.72, 1], ease: "easeInOut" }} />
