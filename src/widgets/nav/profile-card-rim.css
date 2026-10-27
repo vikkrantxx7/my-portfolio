@@ -1,0 +1,53 @@
+.profile-card-rim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.profile-card-rim-bloom {
+  stroke-width: 2.4;
+  opacity: 0.42;
+  filter: var(--profile-rim-glow);
+}
+
+.profile-card-rim-filament {
+  stroke-width: 1.05;
+  opacity: 0.83;
+}
+
+.profile-card-rim-core {
+  stroke: var(--profile-rim-core);
+  stroke-width: 0.35;
+  stroke-dasharray: 7 37 2 19 12 61;
+  opacity: 0.65;
+}
+
+.profile-card-rim[data-shimmer="true"] {
+  animation: profile-charge-hum 6.5s ease-in-out infinite;
+}
+
+@keyframes profile-charge-hum {
+  0%,
+  100% {
+    opacity: 0.87;
+  }
+  47% {
+    opacity: 1;
+  }
+  73% {
+    opacity: 0.92;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-card-rim[data-shimmer="true"] {
+    animation: none;
+  }
+}
