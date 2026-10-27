@@ -139,7 +139,7 @@ export function SiteNav() {
                     {active === s.id && (
                       <motion.span
                         data-nav-pill
-                        layoutId="active-nav-pill"
+                        {...(reduce ? {} : { layoutId: "active-nav-pill" })}
                         initial={reduce ? false : { x: -14, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         {...(reduce ? {} : { exit: { x: -14, opacity: 0 } })}
