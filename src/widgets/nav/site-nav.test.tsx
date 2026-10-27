@@ -144,7 +144,7 @@ describe("SiteNav", () => {
     expect(work.querySelector("[data-nav-pill]")).toBeNull();
   });
 
-  it("slides the pill to the newly active link", () => {
+  it("slides the pill to the newly active link", async () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
     act(() => {
