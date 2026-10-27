@@ -128,7 +128,7 @@ export function SiteNav() {
                   </span>
                 ))}
               </span>
-              <span className="hidden font-mono text-[10px] font-normal uppercase tracking-[0.16em] text-muted-foreground lg:block">
+              <span className="hidden font-mono text-[10px] font-normal uppercase tracking-[0.16em] text-muted-foreground min-[880px]:block">
                 {profile.title}
               </span>
             </a>
@@ -143,8 +143,9 @@ export function SiteNav() {
                   Blog
                 </BlogLink>
                 <ResumeViewer triggerClassName="inline-flex touch-manipulation items-center justify-center rounded-md border border-primary/60 px-2.5 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10 lg:px-4">
-                  <FileText aria-hidden className="size-4 lg:hidden" />
-                  <span className="sr-only lg:not-sr-only">View Resume</span>
+                  <FileText aria-hidden className="size-4 min-[830px]:hidden" />
+                  <span className="hidden min-[830px]:inline lg:hidden">Resume</span>
+                  <span className="hidden lg:inline">View Resume</span>
                 </ResumeViewer>
               </div>
             </SectionNavigation>
