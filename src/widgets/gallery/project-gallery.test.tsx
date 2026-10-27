@@ -6,6 +6,13 @@ import { renderWithRouter } from "@/test/render-with-router";
 import { ProjectGallery } from "./project-gallery";
 
 describe("Selected work gallery", () => {
+  it("keeps cards two-up from the tablet breakpoint so they never stretch full width", async () => {
+    await renderWithRouter(() => <ProjectGallery filters={{}} onFiltersChange={vi.fn()} />);
+    const grid = screen.getAllByRole("article")[0]?.parentElement;
+    if (!grid) throw new Error("Missing project card grid");
+    expect(grid.className).toContain("md:grid-cols-2");
+    expect(grid.className).not.toContain("lg:grid-cols-2");
+  });
   it("shows the resume-backed projects with problem, role, technology and a working destination", async () => {
     await renderWithRouter(() => <ProjectGallery filters={{}} onFiltersChange={vi.fn()} />);
     const cards = screen.getAllByRole("article");

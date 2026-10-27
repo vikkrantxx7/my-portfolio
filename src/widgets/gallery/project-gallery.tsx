@@ -59,7 +59,7 @@ export function ProjectGallery({
         </div>
       </div>
       {projects.length ? (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
           {projects.map((project) => (
             <article
               key={project.slug}
@@ -77,7 +77,7 @@ export function ProjectGallery({
                   />
                 )}
               </div>
-              <div className="flex flex-1 flex-col gap-5 p-6 sm:p-8">
+              <div className="flex flex-1 flex-col gap-4 p-5 md:p-6 lg:p-8">
                 <p className="font-mono text-xs text-secondary">{project.category}</p>
                 <h3 className="break-words text-2xl font-semibold">{project.title}</h3>
                 <p className="leading-relaxed text-muted-foreground">{project.problem}</p>
@@ -90,7 +90,7 @@ export function ProjectGallery({
                     <Tag key={tech}>{tech}</Tag>
                   ))}
                 </div>
-                <div className="mt-auto border-t border-border pt-6">
+                <div className="mt-auto border-t border-border pt-4 md:pt-6">
                   <Link
                     to="/projects/$slug"
                     params={{ slug: project.slug }}
