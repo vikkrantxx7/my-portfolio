@@ -106,17 +106,16 @@ describe("SiteNav", () => {
     const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
     const role = within(name).getByText("Lead Fullstack Engineer");
     expect(role).toHaveClass("hidden");
-    expect(role).toHaveClass("lg:block");
+    expect(role).toHaveClass("min-[880px]:block");
   });
 
-  it("keeps the resume trigger labelled while showing only its icon on narrow desktops", () => {
+  it("shortens the resume label instead of dropping the word on narrow desktops", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
     const trigger = within(nav).getByRole("button", { name: /resume/i });
-    expect(trigger.querySelector("svg")).not.toBeNull();
-    const label = within(trigger).getByText("View Resume");
-    expect(label).toHaveClass("sr-only");
-    expect(label).toHaveClass("lg:not-sr-only");
+    expect(trigger.querySelector("svg")).toBeNull();
+    expect(within(trigger).getByText("Resume")).toHaveClass("lg:hidden");
+    expect(within(trigger).getByText("View Resume")).toHaveClass("hidden", "lg:inline");
   });
 
   it("tightens the header gaps below the large breakpoint", () => {
