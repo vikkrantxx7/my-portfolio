@@ -69,6 +69,35 @@ describe("theme", () => {
     expect(start).not.toHaveBeenCalled();
     expect(document.documentElement.classList.contains("light")).toBe(true);
   });
+
+  it("syncs the browser bar before the burn transition, for Safari builds that ignore mid-transition meta changes", async () => {
+    const meta = document.createElement("meta");
+    meta.name = "theme-color";
+    meta.content = "#F6F7FB";
+    document.head.appendChild(meta);
+    // A transition whose callback has not run yet: the meta must already be updated.
+    let runCallback: () => void = () => {};
+    const start = vi.fn(
+      (cb: () => void) =>
+        ({
+          finished: new Promise<void>((resolve) => {
+            runCallback = () => {
+              cb();
+              resolve();
+            };
+          }),
+        }) as unknown,
+    );
+    // biome-ignore lint/suspicious/noExplicitAny: stub
+    (document as any).startViewTransition = start;
+
+    switchTheme("dark", false, { x: 10, y: 10 });
+    expect(meta.content).toBe("#080A0F");
+    runCallback();
+    await Promise.resolve();
+    expect(meta.content).toBe("#080A0F");
+    meta.remove();
+  });
 });
 
 describe("light palette contrast", () => {
