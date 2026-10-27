@@ -330,15 +330,14 @@
 .nav-energy-stop-tail { stop-color: var(--secondary); stop-opacity: 0.15; }
 .nav-energy-stop-mid { stop-color: var(--primary); stop-opacity: 0.65; }
 .nav-energy-stop-head { stop-color: var(--primary); }
-.nav-energy-liquid {
+.nav-energy-fused {
   filter: drop-shadow(0 0 4px var(--primary));
 }
 .nav-energy-rim {
   fill: none;
   stroke: var(--primary);
-  stroke-width: 2;
+  stroke-width: 1.25;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 5px var(--primary));
 }
 
 .achievement-highlight {

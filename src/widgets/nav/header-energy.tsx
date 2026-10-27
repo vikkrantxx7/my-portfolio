@@ -10,7 +10,8 @@ function borderArc(rect: EnergyRect, right: boolean, avatar: boolean) {
   const x = right ? rect.right : rect.left;
   const inner = x + (right ? -radius : radius);
   const bottom = rect.top + rect.height;
-  return `M ${inner} ${rect.top} Q ${x} ${rect.top} ${x} ${rect.top + radius} L ${x} ${bottom - radius} Q ${x} ${bottom} ${inner} ${bottom}`;
+  const sweep = right ? 1 : 0;
+  return `M ${inner} ${rect.top} A ${radius} ${radius} 0 0 ${sweep} ${x} ${rect.top + radius} L ${x} ${bottom - radius} A ${radius} ${radius} 0 0 ${sweep} ${inner} ${bottom}`;
 }
 
 function LiquidFlight({ flight }: { flight: Flight }) {
@@ -31,8 +32,11 @@ function LiquidFlight({ flight }: { flight: Flight }) {
     const neck = x - dir * tail * 0.26;
     const thickness = 3 + Math.sin(p * Math.PI) * 3;
     // Concave fork follows the capsule's rounded nose, rather than a detached bar.
-    return `M ${rear} ${y} C ${neck} ${y - thickness} ${x - dir * r} ${y - thickness} ${tip} ${y - r} Q ${x} ${y - r} ${x} ${y} Q ${x} ${y + r} ${tip} ${y + r} C ${x - dir * r} ${y + thickness} ${neck} ${y + thickness} ${rear} ${y} Z`;
+    const sweep = flight.rightward ? 0 : 1;
+    return `M ${rear} ${y} C ${neck} ${y - thickness} ${x - dir * r} ${y - thickness} ${tip} ${y - r} A ${r} ${r} 0 0 ${sweep} ${x} ${y} A ${r} ${r} 0 0 ${sweep} ${tip} ${y + r} C ${x - dir * r} ${y + thickness} ${neck} ${y + thickness} ${rear} ${y} Z`;
   });
+  // The rim only receives light when the liquid actually reaches it.
+  const absorption = useTransform(progress, [0, 0.96, 1], [0, 0, 0.85]);
   return (
     <motion.svg
       aria-hidden
@@ -59,6 +63,7 @@ function LiquidFlight({ flight }: { flight: Flight }) {
           <stop offset="1" className="nav-energy-stop-head" />
         </linearGradient>
       </defs>
+      <g className="nav-energy-fused">
       <motion.path d={shape} fill={`url(#${gradientId})`} className="nav-energy-liquid" />
       <motion.path
         d={borderArc(flight.source, flight.rightward, flight.sourceKind === "avatar")}
@@ -71,10 +76,9 @@ function LiquidFlight({ flight }: { flight: Flight }) {
         data-energy-edge={flight.edge}
         d={borderArc(flight.destination, !flight.rightward, flight.destinationKind === "avatar")}
         className="nav-energy-rim"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ delay: flight.duration * 0.72, duration: 0.5, times: [0, 0.4, 1] }}
+        style={{ opacity: absorption }}
       />
+      </g>
     </motion.svg>
   );
 }
