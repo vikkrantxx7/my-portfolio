@@ -51,7 +51,7 @@ export function switchTheme(theme: Theme, reduceMotion: boolean, origin?: BurnOr
 }
 
 /** Inline pre-paint script: applies the saved theme before first paint. */
-export const THEME_SCRIPT = `try{var t=localStorage.getItem("${THEME_KEY}")==="light"?"light":"dark";var r=document.documentElement;r.classList.add(t);r.style.colorScheme=t}catch(e){}`;
+export const THEME_SCRIPT = `try{var t=localStorage.getItem("${THEME_KEY}")==="light"?"light":"dark";var r=document.documentElement;r.classList.add(t);r.style.colorScheme=t;var c=t==="light"?"${THEME_BAR_COLORS.light}":"${THEME_BAR_COLORS.dark}";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.content=c})}catch(e){}`;
 
 function luminance(hex: string) {
   const n = hex.replace("#", "");
