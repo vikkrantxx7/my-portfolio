@@ -129,6 +129,51 @@ describe("SiteNav", () => {
     expect(within(nav).getByRole("link", { name: "Work" })).not.toHaveAttribute("aria-current");
   });
 
+  it("renders the sliding pill only behind the active desktop link", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    expect(nav.querySelector("[data-nav-pill]")).toBeNull();
+    act(() => {
+      ioCallback([
+        { isIntersecting: true, target: document.getElementById("experience") as Element },
+      ]);
+    });
+    const experience = within(nav).getByRole("link", { name: "Experience" });
+    const work = within(nav).getByRole("link", { name: "Work" });
+    expect(experience.querySelector("[data-nav-pill]")).not.toBeNull();
+    expect(work.querySelector("[data-nav-pill]")).toBeNull();
+  });
+
+  it("slides the pill to the newly active link", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    act(() => {
+      ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]);
+    });
+    expect(
+      within(nav).getByRole("link", { name: "Work" }).querySelector("[data-nav-pill]"),
+    ).not.toBeNull();
+    act(() => {
+      ioCallback([{ isIntersecting: true, target: document.getElementById("about") as Element }]);
+    });
+    expect(
+      within(nav).getByRole("link", { name: "About" }).querySelector("[data-nav-pill]"),
+    ).not.toBeNull();
+    expect(
+      within(nav).getByRole("link", { name: "Work" }).querySelector("[data-nav-pill]"),
+    ).toBeNull();
+  });
+
+  it("styles the pill as a capsule visible against the light theme", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    act(() => {
+      ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]);
+    });
+    const pill = nav.querySelector("[data-nav-pill]") as HTMLElement;
+    expect(pill).toHaveClass("rounded-full", "border", "bg-primary/10");
+  });
+
   it("AC4: mobile menu opens, traps focus and closes on Esc", async () => {
     const user = userEvent.setup();
     render(<SiteNav />);
