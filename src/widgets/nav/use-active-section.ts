@@ -27,7 +27,8 @@ export function useActiveSection(ids: readonly string[]) {
       // The final section may be too short to reach its scroll-margin. At the
       // document bottom it still owns the highlight instead of the prior tab.
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (maxScroll > 0 && window.scrollY >= maxScroll - 2) current = key.split(",").at(-1) ?? current;
+      if (maxScroll > 0 && window.scrollY >= maxScroll - 2)
+        current = key.split(",").at(-1) ?? current;
       setActive(window.scrollY <= 1 ? null : current);
     };
     const finish = () => {
@@ -46,7 +47,8 @@ export function useActiveSection(ids: readonly string[]) {
       if (pending.current) finish();
     };
     const onKey = (event: KeyboardEvent) => {
-      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key)) interrupt();
+      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key))
+        interrupt();
     };
     measure();
     window.addEventListener("scroll", onScroll, { passive: true });

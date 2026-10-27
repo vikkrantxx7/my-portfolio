@@ -12,9 +12,12 @@ beforeEach(() => {
   ids.forEach((id, index) => {
     const el = document.getElementById(id);
     if (!el) return;
-    vi.spyOn(el, "getBoundingClientRect").mockImplementation(() => ({
-      top: 500 + index * 1000 - scroll,
-    }) as DOMRect);
+    vi.spyOn(el, "getBoundingClientRect").mockImplementation(
+      () =>
+        ({
+          top: 500 + index * 1000 - scroll,
+        }) as DOMRect,
+    );
   });
 });
 
@@ -68,7 +71,9 @@ it("resumes manual section tracking when the user interrupts click scrolling", a
 });
 
 it("keeps About selected when the document bottom prevents its full alignment", async () => {
-  vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(window.innerHeight + 1800);
+  vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(
+    window.innerHeight + 1800,
+  );
   const { result } = renderHook(() => useActiveSection(ids));
   act(() => result.current.select("about"));
   await moveTo(1800);

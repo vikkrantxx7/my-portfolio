@@ -24,9 +24,16 @@ function setReducedMotion(reduce: boolean) {
 beforeEach(() => {
   scrollPosition = 0;
   vi.spyOn(window, "scrollY", "get").mockImplementation(() => scrollPosition);
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
+  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (
+    this: HTMLElement,
+  ) {
     const index = ["work", "experience", "about"].indexOf(this.id);
-    return { top: index < 0 ? 0 : 500 + index * 1000 - scrollPosition, left: 0, width: 100, height: 30 } as DOMRect;
+    return {
+      top: index < 0 ? 0 : 500 + index * 1000 - scrollPosition,
+      left: 0,
+      width: 100,
+      height: 30,
+    } as DOMRect;
   });
   document.body.innerHTML = "";
   for (const id of ["work", "experience", "about"]) {
@@ -36,7 +43,6 @@ beforeEach(() => {
   }
   Element.prototype.scrollIntoView = vi.fn();
   setReducedMotion(false);
-
 });
 
 describe("SiteNav", () => {
@@ -85,8 +91,6 @@ describe("SiteNav", () => {
     expect(glow?.textContent).toContain("Vikrant Sharma");
     expect(glow?.textContent).not.toContain("Lead Fullstack Engineer");
   });
-
-
 
   it("AC2: smooth-scrolls to the section", async () => {
     render(<SiteNav />);
@@ -138,14 +142,19 @@ describe("SiteNav", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
     await userEvent.click(within(nav).getByRole("link", { name: "About" }));
-    expect(within(nav).getByRole("link", { name: "About" })).toHaveAttribute("aria-current", "true");
+    expect(within(nav).getByRole("link", { name: "About" })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
     expect(within(nav).getByRole("link", { name: "Work" })).not.toHaveAttribute("aria-current");
   });
 
   it("clears the selection immediately when the header name is clicked", async () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    act(() => ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]));
+    act(() =>
+      ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]),
+    );
     expect(within(nav).getByRole("link", { name: "Work" })).toHaveAttribute("aria-current", "true");
     await userEvent.click(within(nav).getByRole("link", { name: "Vikrant Sharma" }));
     for (const label of ["Work", "Experience", "About"]) {

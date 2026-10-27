@@ -62,7 +62,12 @@ export function SiteNav() {
       if (!list || !link) return;
       const parent = list.getBoundingClientRect();
       const rect = link.getBoundingClientRect();
-      setPill({ x: rect.left - parent.left, y: rect.top - parent.top, width: rect.width, height: rect.height });
+      setPill({
+        x: rect.left - parent.left,
+        y: rect.top - parent.top,
+        width: rect.width,
+        height: rect.height,
+      });
     };
     measure();
     const observer = new ResizeObserver(measure);
@@ -145,40 +150,54 @@ export function SiteNav() {
             </a>
           </div>
           <div className="flex items-center gap-6">
-          <ul ref={desktopRef} className="relative hidden items-center gap-8 md:flex">
-            <AnimatePresence>
-              {active && pill.width > 0 && (
-                <motion.span
-                  key="active-nav-pill"
-                  data-nav-pill
-                  initial={reduce ? false : { x: pill.x - 14, y: pill.y, width: pill.width, height: pill.height, opacity: 0 }}
-                  animate={{ ...pill, opacity: 1 }}
-                  {...(reduce ? {} : { exit: { x: pill.x - 14, opacity: 0 } })}
-                  transition={{ type: "tween", duration: reduce ? 0 : 0.28, ease: [0.25, 0.1, 0.25, 1] }}
-                  aria-hidden
-                  className="pointer-events-none absolute left-0 top-0 rounded-full border border-primary/25 bg-primary/10 shadow-xs"
-                />
-              )}
-            </AnimatePresence>
-            {NAV_SECTIONS.map((s) => (
-              <li key={s.id}>
-                <a
-                  href={`#${s.id}`}
-                  onClick={go(s.id)}
-                  aria-current={active === s.id ? "true" : undefined}
-                  className={linkCls(s.id)}
-                >
-                  <span className="relative">{s.label}</span>
-                </a>
+            <ul ref={desktopRef} className="relative hidden items-center gap-8 md:flex">
+              <AnimatePresence>
+                {active && pill.width > 0 && (
+                  <motion.span
+                    key="active-nav-pill"
+                    data-nav-pill
+                    initial={
+                      reduce
+                        ? false
+                        : {
+                            x: pill.x - 14,
+                            y: pill.y,
+                            width: pill.width,
+                            height: pill.height,
+                            opacity: 0,
+                          }
+                    }
+                    animate={{ ...pill, opacity: 1 }}
+                    {...(reduce ? {} : { exit: { x: pill.x - 14, opacity: 0 } })}
+                    transition={{
+                      type: "tween",
+                      duration: reduce ? 0 : 0.28,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                    aria-hidden
+                    className="pointer-events-none absolute left-0 top-0 rounded-full border border-primary/25 bg-primary/10 shadow-xs"
+                  />
+                )}
+              </AnimatePresence>
+              {NAV_SECTIONS.map((s) => (
+                <li key={s.id}>
+                  <a
+                    href={`#${s.id}`}
+                    onClick={go(s.id)}
+                    aria-current={active === s.id ? "true" : undefined}
+                    className={linkCls(s.id)}
+                  >
+                    <span className="relative">{s.label}</span>
+                  </a>
+                </li>
+              ))}
+              <li>
+                <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
+                  View Resume
+                </ResumeViewer>
               </li>
-            ))}
-            <li>
-              <ResumeViewer triggerClassName="touch-manipulation rounded-md border border-primary/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10">
-                View Resume
-              </ResumeViewer>
-            </li>
-          </ul>
-          <ThemeToggle />
+            </ul>
+            <ThemeToggle />
           </div>
         </nav>
         <ScrollProgress />
