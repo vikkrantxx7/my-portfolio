@@ -67,6 +67,17 @@ describe("SiteNav", () => {
     expect(within(nav).getByRole("link", { name: "Vikrant Sharma" })).toHaveClass("header-name");
   });
 
+  it("keeps the hover glow on the name letters, not the role subheading", () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    const glow = name.querySelector(".header-glow");
+    expect(glow).not.toBeNull();
+    expect(glow?.textContent).toContain("Vikrant Sharma");
+    expect(glow?.textContent).not.toContain("Lead Fullstack Engineer");
+  });
+
+
 
   it("AC2: smooth-scrolls to the section", async () => {
     render(<SiteNav />);

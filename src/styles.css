@@ -205,20 +205,37 @@
     cursor: pointer;
   }
 
-  /* Header name: soft halo in each letter's own colour, fading in on hover/focus.
-     The transition is declared on the letter spans too: text-shadow is inherited,
-     so only elements that declare it animate instead of snapping. */
-  .header-name,
-  .header-name span {
-    transition: text-shadow 0.5s ease;
-  }
-  .header-name:hover,
-  .header-name:focus-visible {
+  /* Header name: the glow lives on the name letters only — the role subheading
+     stays clean. The transition is declared once on the letters' wrapper; the
+     letter spans just inherit the animating value, which avoids the chained-
+     easing lag you get when parent and children both transition text-shadow. */
+  .header-glow {
+    transition: text-shadow 0.45s ease;
     text-shadow:
-      0 0 4px color-mix(in oklab, currentColor 65%, transparent),
-      0 0 14px color-mix(in oklab, currentColor 55%, transparent),
-      0 0 28px color-mix(in oklab, currentColor 35%, transparent);
+      0 0 4px transparent,
+      0 0 12px transparent,
+      0 0 26px transparent,
+      0 0 48px transparent;
   }
+  .header-name:hover .header-glow,
+  .header-name:focus-visible .header-glow {
+    /* Same structure as the avatar halo: tight dark separation, then blooms. */
+    text-shadow:
+      0 0 4px color-mix(in oklab, var(--background) 90%, transparent),
+      0 0 12px color-mix(in oklab, var(--primary) 70%, transparent),
+      0 0 26px color-mix(in oklab, var(--primary) 45%, transparent),
+      0 0 48px color-mix(in oklab, var(--primary) 20%, transparent);
+  }
+  /* On light paper the cyan bloom washes out — fall back to a soft own-colour glow. */
+  .light .header-name:hover .header-glow,
+  .light .header-name:focus-visible .header-glow {
+    text-shadow:
+      0 0 4px color-mix(in oklab, currentColor 50%, transparent),
+      0 0 12px color-mix(in oklab, currentColor 30%, transparent),
+      0 0 26px color-mix(in oklab, currentColor 18%, transparent),
+      0 0 48px color-mix(in oklab, currentColor 8%, transparent);
+  }
+
 
 
 

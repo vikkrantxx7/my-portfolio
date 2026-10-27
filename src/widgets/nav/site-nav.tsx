@@ -107,7 +107,7 @@ export function SiteNav() {
               aria-label={profile.name}
               className="header-name flex flex-col gap-1 leading-tight text-foreground"
             >
-              <span className="font-semibold">
+              <span className="header-glow font-semibold">
                 {profile.name.split(" ").map((part, index) => (
                   <span key={`${index}-${part}`}>
                     {index > 0 ? " " : ""}
