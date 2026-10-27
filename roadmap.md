@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [ ] Finish Google Search Console: confirm connected account, publish verification tag with approval if needed, verify ownership, add property and submit the existing valid sitemap.
 - [x] Migrate git-contributor-stats to MDX with the existing layout and evidence; document MDX as the default for upcoming case studies (228 tests pass; verified navigation, citations, diagram and both themes).
 - [x] Add two faint shimmer sparks originating near opposite card corners and fading away (TDD geometry tests; verified in preview).
 - [x] Add a contained electrostatic filament around the entire profile card with faint shimmer; verified themes, narrow screens, reduced motion, GitHub hit target and Escape dismissal (6 focused tests pass).
