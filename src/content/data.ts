@@ -8,6 +8,7 @@ export const content: Content = {
     monogram: "VS",
     avatarUrl: "https://avatars.githubusercontent.com/u/37444378?v=4",
     role: "Lead Fullstack Engineer · Frontend Architecture · AI-Assisted Development",
+    title: "Lead Fullstack Engineer",
     headline: "I build systems, not just screens.",
     summary:
       "13 years building web applications across frontend and backend — GraphQL BFFs, micro-frontends, and performance work that ships.",

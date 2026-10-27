@@ -199,6 +199,22 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Buttons read as clickable everywhere, not just where a utility was added. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Header name: soft halo in each letter's own colour on hover/focus. */
+  .header-name {
+    transition: text-shadow 0.35s ease;
+  }
+  .header-name:hover,
+  .header-name:focus-visible {
+    text-shadow: 0 0 12px color-mix(in oklab, currentColor 40%, transparent);
+  }
+
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
