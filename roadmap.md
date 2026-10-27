@@ -1,5 +1,5 @@
 # Portfolio — Current requests
-- [ ] Add a contained electrostatic filament around the entire profile card with faint shimmer; verify themes, narrow screens and reduced motion.
+- [x] Add a contained electrostatic filament around the entire profile card with faint shimmer; verified themes, narrow screens, reduced motion, GitHub hit target and Escape dismissal (6 focused tests pass).
 - [x] Add a momentary cyan/violet border ignition when the mobile dock opens; verified repeat opening, immediate navigation, both themes and reduced motion (40 navigation tests pass).
 - [x] Remove trident-like impact forks; dissolve lightning into expanding, visible border illumination on the pill and avatar.
 - [x] Match impact illumination to the source and add a small lightning spread touching the curved border; verify both directions.
