@@ -159,9 +159,12 @@ describe("SiteNav", () => {
     expect(
       within(nav).getByRole("link", { name: "About" }).querySelector("[data-nav-pill]"),
     ).not.toBeNull();
-    expect(
-      within(nav).getByRole("link", { name: "Work" }).querySelector("[data-nav-pill]"),
-    ).toBeNull();
+    // The old pill unmounts once its exit animation completes.
+    await waitFor(() =>
+      expect(
+        within(nav).getByRole("link", { name: "Work" }).querySelector("[data-nav-pill]"),
+      ).toBeNull(),
+    );
   });
 
   it("styles the pill as a capsule visible against the light theme", () => {
