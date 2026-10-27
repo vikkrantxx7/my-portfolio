@@ -76,7 +76,15 @@ export function ResumeViewer({
             <DialogPrimitive.Title className="sr-only">
               Resume — {profile.name}
             </DialogPrimitive.Title>
-            <div className="relative min-h-0 flex-1 bg-white" data-resume-vignette>
+            {/* Fixed document tones (not tokens): the reading area must match the paper
+                sheet itself. Dark view matches the colour-preserving inverted paper. */}
+            <div
+              className={cn(
+                "relative min-h-0 flex-1",
+                darkView ? "bg-[#0d0d0d]" : "bg-white",
+              )}
+              data-resume-vignette
+            >
               {useHtml && site.resumeHtmlUrl ? (
                 <ResumeHtmlDocument
                   src={site.resumeHtmlUrl}

@@ -103,6 +103,15 @@ describe("ResumeViewer", () => {
       "href",
       "/resume.pdf",
     );
+
+    // Seamless reading area: in dark view the area around the document must match the
+    // inverted paper tone instead of staying white (which showed as bright margins).
+    const readingArea = dialog.querySelector("[data-resume-vignette]") as HTMLElement;
+    expect(readingArea).toHaveClass("bg-white");
+    await userEvent.click(within(dialog).getByRole("button", { name: /dark view/i }));
+    expect(readingArea).not.toHaveClass("bg-white");
+    expect(readingArea).toHaveClass("bg-[#0d0d0d]");
+
     siteMock.resumeHtmlUrl = undefined;
   });
 });
