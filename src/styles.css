@@ -224,7 +224,7 @@
 
 /* Ember burst on the toggle at the burn origin. */
 [data-theme-burn] .theme-toggle {
-  animation: theme-ember 0.9s ease-out;
+  animation: theme-ember 1.7s ease-out;
 }
 @keyframes theme-ember {
   0% {
