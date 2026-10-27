@@ -2,15 +2,19 @@ import { cva } from "class-variance-authority";
 
 /** Shared bottom toolbar pill used on every page. `fixed` tone stays dark over the white resume. */
 export const dockBar = cva(
-  "pointer-events-auto flex w-full max-w-sm items-center justify-between rounded-full border px-2 backdrop-blur-xl",
+  "pointer-events-auto flex items-center rounded-full border px-2 backdrop-blur-xl",
   {
     variants: {
       tone: {
         theme: "border-primary/30 bg-background/85",
         fixed: "border-[#62F4E0]/30 bg-[#080A0F]/90 shadow-[0_0_24px_-4px_rgba(98,244,224,0.5)]",
       },
+      size: {
+        full: "w-full max-w-sm justify-between",
+        compact: "w-auto justify-center gap-1",
+      },
     },
-    defaultVariants: { tone: "theme" },
+    defaultVariants: { tone: "theme", size: "full" },
   },
 );
 
