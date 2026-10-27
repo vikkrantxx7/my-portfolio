@@ -25,7 +25,15 @@ ACs
 - A new test renders it in a plain tab bar to prove independence.
 - Geometry module has no DOM or site imports.
 
-## Story T4 — Template guide
+## Story T4 — Component styles live with their components
+Move component-only CSS (lightning nav, dock ignition, scroll progress, gradient-frame CTA, theme-toggle transitions, glow halo) out of the global stylesheet into a stylesheet beside each component, imported by that component.
+
+ACs
+- The global stylesheet keeps only tokens, theme blocks, base rules and shared utilities.
+- Each moved component's styles live in its own folder, so copying the folder copies its look.
+- Visual output unchanged in both themes and with reduced motion (Playwright screenshot comparison before/after).
+
+## Story T5 — Template guide
 Add a `TEMPLATE.md`: which files to edit, how to swap avatar/banner/resume PDF, how to run tests.
 
 ## Technical notes
