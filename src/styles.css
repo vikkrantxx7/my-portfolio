@@ -161,25 +161,53 @@
   mix-blend-mode: normal;
 }
 
-/* Incoming theme expands from the toggle with a soft ember edge. */
+/* Incoming theme expands from the toggle with a wrinkled, paper-burn edge:
+   the radial front is intersected with a noise texture so it eats in jaggedly. */
 ::view-transition-new(root) {
   --burn-r: 0px;
-  mask-image: radial-gradient(
-    circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
-    #000 0 62%,
-    transparent 82%
-  );
-  animation: theme-burn-in 1s cubic-bezier(0.45, 0, 0.35, 1) forwards;
+  mask-image:
+    radial-gradient(
+      circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
+      #000 calc(var(--burn-r) - 130px),
+      transparent var(--burn-r)
+    ),
+    url("/burn-noise.png");
+  mask-size: auto, 480px;
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+  animation: theme-burn-in 1.7s cubic-bezier(0.35, 0, 0.35, 1) forwards;
 }
 @keyframes theme-burn-in {
+  from {
+    --burn-r: 0px;
+  }
   to {
     --burn-r: 160vmax;
+  }
+}
+/* Dark runs in reverse: the burn front converges and the last light dies at the toggle. */
+[data-theme-burn="dark"]::view-transition-new(root) {
+  mask-image:
+    radial-gradient(
+      circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
+      transparent calc(var(--burn-r) - 130px),
+      #000 var(--burn-r)
+    ),
+    url("/burn-noise.png");
+  animation-name: theme-burn-in-dark;
+}
+@keyframes theme-burn-in-dark {
+  from {
+    --burn-r: 160vmax;
+  }
+  to {
+    --burn-r: 0px;
   }
 }
 
 /* Outgoing theme folds away like ash. */
 ::view-transition-old(root) {
-  animation: theme-burn-out 1s cubic-bezier(0.45, 0, 0.35, 1) forwards;
+  animation: theme-burn-out 1.7s cubic-bezier(0.35, 0, 0.35, 1) forwards;
 }
 @keyframes theme-burn-out {
   0% {
@@ -193,26 +221,10 @@
     transform: scale(1.02) translateY(-6px);
   }
 }
-/* Switching to dark: the light crumbles inward as darkness is recreated. */
-[data-theme-burn="dark"]::view-transition-old(root) {
-  animation-name: theme-burn-out-dark;
-}
-@keyframes theme-burn-out-dark {
-  0% {
-    opacity: 1;
-    filter: none;
-    transform: none;
-  }
-  100% {
-    opacity: 0;
-    filter: blur(8px) brightness(0.5) saturate(0.6);
-    transform: scale(0.985) translateY(4px);
-  }
-}
 
 /* Ember burst on the toggle at the burn origin. */
 [data-theme-burn] .theme-toggle {
-  animation: theme-ember 0.9s ease-out;
+  animation: theme-ember 1.7s ease-out;
 }
 @keyframes theme-ember {
   0% {
