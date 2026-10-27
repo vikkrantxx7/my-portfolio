@@ -22,11 +22,23 @@ export function applyTheme(theme: Theme) {
   }
 }
 
-/** Switch with a left-to-right wave (View Transitions) unless motion is reduced/unsupported. */
-export function switchTheme(theme: Theme, reduceMotion: boolean) {
+export interface BurnOrigin {
+  x: number;
+  y: number;
+}
+
+/**
+ * Switch with a burn transition (View Transitions) radiating from the toggle,
+ * unless motion is reduced/unsupported. Light incinerates outward; dark consumes.
+ */
+export function switchTheme(theme: Theme, reduceMotion: boolean, origin?: BurnOrigin) {
   const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
   if (reduceMotion || typeof doc.startViewTransition !== "function") return applyTheme(theme);
-  document.documentElement.dataset["themeWave"] = theme === "light" ? "ltr" : "rtl";
+  const root = document.documentElement;
+  root.dataset["themeBurn"] = theme;
+  const o = origin ?? { x: window.innerWidth - 44, y: 44 };
+  root.style.setProperty("--burn-x", `${o.x}px`);
+  root.style.setProperty("--burn-y", `${o.y}px`);
   doc.startViewTransition(() => applyTheme(theme));
 }
 
