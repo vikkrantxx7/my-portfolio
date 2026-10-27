@@ -17,9 +17,13 @@ export const THEME_BAR_COLORS: Record<Theme, string> = { dark: "#080A0F", light:
 
 /** Paints the browser chrome (iOS status bar / Safari toolbar) to match the theme. */
 export function syncBrowserBar(theme: Theme) {
-  for (const m of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
-    m.content = THEME_BAR_COLORS[theme];
-  }
+  // iOS Safari latches the theme-color element it saw first and ignores later
+  // content edits, so swap in a fresh element instead of mutating it.
+  for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.remove();
+  const meta = document.createElement("meta");
+  meta.name = "theme-color";
+  meta.content = THEME_BAR_COLORS[theme];
+  document.head.appendChild(meta);
 }
 
 export function applyTheme(theme: Theme) {
@@ -66,7 +70,7 @@ export function switchTheme(theme: Theme, reduceMotion: boolean, origin?: BurnOr
 }
 
 /** Inline pre-paint script: applies the saved theme before first paint. */
-export const THEME_SCRIPT = `try{var t=localStorage.getItem("${THEME_KEY}")==="light"?"light":"dark";var r=document.documentElement;r.classList.add(t);r.style.colorScheme=t;var c=t==="light"?"${THEME_BAR_COLORS.light}":"${THEME_BAR_COLORS.dark}";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.content=c})}catch(e){}`;
+export const THEME_SCRIPT = `try{var t=localStorage.getItem("${THEME_KEY}")==="light"?"light":"dark";var r=document.documentElement;r.classList.add(t);r.style.colorScheme=t;var c=t==="light"?"${THEME_BAR_COLORS.light}":"${THEME_BAR_COLORS.dark}";var m=document.createElement("meta");m.name="theme-color";m.content=c;document.head.appendChild(m)}catch(e){}`;
 
 function luminance(hex: string) {
   const n = hex.replace("#", "");
