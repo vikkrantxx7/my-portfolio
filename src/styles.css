@@ -148,32 +148,81 @@
   background: linear-gradient(oklch(1 0 0 / 0.92), oklch(0.97 0.005 265 / 0.9));
 }
 
-/* Theme change sweeps in as a soft-edged wave from left to right. */
+/* Theme change burns outward from the toggle: light incinerates, dark consumes. */
+@property --burn-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
+
+/* Incoming theme expands from the toggle with a soft ember edge. */
 ::view-transition-new(root) {
-  mask-image: linear-gradient(to right, #000 40%, transparent 60%);
-  mask-size: 300% 100%;
-  mask-position: 100% 0;
-  animation: theme-wave 0.7s ease-in-out forwards;
+  --burn-r: 0px;
+  mask-image: radial-gradient(
+    circle var(--burn-r) at var(--burn-x, calc(100% - 44px)) var(--burn-y, 44px),
+    #000 0 62%,
+    transparent 82%
+  );
+  animation: theme-burn-in 0.9s cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
-@keyframes theme-wave {
+@keyframes theme-burn-in {
   to {
-    mask-position: 0 0;
+    --burn-r: 160vmax;
   }
 }
-/* Dark sweeps the other way: right to left. */
-[data-theme-wave="rtl"]::view-transition-new(root) {
-  mask-image: linear-gradient(to left, #000 40%, transparent 60%);
-  mask-position: 0 0;
-  animation-name: theme-wave-rtl;
+
+/* Outgoing theme folds away like ash. */
+::view-transition-old(root) {
+  animation: theme-burn-out 0.9s cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
-@keyframes theme-wave-rtl {
-  to {
-    mask-position: 100% 0;
+@keyframes theme-burn-out {
+  0% {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(8px) brightness(1.6) saturate(1.8);
+    transform: scale(1.02) translateY(-6px);
+  }
+}
+/* Switching to dark: the light crumbles inward as darkness is recreated. */
+[data-theme-burn="dark"]::view-transition-old(root) {
+  animation-name: theme-burn-out-dark;
+}
+@keyframes theme-burn-out-dark {
+  0% {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(8px) brightness(0.5) saturate(0.6);
+    transform: scale(0.985) translateY(4px);
+  }
+}
+
+/* Ember burst on the toggle at the burn origin. */
+[data-theme-burn] .theme-toggle {
+  animation: theme-ember 0.9s ease-out;
+}
+@keyframes theme-ember {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 80%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 42px 10px color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
   }
 }
 /* Keep the toggle live above the snapshots so its sun/moon motion is visible. */

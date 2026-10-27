@@ -20,8 +20,9 @@ export function ThemeToggle() {
       type="button"
       aria-label={`Switch to ${next} theme`}
       aria-pressed={theme === "light"}
-      onClick={() => {
-        switchTheme(next, reduce);
+      onClick={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        switchTheme(next, reduce, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
         setTheme(next);
       }}
       className="theme-toggle relative flex size-10 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border bg-card/60 text-primary shadow-glow transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
