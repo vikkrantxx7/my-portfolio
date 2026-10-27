@@ -40,5 +40,33 @@ export async function registerServiceWorker() {
     await unregisterAppWorkers();
     return;
   }
-  await navigator.serviceWorker.register(SW_PATH, { scope: "/" });
+  const hadController = !!navigator.serviceWorker.controller;
+  const reg = await navigator.serviceWorker.register(SW_PATH, { scope: "/" });
+  watchForUpdates(reg, {
+    doc: document,
+    sw: navigator.serviceWorker,
+    reload: () => window.location.reload(),
+    hadController,
+  });
+  setInterval(() => void reg.update().catch(() => {}), 60 * 60 * 1000);
+}
+
+interface UpdateDeps {
+  doc: EventTarget & { visibilityState?: string };
+  sw: EventTarget;
+  reload: () => void;
+  hadController: boolean;
+}
+
+/** Look for new deploys when the app is reopened, and reload once a new version takes over. */
+export function watchForUpdates(reg: { update: () => Promise<unknown> | unknown }, deps: UpdateDeps) {
+  deps.doc.addEventListener("visibilitychange", () => {
+    if (deps.doc.visibilityState === "visible") void Promise.resolve(reg.update()).catch(() => {});
+  });
+  let reloaded = false;
+  deps.sw.addEventListener("controllerchange", () => {
+    if (!deps.hadController || reloaded) return;
+    reloaded = true;
+    deps.reload();
+  });
 }

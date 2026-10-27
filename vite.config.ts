@@ -27,6 +27,8 @@ export default defineConfig({
           globPatterns: ["**/*.{js,css,woff2,png,jpg,svg,pdf,webp}"],
           navigateFallback: null,
           cleanupOutdatedCaches: true,
+          skipWaiting: true,
+          clientsClaim: true,
           runtimeCaching: [
             {
               // The resume PDF is precached and shown in the in-app viewer; a raw
