@@ -28,7 +28,7 @@ describe("BlogArticleDock", () => {
     await renderWithRouter(() => <BlogArticleDock posts={list} slug="new" />);
     await screen.findByRole("navigation", { name: /article controls/i });
     expect(screen.queryByRole("link", { name: /newer article/i })).toBeNull();
-    expect(screen.getByText("Older").closest("[aria-disabled]")).toHaveAttribute(
+    expect(screen.getByText("Newer").closest("[aria-disabled]")).toHaveAttribute(
       "aria-disabled",
       "true",
     );
