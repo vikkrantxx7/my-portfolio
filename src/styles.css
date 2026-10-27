@@ -344,6 +344,12 @@
   stroke-width: 1.5;
   stroke-linecap: round;
 }
+.nav-energy-rim-bloom {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: blur(2px);
+}
 
 .achievement-highlight {
   background-color: color-mix(in oklab, var(--primary) 8%, transparent);
