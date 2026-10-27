@@ -1,7 +1,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ArrowLeft, FileDown, Moon, Sun, ZoomIn, ZoomOut } from "lucide-react";
 import { motion } from "motion/react";
-import { type ReactNode, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import {
   type ReactZoomPanPinchContentRef,
   TransformComponent,
@@ -11,6 +11,7 @@ import { content } from "@/content/data";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { dockBar, dockItem } from "@/shared/ui/dock";
+import { readResumeDark, writeResumeDark } from "./resume-theme";
 import { saveResume } from "./save-resume";
 import "./resume-viewer.css";
 
@@ -39,7 +40,17 @@ export function ResumeViewer({
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
-  const [darkView, setDarkView] = useState(false);
+  const [darkView, setDarkViewState] = useState(false);
+  // Every viewer instance re-reads the saved mode when it opens, so all triggers agree.
+  useEffect(() => {
+    if (open) setDarkViewState(readResumeDark());
+  }, [open]);
+  const setDarkView = (update: (v: boolean) => boolean) =>
+    setDarkViewState((v) => {
+      const next = update(v);
+      writeResumeDark(next);
+      return next;
+    });
   const [page, setPage] = useState(1);
   const zoomRef = useRef<ReactZoomPanPinchContentRef>(null);
   const pagesRef = useRef<HTMLDivElement>(null);

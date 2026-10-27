@@ -32,7 +32,7 @@ describe("HeaderEnergy outside the site nav", () => {
     const spy = vi
       .spyOn(HTMLElement.prototype, "getBoundingClientRect")
       .mockImplementation(function (this: HTMLElement) {
-        const key = this.dataset.energyTarget;
+        const key = this.dataset["energyTarget"];
         return (key === "one" ? rect(0, 80) : key === "two" ? rect(200, 32) : rect(0, 400)) as DOMRect;
       });
     const { container, rerender } = render(<Tabs active="one" />);

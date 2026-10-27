@@ -37,7 +37,7 @@ describe("site config", () => {
       .filter((file) => !file.endsWith("routeTree.gen.ts"))
       .filter((file) => {
         const text = readFileSync(file, "utf8");
-        return personal.some((value) => text.includes(value));
+        return personal.some((value) => text.includes(value ?? "\u0000"));
       })
       .map((file) => path.relative(SRC, file));
     expect(offenders).toEqual([]);
