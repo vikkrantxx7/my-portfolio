@@ -41,17 +41,21 @@ describe("SiteNav", () => {
     expect(img).toHaveAttribute("src", "https://avatars.githubusercontent.com/u/37444378?v=4");
   });
 
-  it("AC1: shows name, section links and resume PDF", () => {
+  it("AC1: shows name, section links and a resume viewer trigger", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
     expect(within(nav).getByRole("link", { name: "Vikrant Sharma" })).toBeInTheDocument();
     for (const l of ["Work", "Experience", "About"]) {
       expect(within(nav).getByRole("link", { name: l })).toBeInTheDocument();
     }
-    expect(within(nav).getByRole("link", { name: /resume/i })).toHaveAttribute(
-      "href",
-      "/resume.pdf",
-    );
+    expect(within(nav).getByRole("button", { name: /resume/i })).toBeInTheDocument();
+  });
+
+  it("opens the in-app resume viewer from the header", async () => {
+    render(<SiteNav />);
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    await userEvent.click(within(nav).getByRole("button", { name: /resume/i }));
+    expect(screen.getByRole("dialog", { name: /resume/i })).toBeInTheDocument();
   });
 
   it("shows the role as a subheading under the name", () => {
@@ -174,9 +178,10 @@ describe("SiteNav", () => {
       within(right)
         .getAllByRole("link")
         .map((l) => l.textContent),
-    ).toEqual(["About", "CV"]);
-    expect(within(right).getByRole("link", { name: "CV" })).toHaveAttribute("href", "/resume.pdf");
-    expect(dialog.querySelectorAll("svg").length).toBeGreaterThanOrEqual(4);
+    ).toEqual(["About"]);
+    const cv = within(right).getByRole("button", { name: "CV" });
+    await user.click(cv);
+    expect(screen.getByRole("dialog", { name: /resume/i })).toBeInTheDocument();
   });
 
   it("mobile dock marks the active section", async () => {

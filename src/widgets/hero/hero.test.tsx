@@ -16,7 +16,7 @@ describe("Hero", () => {
     );
     expect(screen.getByText(/Lead Fullstack Engineer/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /explore my work/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /download resume/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /view resume/i })).toBeInTheDocument();
   });
 
   it("AC1b: Explore my work uses the animated gradient outline treatment", () => {
@@ -41,10 +41,9 @@ describe("Hero", () => {
     expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
   });
 
-  it("AC3: Download resume downloads the PDF", () => {
+  it("AC3: View resume opens the in-app viewer instead of navigating away", async () => {
     render(<Hero />);
-    const link = screen.getByRole("link", { name: /download resume/i });
-    expect(link).toHaveAttribute("href", "/resume.pdf");
-    expect(link).toHaveAttribute("download", "Vikrant_Sharma_Lead_Fullstack_Engineer.pdf");
+    await userEvent.click(screen.getByRole("button", { name: /view resume/i }));
+    expect(screen.getByRole("dialog", { name: /resume/i })).toBeInTheDocument();
   });
 });
