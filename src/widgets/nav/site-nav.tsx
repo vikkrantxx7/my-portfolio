@@ -143,7 +143,8 @@ export function SiteNav() {
                   Blog
                 </BlogLink>
                 <ResumeViewer triggerClassName="inline-flex touch-manipulation items-center justify-center rounded-md border border-primary/60 px-2.5 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary hover:bg-primary/10 lg:px-4">
-                  <span className="lg:hidden">Resume</span>
+                  <FileText aria-hidden className="size-4 min-[830px]:hidden" />
+                  <span className="hidden min-[830px]:inline lg:hidden">Resume</span>
                   <span className="hidden lg:inline">View Resume</span>
                 </ResumeViewer>
               </div>

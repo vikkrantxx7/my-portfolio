@@ -109,12 +109,18 @@ describe("SiteNav", () => {
     expect(role).toHaveClass("min-[880px]:block");
   });
 
-  it("shortens the resume label instead of dropping the word on narrow desktops", () => {
+  it("shortens the resume label as soon as the word fits", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
     const trigger = within(nav).getByRole("button", { name: /resume/i });
-    expect(trigger.querySelector("svg")).toBeNull();
-    expect(within(trigger).getByText("Resume")).toHaveClass("lg:hidden");
+    const icon = trigger.querySelector("svg");
+    expect(icon).not.toBeNull();
+    expect(icon).toHaveClass("min-[830px]:hidden");
+    expect(within(trigger).getByText("Resume")).toHaveClass(
+      "hidden",
+      "min-[830px]:inline",
+      "lg:hidden",
+    );
     expect(within(trigger).getByText("View Resume")).toHaveClass("hidden", "lg:inline");
   });
 
