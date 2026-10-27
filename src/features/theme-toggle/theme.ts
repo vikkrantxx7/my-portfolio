@@ -61,9 +61,6 @@ export function switchTheme(theme: Theme, reduceMotion: boolean, origin?: BurnOr
     | undefined;
   // Re-sync once the burn settles in case the browser dropped the mid-transition update.
   transition?.finished
-    ? ({} as never)
-    : undefined;
-  transition?.finished
     ?.catch(() => undefined)
     .then(() => syncBrowserBar(theme));
 }
