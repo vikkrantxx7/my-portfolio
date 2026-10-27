@@ -3,6 +3,8 @@ export interface Profile {
   monogram: string;
   avatarUrl?: string;
   role: string;
+  /** Short form of role used as the header subheading. */
+  title: string;
   headline: string;
   summary: string;
   email: string;

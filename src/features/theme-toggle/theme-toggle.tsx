@@ -24,7 +24,7 @@ export function ThemeToggle() {
         switchTheme(next, reduce);
         setTheme(next);
       }}
-      className="theme-toggle relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-card/60 text-primary shadow-glow transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="theme-toggle relative flex size-10 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border bg-card/60 text-primary shadow-glow transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <AnimatePresence initial={false} custom={d}>
         <motion.span
