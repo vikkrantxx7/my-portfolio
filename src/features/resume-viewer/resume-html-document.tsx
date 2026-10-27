@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
+import { bindResumeZoom } from "./resume-document-zoom";
 
 export const DARK_STYLE_ID = "resume-dark-view";
 
 const BASE_STYLE_ID = "resume-screen-view";
 // Screen-only breathing room; the PDF uses its own @page margins.
-const BASE_CSS = "@media screen { body { padding: 24px 20px 120px !important; } }";
+const BASE_CSS = "@media screen { html { touch-action: pan-x pan-y; overscroll-behavior: contain; } body { padding: 24px 20px 120px !important; } }";
 
 // Dark view reuses the PDF's colour-preserving filter on the frame itself, so it is
 // dark from the first paint (no white flash) and keeps the resume's accent colours.
@@ -23,6 +24,17 @@ export function ResumeHtmlDocument({
   onFail: () => void;
 }) {
   const ref = useRef<HTMLIFrameElement>(null);
+  const unbindZoom = useRef<(() => void) | undefined>(undefined);
+
+  const bindZoom = useCallback(() => {
+    const frame = ref.current;
+    const doc = frame?.contentDocument;
+    const host = frame?.closest<HTMLElement>('[role="dialog"]') ?? frame?.parentElement;
+    if (!frame || !doc || !host) return;
+    unbindZoom.current?.();
+    unbindZoom.current = bindResumeZoom(doc, frame, host);
+  }, []);
+  useEffect(() => () => unbindZoom.current?.(), []);
 
   const applyDark = useCallback(() => {
     const doc = ref.current?.contentDocument;
@@ -47,7 +59,10 @@ export function ResumeHtmlDocument({
   // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only check
   useEffect(() => {
     const doc = ref.current?.contentDocument;
-    if (doc?.readyState === "complete" && doc.querySelector(".page")) applyDark();
+    if (doc?.readyState === "complete" && doc.querySelector(".page")) {
+      applyDark();
+      bindZoom();
+    }
   }, []);
 
   return (
@@ -60,6 +75,7 @@ export function ResumeHtmlDocument({
         const doc = ref.current?.contentDocument;
         if (!doc?.querySelector(".page")) return onFail();
         applyDark();
+        bindZoom();
       }}
       onError={onFail}
       className={`mx-auto block size-full max-w-[230mm] bg-white ${dark ? "resume-frame--dark" : ""}`}
