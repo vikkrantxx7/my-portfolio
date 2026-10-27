@@ -27,6 +27,18 @@ export async function renderWithRouter(ui: () => ReactNode) {
     path: "/projects/$slug",
     component: () => <h1>Case study page</h1>,
   });
+  const blog = createRoute({
+    staticData: { sitemap: true },
+    getParentRoute: () => rootRoute,
+    path: "/blog/",
+    component: () => <h1>Blog index</h1>,
+  });
+  const blogPost = createRoute({
+    staticData: { sitemap: true },
+    getParentRoute: () => rootRoute,
+    path: "/blog/$slug",
+    component: () => <h1>Blog article</h1>,
+  });
   const router = createRouter({
     routeTree: rootRoute.addChildren([home, project]),
     history: createMemoryHistory({ initialEntries: ["/"] }),
