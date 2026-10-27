@@ -3,6 +3,7 @@ import { blogPosts } from "@/content/blog";
 import { site } from "@/content/site";
 import { pageUrl } from "@/shared/lib/seo";
 import { BlogHeader } from "@/widgets/blog/blog-header";
+import { BlogIndexDock } from "@/widgets/blog/blog-dock";
 import { BlogLedger } from "@/widgets/blog/blog-ledger";
 
 const title = `Engineering blog — ${site.titleSuffix}`;
@@ -41,6 +42,7 @@ function BlogIndex() {
         </header>
         <BlogLedger posts={blogPosts} tag={tag} />
       </main>
+      <BlogIndexDock />
     </>
   );
 }

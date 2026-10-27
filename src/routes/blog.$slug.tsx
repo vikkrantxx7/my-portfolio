@@ -1,10 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { findPost } from "@/content/blog";
+import { blogPosts, findPost } from "@/content/blog";
 import { site } from "@/content/site";
 import { pageUrl } from "@/shared/lib/seo";
 import { buttonVariants } from "@/shared/ui/button";
 import { Prose } from "@/shared/ui/prose/prose";
 import { Tag } from "@/shared/ui/tag";
+import { BlogArticleDock } from "@/widgets/blog/blog-dock";
 import { BlogHeader } from "@/widgets/blog/blog-header";
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -100,6 +101,7 @@ function BlogArticle() {
         />
         <article>{Body && <Prose><Body /></Prose>}</article>
       </main>
+      <BlogArticleDock posts={blogPosts} slug={slug} />
     </>
   );
 }
