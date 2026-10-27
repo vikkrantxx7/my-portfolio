@@ -15,12 +15,14 @@ export function bindResumeZoom(doc: Document, frame: HTMLIFrameElement, host: HT
   const width = root.clientWidth;
   const zoom = (next: number, x: number, y: number) => {
     const previous = scale;
+    const left = scroller.scrollLeft;
+    const top = scroller.scrollTop;
     scale = clampScale(next);
     if (width) doc.body.style.width = `${width}px`;
     doc.body.style.zoom = String(scale);
     const ratio = scale / previous;
-    scroller.scrollLeft = (scroller.scrollLeft + x) * ratio - x;
-    scroller.scrollTop = (scroller.scrollTop + y) * ratio - y;
+    scroller.scrollLeft = (left + x) * ratio - x;
+    scroller.scrollTop = (top + y) * ratio - y;
   };
   const onWheel = (event: WheelEvent) => {
     if (!event.ctrlKey) return;

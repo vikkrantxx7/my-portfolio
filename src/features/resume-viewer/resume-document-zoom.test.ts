@@ -14,14 +14,16 @@ describe("resume-only zoom", () => {
     const frame = document.createElement("iframe");
     host.appendChild(frame);
     const cleanup = bindResumeZoom(doc, frame, host);
+    doc.documentElement.scrollTop = 300;
     const scroll = new WheelEvent("wheel", { deltaY: 100, cancelable: true });
     doc.dispatchEvent(scroll);
     expect(scroll.defaultPrevented).toBe(false);
-    const pinch = new WheelEvent("wheel", { deltaY: -100, ctrlKey: true, cancelable: true });
+    const pinch = new WheelEvent("wheel", { deltaY: -100, ctrlKey: true, clientY: 200, cancelable: true });
     doc.dispatchEvent(pinch);
     expect(pinch.defaultPrevented).toBe(true);
     expect(Number(doc.body.style.zoom)).toBeCloseTo(Math.exp(0.15));
     expect(document.body.style.zoom).toBeUndefined();
+    expect(doc.documentElement.scrollTop).toBeCloseTo(500 * Math.exp(0.15) - 200);
     cleanup();
     const later = new WheelEvent("wheel", { ctrlKey: true, cancelable: true });
     doc.dispatchEvent(later);
