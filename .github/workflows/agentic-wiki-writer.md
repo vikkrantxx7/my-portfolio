@@ -15,6 +15,7 @@ on:
 
 engine:
   id: gemini
+  model: gemini-3.1-flash-lite
   command: node .github/aw/gemini-api-key.cjs
 
 permissions:
