@@ -15,7 +15,7 @@ on:
 
 engine:
   id: copilot
-  model: claude-sonnet-4.6
+  model: gpt-4.1
 
 permissions:
   contents: read
