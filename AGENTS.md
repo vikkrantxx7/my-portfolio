@@ -15,7 +15,7 @@
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
 - Social banners use CDN pointers; favicon is local. Compose og/twitter images from site.url, never a request-origin function, to avoid Promise URLs.
 - Document scroll is restored by the SSR inline script; skip only the first client restoration callback to avoid overwriting early user scrolling during hydration, while retaining later navigation and Back/Forward restoration.
-- Portfolio content is typed static data in `src/content` and must pass `validateContent` (no database in v1).
+- Typed static `src/content` passes `validateContent` (no DB in v1). Resume tests compare HTML shared facts, not prose; re-export/review PDF separately (only its email is tested) to prevent drift.
 - Reusable UI primitives live in `src/shared/ui` with `cva` variants; features/widgets follow simplified Feature-Sliced Design.
 - Every story ships with Vitest + Testing Library tests written first.
 - Lint/format with Biome only (one fast tool).

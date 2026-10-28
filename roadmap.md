@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [x] Add resume/portfolio shared-fact consistency checks and document updates and PDF regeneration; all 291 tests pass. PDF full-text review remains manual.
 - [x] Add article Home navigation: desktop icon after All articles; mobile Newer, Home, Articles, Top, Older; verified desktop/mobile destinations and 320px layout.
 - [x] Add the article list and published posts to site search; verified collection and article navigation; all 19 focused tests pass.
 - [x] Optimize Geist font discovery with matching head preloads and Latin-only local files; browser confirms two successful preload-initiated downloads, no duplicates; all 272 tests pass. Not published.

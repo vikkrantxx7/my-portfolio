@@ -2,6 +2,109 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { content } from "./data";
 
+const resume = new DOMParser().parseFromString(
+  readFileSync("public/resume.html", "utf8"),
+  "text/html",
+);
+const text = (element: Element | null) => element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+const jobs = Array.from(resume.querySelectorAll(".job"));
+const contactLinks = Array.from(resume.querySelectorAll(".contact-row a"));
+
+// www and a trailing slash do not change these public profile identities.
+function profileUrl(value: string) {
+  const url = new URL(value);
+  return `${url.protocol}//${url.hostname.replace(/^www\./, "")}${url.pathname.replace(/\/$/, "")}`;
+}
+
+function resumeMonth(value: string) {
+  const [year, month] = value.split("-");
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  return `${months[Number(month) - 1]} ${year}`;
+}
+
+describe("resume HTML and portfolio shared facts", () => {
+  it("uses the same candidate name", () => {
+    expect(text(resume.querySelector(".header h1"))).toBe(content.profile.name);
+  });
+
+  it("uses the same professional title", () => {
+    expect(text(resume.querySelector(".summary-text"))).toMatch(
+      new RegExp(`^${content.profile.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`),
+    );
+  });
+
+  it("uses the same email address and mail link", () => {
+    const link = contactLinks.find((entry) => entry.getAttribute("href")?.startsWith("mailto:"));
+    expect(link?.getAttribute("href")).toBe(`mailto:${content.profile.email}`);
+    expect(text(link ?? null)).toBe(content.profile.email);
+  });
+
+  it.each(["github", "linkedin"] as const)("uses the same %s profile", (network) => {
+    const expected = profileUrl(content.profile.links[network]);
+    const links = contactLinks
+      .map((entry) => entry.getAttribute("href"))
+      .filter((href): href is string => Boolean(href?.startsWith("https://")))
+      .map(profileUrl);
+    expect(links).toContain(expected);
+  });
+
+  it("lists the same companies in the same career order", () => {
+    expect(jobs.map((job) => text(job.querySelector(".job-company")))).toEqual(
+      content.experiences.map((experience) => experience.company),
+    );
+  });
+
+  it.each(content.experiences)("keeps $company's role title in sync", (experience) => {
+    const job = jobs.find(
+      (entry) => text(entry.querySelector(".job-company")) === experience.company,
+    );
+    expect(text(job?.querySelector(".job-role") ?? null)).toBe(experience.role);
+  });
+
+  it.each(content.experiences)("keeps $company's start/end dates in sync", (experience) => {
+    const job = jobs.find(
+      (entry) => text(entry.querySelector(".job-company")) === experience.company,
+    );
+    const period = text(job?.querySelector(".job-period") ?? null).replace(/[–—]/g, "-");
+    expect(period).toBe(
+      `${resumeMonth(experience.start)} - ${experience.end ? resumeMonth(experience.end) : "Present"}`,
+    );
+  });
+
+  it("keeps the years-of-experience figure in sync", () => {
+    const stat = content.snapshot.stats.find((entry) => entry.id === "years");
+    expect(stat).toBeDefined();
+    const years = text(resume.querySelector(".summary-text")).match(/(\d+)\+? years\b/i);
+    expect(years).not.toBeNull();
+    expect(Number(years?.[1])).toBe(stat?.value);
+  });
+
+  it.each([
+    { id: "bundle", pattern: /JavaScript and CSS by\s*~?(\d+)%/i },
+    { id: "images", pattern: /image assets by\s*~?(\d+)%/i },
+    { id: "effort", pattern: /~?(\d+)% reduction in development effort/i },
+  ])("keeps the $id improvement metric in sync", ({ id, pattern }) => {
+    const stat = content.snapshot.stats.find((entry) => entry.id === id);
+    expect(stat).toBeDefined();
+    const metric = jobs.map(text).join(" ").match(pattern);
+    expect(metric).not.toBeNull();
+    expect(Number(metric?.[1])).toBe(stat?.value);
+  });
+});
+
 describe("content from resume", () => {
   it("lists roles newest first: adidas, UKG, Infosys", () => {
     expect(content.experiences.map((e) => e.company)).toEqual(["adidas", "UKG", "Infosys"]);
