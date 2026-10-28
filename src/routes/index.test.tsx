@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 import { site } from "@/content/site";
 import { Route } from "./index";
 
-type MetaEntry = Record<string, string>;
+type MetaEntry = {
+  title?: string;
+  name?: string;
+  property?: string;
+  content?: string;
+};
 
 /** Read the home page's share tags the way SSR renders them, with no loader data. */
 function homeMeta(loaderData?: unknown): MetaEntry[] {
@@ -13,11 +18,15 @@ function homeMeta(loaderData?: unknown): MetaEntry[] {
   return head({ loaderData, params: {} }).meta;
 }
 
+function tag(entries: MetaEntry[], key: "property" | "name", value: string) {
+  return entries.find((entry) => entry[key] === value)?.content;
+}
+
 describe("home route share metadata", () => {
   it("publishes an absolute og:image built from the configured site URL", () => {
     const meta = homeMeta();
-    const ogImage = meta.find((m) => m.property === "og:image")?.content;
-    const twitterImage = meta.find((m) => m.name === "twitter:image")?.content;
+    const ogImage = tag(meta, "property", "og:image");
+    const twitterImage = tag(meta, "name", "twitter:image");
     expect(ogImage).toBeDefined();
     expect(ogImage).toMatch(/^https:\/\//);
     expect(ogImage).toContain(site.url);
