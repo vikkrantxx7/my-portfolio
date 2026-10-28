@@ -9,7 +9,12 @@ const post = (slug: string) => ({ slug, frontmatter: { title: `Post ${slug}` } }
 const list = [post("new"), post("mid"), post("old")];
 
 describe("BlogArticleDock", () => {
-  it("stays open at the bottom with Newer, Blog, Top and Older", async () => {
+  it("provides a direct Home destination from an article", async () => {
+    await renderWithRouter(() => <BlogArticleDock posts={list} slug="mid" />);
+    expect(await screen.findByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+  });
+
+  it("stays open at the bottom with Newer, Home, Articles, Top and Older", async () => {
     await renderWithRouter(() => <BlogArticleDock posts={list} slug="mid" />);
     const dock = await screen.findByRole("navigation", { name: /article controls/i });
     expect(dock).toHaveClass("fixed", "md:hidden");
