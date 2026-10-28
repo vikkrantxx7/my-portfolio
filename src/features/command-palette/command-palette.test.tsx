@@ -1,6 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { blogPosts } from "@/content/blog";
 import { content } from "@/content/data";
 import { achievementNavigationEvent } from "@/features/deep-link/deep-link";
 import { renderWithRouter } from "@/test/render-with-router";
@@ -20,6 +21,13 @@ beforeEach(() => {
 
 describe("buildPaletteItems", () => {
   const items = buildPaletteItems(content);
+
+  it("includes the article collection and every published article", () => {
+    expect(items.find((item) => item.kind === "articles")).toMatchObject({ kind: "articles" });
+    expect(items.filter((item) => item.kind === "article").map((item) => item.slug)).toEqual(
+      blogPosts.map((post) => post.slug),
+    );
+  });
 
   it("AC2: covers every section, project and achievement", () => {
     expect(items.filter((i) => i.kind === "section")).toHaveLength(3);

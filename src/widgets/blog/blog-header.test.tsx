@@ -4,6 +4,12 @@ import { renderWithRouter } from "@/test/render-with-router";
 import { BlogHeader } from "./blog-header";
 
 describe("BlogHeader", () => {
+  it("offers a direct Home destination alongside the article collection", async () => {
+    await renderWithRouter(() => <BlogHeader back="blog" />);
+    expect(await screen.findByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: /all articles/i })).toHaveAttribute("href", "/blog");
+  });
+
   it("keeps the glass bar with back link and toggle for desktop", async () => {
     await renderWithRouter(() => <BlogHeader back="blog" />);
     expect(await screen.findByRole("link", { name: /all articles/i })).toBeInTheDocument();

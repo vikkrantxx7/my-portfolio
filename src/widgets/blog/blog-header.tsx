@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, House } from "lucide-react";
 import { ThemeToggle } from "@/features/theme-toggle/theme-toggle";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
@@ -19,13 +19,23 @@ export function BlogHeader({ back }: { back: "home" | "blog" }) {
               Home
             </Link>
           ) : (
-            <Link
-              to="/blog"
-              className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "-ml-3")}
-            >
-              <ArrowLeft className="size-4" aria-hidden="true" />
-              All articles
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/blog"
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "-ml-3")}
+              >
+                <ArrowLeft className="size-4" aria-hidden="true" />
+                All articles
+              </Link>
+              <Link
+                to="/"
+                aria-label="Home"
+                title="Home"
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "size-9 px-0")}
+              >
+                <House className="size-4" aria-hidden="true" />
+              </Link>
+            </div>
           )}
           <ThemeToggle />
         </div>
