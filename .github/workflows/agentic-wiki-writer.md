@@ -23,6 +23,8 @@ permissions:
   pull-requests: read
 
 steps:
+  - name: Install pinned Gemini CLI for custom auth wrapper
+    run: npm install --ignore-scripts -g @google/gemini-cli@0.55.1
   - name: Pre-stage event payload for sandbox
     run: |
       cp "$GITHUB_EVENT_PATH" /tmp/gh-aw/event.json
