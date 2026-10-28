@@ -13,7 +13,7 @@
 - Subdirectories may have their own `AGENTS.md` (e.g. `src/widgets/nav`, `src/features/resume-viewer`); read it before changing files there.
 - Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
-- Social banner media uses a CDN asset pointer and the favicon uses a small local public image; og/twitter image URLs are composed from the configured site URL, never from a request-origin server function (an un-awaited one stringifies into the tag), so share tags stay absolute and crawler-fetchable.
+- Social banners use CDN pointers; favicon is local. Compose og/twitter images from site.url, never a request-origin function, to avoid Promise URLs.
 - Document scroll is restored by the SSR inline script; skip only the first client restoration callback to avoid overwriting early user scrolling during hydration, while retaining later navigation and Back/Forward restoration.
 - Portfolio content is typed static data in `src/content` and must pass `validateContent` (no database in v1).
 - Reusable UI primitives live in `src/shared/ui` with `cva` variants; features/widgets follow simplified Feature-Sliced Design.
@@ -40,3 +40,4 @@
 - Author new case-study bodies in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and render through shared `Prose` components to preserve the existing page shell; summaries and diagrams stay typed, and projects without MDX retain typed sections. Vite and Vitest share the compiler via `mdx.config.ts`.
 - Blog posts are MDX in `src/content/blog/`, registered and validated in `src/content/blog.ts`, rendered via shared `Prose`; `/blog` filters by URL `?tag=` — one MDX pipeline with case studies.
 - MDX code is Shiki-highlighted at build time (dual themes via root class) so no highlighter ships.
+- Latin variable fonts live in `public/fonts` with licenses; `src/fonts.css` URLs match root-head anonymous preloads to avoid CSS-dependent discovery and duplicate downloads.
