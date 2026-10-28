@@ -1,0 +1,8 @@
+{
+  "Home": { "sourceFiles": [], "templateHash": "abc", "generatedAt": "2026-10-28T20:10:00Z" },
+  "Architecture": { "sourceFiles": [], "templateHash": "def", "generatedAt": "2026-10-28T20:10:00Z" },
+  "Features": { "sourceFiles": [], "templateHash": "ghi", "generatedAt": "2026-10-28T20:10:00Z" },
+  "Content-Management": { "sourceFiles": [], "templateHash": "jkl", "generatedAt": "2026-10-28T20:10:00Z" },
+  "Getting-Started": { "sourceFiles": [], "templateHash": "mno", "generatedAt": "2026-10-28T20:10:00Z" },
+  "For-Agents": { "sourceFiles": [], "templateHash": "pqr", "generatedAt": "2026-10-28T20:10:00Z" }
+}

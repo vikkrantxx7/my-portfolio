@@ -1,0 +1,14 @@
+{
+  "pages": [
+    { "title": "Home", "slug": "Home" },
+    { "title": "Architecture", "slug": "Architecture", "children": [
+        { "title": "Features", "slug": "Features", "children": [
+            { "title": "Command Palette", "slug": "Features#Command-Palette" },
+            { "title": "Theme Toggle", "slug": "Features#Theme-Toggle" }
+        ]},
+        { "title": "Content Management", "slug": "Content-Management" }
+    ]},
+    { "title": "Getting Started", "slug": "Getting-Started" },
+    { "title": "For Agents", "slug": "For-Agents" }
+  ]
+}
