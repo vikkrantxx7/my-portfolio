@@ -14,8 +14,7 @@ on:
   schedule: daily
 
 engine:
-  id: copilot
-  model: gpt-4.1
+  id: gemini
 
 permissions:
   contents: read
