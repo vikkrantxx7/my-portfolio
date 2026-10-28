@@ -13,7 +13,7 @@
 - Subdirectories may have their own `AGENTS.md` (e.g. `src/widgets/nav`, `src/features/resume-viewer`); read it before changing files there.
 - Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
-- Social banner media uses a CDN asset pointer and the favicon uses a small local public image, keeping share media lightweight and browser icon discovery reliable.
+- Social banner media uses a CDN asset pointer and the favicon uses a small local public image; og/twitter image URLs are composed from the configured site URL, never from a request-origin server function (an un-awaited one stringifies into the tag), so share tags stay absolute and crawler-fetchable.
 - Document scroll is restored by the SSR inline script; skip only the first client restoration callback to avoid overwriting early user scrolling during hydration, while retaining later navigation and Back/Forward restoration.
 - Portfolio content is typed static data in `src/content` and must pass `validateContent` (no database in v1).
 - Reusable UI primitives live in `src/shared/ui` with `cva` variants; features/widgets follow simplified Feature-Sliced Design.

@@ -4,7 +4,6 @@ import { content } from "@/content/data";
 import { site } from "@/content/site";
 import { projectFilterNavigation } from "@/features/filter-projects/filter-navigation";
 import { validateProjectSearch } from "@/features/filter-projects/filter-projects";
-import { getRequestOrigin } from "@/shared/lib/origin.functions";
 import { pageUrl, personJsonLd } from "@/shared/lib/seo";
 import { Contact } from "@/widgets/contact/contact";
 import { ProjectGallery } from "@/widgets/gallery/project-gallery";
@@ -14,13 +13,17 @@ import { SiteNav } from "@/widgets/nav/site-nav";
 import { Snapshot } from "@/widgets/snapshot/snapshot";
 import { CareerTimeline } from "@/widgets/timeline/timeline";
 
+/**
+ * Share tags must be a stable absolute URL, so they are built from the
+ * configured site URL — never from the request origin, and never from an
+ * un-awaited server function (which would stringify to "[object Promise]").
+ */
+const ogImageUrl = `${site.url}${ogBanner.url}`;
+
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
   validateSearch: validateProjectSearch,
-  // The origin only matters for SSR head tags (og:image). On client navigations
-  // resolve synchronously so project → home never waits on a server roundtrip.
-  loader: () => (typeof window === "undefined" ? { origin: getRequestOrigin() } : {}),
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
       { title: site.homeTitle },
       {
@@ -35,14 +38,10 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: pageUrl("/") },
       { name: "twitter:card", content: "summary_large_image" },
-      ...(loaderData?.origin
-        ? [
-            { property: "og:image", content: `${loaderData.origin}${ogBanner.url}` },
-            { property: "og:image:width", content: "1200" },
-            { property: "og:image:height", content: "630" },
-            { name: "twitter:image", content: `${loaderData.origin}${ogBanner.url}` },
-          ]
-        : []),
+      { property: "og:image", content: ogImageUrl },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: ogImageUrl },
     ],
     links: [{ rel: "canonical", href: pageUrl("/") }],
     scripts: [
