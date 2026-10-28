@@ -1,8 +1,8 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { content } from "@/content/data";
 import { blogPosts } from "@/content/blog";
+import { content } from "@/content/data";
 import { achievementNavigationEvent } from "@/features/deep-link/deep-link";
 import { renderWithRouter } from "@/test/render-with-router";
 import { NAV_SECTIONS } from "@/widgets/nav/site-nav";

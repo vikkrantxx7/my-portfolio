@@ -3,8 +3,8 @@ import { Command as CommandPrimitive } from "cmdk";
 import { BookOpen, FolderGit2, Hash, Milestone, Search } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { type BlogPost, blogPosts } from "@/content/blog";
 import { content as siteContent } from "@/content/data";
-import { blogPosts, type BlogPost } from "@/content/blog";
 import type { Content } from "@/content/types";
 import {
   achievementHash,
@@ -42,15 +42,23 @@ export function paletteFilter(value: string, search: string, keywords: string[] 
 /** Pure: every place the palette can reach, all of which also exist in normal navigation. */
 export function buildPaletteItems(c: Content, posts: BlogPost[] = blogPosts): PaletteItem[] {
   return [
-    { kind: "articles", id: "articles", label: "All articles", hint: "Blog", keywords: ["blogs", "posts", "list"] },
-    ...posts.map((post): PaletteItem => ({
-      kind: "article",
-      id: `article-${post.slug}`,
-      label: post.frontmatter.title,
-      hint: "Article",
-      slug: post.slug,
-      keywords: [post.frontmatter.description, ...post.frontmatter.tags],
-    })),
+    {
+      kind: "articles",
+      id: "articles",
+      label: "All articles",
+      hint: "Blog",
+      keywords: ["blogs", "posts", "list"],
+    },
+    ...posts.map(
+      (post): PaletteItem => ({
+        kind: "article",
+        id: `article-${post.slug}`,
+        label: post.frontmatter.title,
+        hint: "Article",
+        slug: post.slug,
+        keywords: [post.frontmatter.description, ...post.frontmatter.tags],
+      }),
+    ),
     ...SECTIONS.map(
       (s): PaletteItem => ({
         kind: "section",
