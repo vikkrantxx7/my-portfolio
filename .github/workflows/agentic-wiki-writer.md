@@ -13,6 +13,10 @@ on:
         default: false
   schedule: daily
 
+engine:
+  id: copilot
+  model: claude-sonnet-4.6
+
 permissions:
   contents: read
   issues: read
