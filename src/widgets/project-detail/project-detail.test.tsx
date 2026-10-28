@@ -88,11 +88,11 @@ describe("Case study artwork theme variants", () => {
     if (!project) throw new Error("Project fixture required");
     document.documentElement.classList.remove("light");
     const first = render(<ProjectDetail project={project} />);
-    expect(screen.getByRole("img").getAttribute("src")).toBe(projectArtwork[project.slug]?.dark);
+    expect(first.container.querySelector("img")?.getAttribute("src")).toBe(projectArtwork[project.slug]?.dark);
     first.unmount();
 
     document.documentElement.classList.add("light");
-    render(<ProjectDetail project={project} />);
-    expect(screen.getByRole("img").getAttribute("src")).toBe(projectArtwork[project.slug]?.light);
+    const second = render(<ProjectDetail project={project} />);
+    expect(second.container.querySelector("img")?.getAttribute("src")).toBe(projectArtwork[project.slug]?.light);
   });
 });
