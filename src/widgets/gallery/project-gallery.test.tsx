@@ -1,7 +1,8 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { content } from "@/content/data";
+import { projectArtwork } from "@/content/project-artwork";
 import { renderWithRouter } from "@/test/render-with-router";
 import { ProjectGallery } from "./project-gallery";
 
