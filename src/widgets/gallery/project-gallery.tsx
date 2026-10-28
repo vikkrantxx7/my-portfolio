@@ -71,7 +71,7 @@ export function ProjectGallery({
               <div className="aspect-[8/5] overflow-hidden border-b border-border bg-background">
                 {projectArtwork[project.slug] && (
                   <img
-                    src={projectArtwork[project.slug][theme]}
+                    src={projectArtwork[project.slug]?.[theme]}
                     alt=""
                     loading="lazy"
                     width={1024}

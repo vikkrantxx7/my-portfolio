@@ -42,7 +42,7 @@ export function ProjectDetail({ project }: { project: Project }) {
       </header>
       {projectArtwork[project.slug] && (
         <img
-          src={projectArtwork[project.slug][theme]}
+          src={projectArtwork[project.slug]?.[theme]}
           alt=""
           width={1024}
           height={640}
