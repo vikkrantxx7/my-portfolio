@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
-- Subdirectories may have their own `AGENTS.md` (e.g. `src/widgets/nav`, `src/features/resume-viewer`); read it before changing files there.
+- Read nested `AGENTS.md` before editing, including `.github`, nav, theme and resume features.
 - Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
 - Social banners use CDN pointers; favicon is local. Compose og/twitter images from site.url, never a request-origin function, to avoid Promise URLs.
