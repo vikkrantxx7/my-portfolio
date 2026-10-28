@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { content } from "@/content/data";
+import { projectArtwork } from "@/content/project-artwork";
 import { ProjectDetail } from "./project-detail";
 
 describe("Project case study", () => {
