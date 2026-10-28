@@ -2,12 +2,14 @@ import { ArrowUpRight } from "lucide-react";
 import { caseStudyBodies } from "@/content/case-study-bodies";
 import { projectArtwork } from "@/content/project-artwork";
 import type { Project } from "@/content/types";
+import { useTheme } from "@/features/theme-toggle/use-theme";
 import { buttonVariants } from "@/shared/ui/button";
 import { Prose } from "@/shared/ui/prose/prose";
 import { Tag } from "@/shared/ui/tag";
 import { ArchitectureDiagram } from "@/widgets/architecture-diagram/architecture-diagram";
 
 export function ProjectDetail({ project }: { project: Project }) {
+  const theme = useTheme();
   const mdx = caseStudyBodies[project.slug];
   const study = mdx ? { ...project.caseStudy, ...mdx.frontmatter } : project.caseStudy;
   return (
@@ -40,7 +42,7 @@ export function ProjectDetail({ project }: { project: Project }) {
       </header>
       {projectArtwork[project.slug] && (
         <img
-          src={projectArtwork[project.slug]}
+          src={projectArtwork[project.slug][theme]}
           alt=""
           width={1024}
           height={640}

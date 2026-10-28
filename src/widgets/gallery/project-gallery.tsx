@@ -3,10 +3,12 @@ import { ArrowUpRight, RotateCcw } from "lucide-react";
 import { content } from "@/content/data";
 import { projectArtwork } from "@/content/project-artwork";
 import { filterProjects, type ProjectFilters } from "@/features/filter-projects/filter-projects";
+import { useTheme } from "@/features/theme-toggle/use-theme";
 import { Button, buttonVariants } from "@/shared/ui/button";
 import { FilterSelect } from "@/shared/ui/filter-select";
 import { SectionHeading } from "@/shared/ui/section-heading";
 import { Tag } from "@/shared/ui/tag";
+
 
 export function ProjectGallery({
   filters,
@@ -15,6 +17,7 @@ export function ProjectGallery({
   filters: ProjectFilters;
   onFiltersChange: (filters: ProjectFilters) => void;
 }) {
+  const theme = useTheme();
   const featured = content.projects.filter((project) => project.featured);
   const projects = filterProjects(content.projects, filters);
   const technologies = [...new Set(featured.flatMap((project) => project.tech))].sort();
@@ -68,7 +71,7 @@ export function ProjectGallery({
               <div className="aspect-[8/5] overflow-hidden border-b border-border bg-background">
                 {projectArtwork[project.slug] && (
                   <img
-                    src={projectArtwork[project.slug]}
+                    src={projectArtwork[project.slug][theme]}
                     alt=""
                     loading="lazy"
                     width={1024}
