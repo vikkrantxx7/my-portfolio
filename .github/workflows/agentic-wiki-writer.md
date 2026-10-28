@@ -36,6 +36,7 @@ steps:
 
 tools:
   bash:
+    - "safeoutputs *"
     - "find * -type f -not -path"
     - "tree *"
     - "wc *"
