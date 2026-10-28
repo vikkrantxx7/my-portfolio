@@ -1,5 +1,5 @@
 # Portfolio — Current requests
-- [ ] Optimize Geist font discovery with matching head preloads and Latin-only local font files; test and verify without publishing.
+- [x] Optimize Geist font discovery with matching head preloads and Latin-only local files; browser confirms two successful preload-initiated downloads, no duplicates; all 272 tests pass. Not published.
 - [x] Keep the case-study back link as "← Selected work" and switch project cards to a tighter two-column grid from `md` (cards max ~564px; verified at 1280/820/390).
 - [x] Stop the header name wrapping over the progress ribbon: name never wraps; resume control goes icon → "Resume" (830px+) → "View Resume" (lg), the role line returns at 880px, and section gaps tighten below `lg` (25 nav tests; verified at 768/800/831/880/1024/1280).
 - [x] Finish Google Search Console: connected account confirmed, ownership tag published and verified, root property confirmed as siteOwner, existing sitemap submitted and downloaded by Google (3 URLs; 0 errors and warnings).

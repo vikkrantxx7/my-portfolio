@@ -1,7 +1,6 @@
 @import "tailwindcss" source(none);
 @import "tw-animate-css";
-@import "@fontsource-variable/geist";
-@import "@fontsource-variable/geist-mono";
+@import "./fonts.css";
 @import "./shared/ui/prose/code-highlight.css";
 @import "./features/theme-toggle/theme-transition.css";
 @import "./widgets/nav/header-energy.css";
