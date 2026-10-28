@@ -76,3 +76,22 @@ describe("MDX case study body", () => {
     expect(screen.getByText(overview)).toBeInTheDocument();
   });
 });
+
+describe("Case study artwork theme variants", () => {
+  afterEach(() => {
+    document.documentElement.classList.remove("light");
+  });
+
+  it("shows the dark concept art in dark theme and the light art in light theme", () => {
+    const project = content.projects[0];
+    if (!project) throw new Error("Project fixture required");
+    document.documentElement.classList.remove("light");
+    const first = render(<ProjectDetail project={project} />);
+    expect(screen.getByRole("img").getAttribute("src")).toBe(projectArtwork[project.slug]?.dark);
+    first.unmount();
+
+    document.documentElement.classList.add("light");
+    render(<ProjectDetail project={project} />);
+    expect(screen.getByRole("img").getAttribute("src")).toBe(projectArtwork[project.slug]?.light);
+  });
+});
