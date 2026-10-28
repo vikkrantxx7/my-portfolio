@@ -1,9 +1,10 @@
 import { useLocation, useRouter } from "@tanstack/react-router";
 import { Command as CommandPrimitive } from "cmdk";
-import { FolderGit2, Hash, Milestone, Search } from "lucide-react";
+import { BookOpen, FolderGit2, Hash, Milestone, Search } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { content as siteContent } from "@/content/data";
+import { blogPosts, type BlogPost } from "@/content/blog";
 import type { Content } from "@/content/types";
 import {
   achievementHash,
@@ -16,6 +17,8 @@ type Base = { id: string; label: string; hint: string; keywords?: string[] };
 export type PaletteItem =
   | (Base & { kind: "section"; hash: string })
   | (Base & { kind: "project"; slug: string })
+  | (Base & { kind: "articles" })
+  | (Base & { kind: "article"; slug: string })
   | (Base & { kind: "achievement"; hash: string });
 
 const SECTIONS = [
@@ -37,8 +40,17 @@ export function paletteFilter(value: string, search: string, keywords: string[] 
 }
 
 /** Pure: every place the palette can reach, all of which also exist in normal navigation. */
-export function buildPaletteItems(c: Content): PaletteItem[] {
+export function buildPaletteItems(c: Content, posts: BlogPost[] = blogPosts): PaletteItem[] {
   return [
+    { kind: "articles", id: "articles", label: "All articles", hint: "Blog", keywords: ["blogs", "posts", "list"] },
+    ...posts.map((post): PaletteItem => ({
+      kind: "article",
+      id: `article-${post.slug}`,
+      label: post.frontmatter.title,
+      hint: "Article",
+      slug: post.slug,
+      keywords: [post.frontmatter.description, ...post.frontmatter.tags],
+    })),
     ...SECTIONS.map(
       (s): PaletteItem => ({
         kind: "section",
@@ -76,6 +88,8 @@ export function buildPaletteItems(c: Content): PaletteItem[] {
 const GROUPS: { kind: PaletteItem["kind"]; heading: string; icon: ReactNode }[] = [
   { kind: "section", heading: "Sections", icon: <Hash aria-hidden /> },
   { kind: "project", heading: "Projects", icon: <FolderGit2 aria-hidden /> },
+  { kind: "articles", heading: "Blog", icon: <BookOpen aria-hidden /> },
+  { kind: "article", heading: "Articles", icon: <BookOpen aria-hidden /> },
   { kind: "achievement", heading: "Achievements", icon: <Milestone aria-hidden /> },
 ];
 
@@ -98,6 +112,14 @@ export function CommandPalette() {
 
   const select = (item: PaletteItem) => {
     setOpen(false);
+    if (item.kind === "articles") {
+      router.navigate({ to: "/blog" });
+      return;
+    }
+    if (item.kind === "article") {
+      router.navigate({ to: "/blog/$slug", params: { slug: item.slug } });
+      return;
+    }
     if (item.kind === "project") {
       router.navigate({ to: "/projects/$slug", params: { slug: item.slug } });
       return;
@@ -130,7 +152,7 @@ export function CommandPalette() {
         <DialogContent className="block overflow-hidden border-primary/30 p-0 shadow-glow">
           <DialogTitle className="sr-only">Search the site</DialogTitle>
           <DialogDescription className="sr-only">
-            Jump to a section, project or achievement.
+            Jump to a section, project, article or achievement.
           </DialogDescription>
           <CommandPrimitive
             className="w-full min-w-0 bg-popover text-popover-foreground"
@@ -141,7 +163,7 @@ export function CommandPalette() {
               <Search aria-hidden className="size-4 text-primary" />
               <CommandPrimitive.Input
                 autoFocus
-                placeholder="Search sections, projects, achievements…"
+                placeholder="Search sections, projects, articles…"
                 className="h-12 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
             </div>
