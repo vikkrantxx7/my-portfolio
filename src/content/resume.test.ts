@@ -2,7 +2,10 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { content } from "./data";
 
-const resume = new DOMParser().parseFromString(readFileSync("public/resume.html", "utf8"), "text/html");
+const resume = new DOMParser().parseFromString(
+  readFileSync("public/resume.html", "utf8"),
+  "text/html",
+);
 const text = (element: Element | null) => element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
 const jobs = Array.from(resume.querySelectorAll(".job"));
 const contactLinks = Array.from(resume.querySelectorAll(".contact-row a"));
@@ -15,7 +18,20 @@ function profileUrl(value: string) {
 
 function resumeMonth(value: string) {
   const [year, month] = value.split("-");
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   return `${months[Number(month) - 1]} ${year}`;
 }
 
@@ -52,14 +68,20 @@ describe("resume HTML and portfolio shared facts", () => {
   });
 
   it.each(content.experiences)("keeps $company's role title in sync", (experience) => {
-    const job = jobs.find((entry) => text(entry.querySelector(".job-company")) === experience.company);
+    const job = jobs.find(
+      (entry) => text(entry.querySelector(".job-company")) === experience.company,
+    );
     expect(text(job?.querySelector(".job-role") ?? null)).toBe(experience.role);
   });
 
   it.each(content.experiences)("keeps $company's start/end dates in sync", (experience) => {
-    const job = jobs.find((entry) => text(entry.querySelector(".job-company")) === experience.company);
+    const job = jobs.find(
+      (entry) => text(entry.querySelector(".job-company")) === experience.company,
+    );
     const period = text(job?.querySelector(".job-period") ?? null).replace(/[–—]/g, "-");
-    expect(period).toBe(`${resumeMonth(experience.start)} - ${experience.end ? resumeMonth(experience.end) : "Present"}`);
+    expect(period).toBe(
+      `${resumeMonth(experience.start)} - ${experience.end ? resumeMonth(experience.end) : "Present"}`,
+    );
   });
 
   it("keeps the years-of-experience figure in sync", () => {
