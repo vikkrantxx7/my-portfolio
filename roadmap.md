@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [ ] Repair the agentic wiki workflow, validate its compiled configuration, and verify a GitHub run (requires repository Actions access and an engine credential).
 - [x] Add resume/portfolio shared-fact consistency checks and document updates and PDF regeneration; all 291 tests pass. PDF full-text review remains manual.
 - [x] Add article Home navigation: desktop icon after All articles; mobile Newer, Home, Articles, Top, Older; verified desktop/mobile destinations and 320px layout.
 - [x] Add the article list and published posts to site search; verified collection and article navigation; all 19 focused tests pass.

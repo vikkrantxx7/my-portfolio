@@ -13,6 +13,10 @@ on:
         default: false
   schedule: daily
 
+engine:
+  id: gemini
+  command: node .github/aw/gemini-api-key.cjs
+
 permissions:
   contents: read
   issues: read
