@@ -68,7 +68,7 @@ safe-outputs:
           type: string
       steps:
         - name: Checkout wiki
-          uses: actions/checkout@v4
+          uses: actions/checkout@v7.0.1
           with:
             repository: ${{ github.repository }}.wiki
             token: ${{ secrets.GITHUB_TOKEN }}
