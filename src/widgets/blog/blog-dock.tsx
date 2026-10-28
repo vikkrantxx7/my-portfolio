@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUp, BookOpen, ChevronLeft, ChevronRight, House, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import type { BlogPost } from "@/content/blog";
-import { prefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
+import { prefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { Button } from "@/shared/ui/button";
 import { dockBar, dockItem } from "@/shared/ui/dock";
 
@@ -86,7 +86,12 @@ export function BlogArticleDock({ posts, slug }: { posts: BlogPost[]; slug: stri
       <Link to="/blog" aria-label="All articles" className={articleItem}>
         <Inner icon={BookOpen} label="Articles" />
       </Link>
-      <Button variant="ghost" onClick={toTop} aria-label="Back to top" className={cn(articleItem, "h-auto border-0 bg-transparent text-[10px]")}>
+      <Button
+        variant="ghost"
+        onClick={toTop}
+        aria-label="Back to top"
+        className={cn(articleItem, "h-auto border-0 bg-transparent text-[10px]")}
+      >
         <Inner icon={ArrowUp} label="Top" />
       </Button>
       {older ? (
