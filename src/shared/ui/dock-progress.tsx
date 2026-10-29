@@ -47,7 +47,7 @@ export function DockProgress() {
           <stop offset="1" stopColor="var(--secondary)" />
         </linearGradient>
       </defs>
-      <g opacity={progress > 0 ? 1 : 0} aria-hidden="true">
+      <g opacity={progress > 0 ? 1 : 0}>
         <rect {...rect} className="dock-progress-trail" strokeDasharray={`${progress} 1`} />
         <rect
           {...rect}
