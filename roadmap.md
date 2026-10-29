@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [x] Align reading progress with the measured dock border, starting clockwise at its top centre; eight focused tests pass, verified at 360/703px and Top resets to zero. Not published.
 - [x] Give all five home dock items equal space and slide Close above it; verified 320/360/393/702px, CV opening, keyboard exit and reduced motion. Root guidance is under budget.
 - [ ] Decide whether to hide the visible Close button; outside taps already dismiss the dock. Awaiting user choice.
 - [x] Share header/dock shells, contain the Android CV control, and track project/article reading progress along the dock rim; 298 tests pass. Verified CV opening without overflow/overlap at 320/360/393/702px, progress 0/50/100 and Top in both themes, reduced motion and desktop headers. Not published.
