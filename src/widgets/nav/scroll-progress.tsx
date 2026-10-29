@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useScrollProgress } from "@/shared/lib/use-scroll-progress";
 
 // Ribbon geometry in a 100x8 viewBox stretched across the header width.
 // Both ribbon edges swell symmetrically around the meteor's centreline.
@@ -21,34 +21,8 @@ export function progressPath(progress: number): string {
   return `M0 ${TRAIL_TOP} L${rampStart} ${TRAIL_TOP} C ${controlStart} ${TRAIL_TOP}, ${controlEnd} ${HEAD_TOP + 0.4}, ${p} ${HEAD_TOP} L${p} ${HEAD_BOTTOM} C ${controlEnd} ${HEAD_BOTTOM - 0.4}, ${controlStart} ${TRAIL_BOTTOM}, ${rampStart} ${TRAIL_BOTTOM} L0 ${TRAIL_BOTTOM} Z`;
 }
 
-function readScrollProgress(): number {
-  if (typeof window === "undefined") return 0;
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  if (max <= 0) return 0;
-  return Math.min(Math.max(window.scrollY / max, 0), 1);
-}
-
 export function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      setProgress(readScrollProgress());
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    update();
-    return () => {
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, []);
+  const progress = useScrollProgress();
 
   const pct = Math.round(progress * 100);
 

@@ -7,13 +7,24 @@ describe("DockShell reading progress", () => {
     vi.spyOn(window, "scrollY", "get").mockReturnValue(500);
     vi.spyOn(window, "innerHeight", "get").mockReturnValue(1000);
     vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(2000);
-    render(<DockShell label="Article controls" progress><a href="#top">Top</a></DockShell>);
-    expect(screen.getByRole("progressbar", { name: "Page scroll progress" })).toHaveAttribute("aria-valuenow", "50");
+    render(
+      <DockShell label="Article controls" progress>
+        <a href="#top">Top</a>
+      </DockShell>,
+    );
+    expect(screen.getByRole("progressbar", { name: "Page scroll progress" })).toHaveAttribute(
+      "aria-valuenow",
+      "50",
+    );
     vi.restoreAllMocks();
   });
 
   it("does not add reading progress to collection controls", () => {
-    render(<DockShell label="Blog controls" size="compact"><a href="#top">Top</a></DockShell>);
+    render(
+      <DockShell label="Blog controls" size="compact">
+        <a href="#top">Top</a>
+      </DockShell>,
+    );
     expect(screen.queryByRole("progressbar")).toBeNull();
   });
 });

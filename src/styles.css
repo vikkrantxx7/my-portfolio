@@ -10,6 +10,7 @@
 @import "./features/expand-achievement/achievement-highlight.css";
 @import "./widgets/hero/hero.css";
 @import "./shared/ui/gradient-frame.css";
+@import "./shared/ui/dock-progress.css";
 @source "../src";
 
 @custom-variant dark (&:is(.dark *));

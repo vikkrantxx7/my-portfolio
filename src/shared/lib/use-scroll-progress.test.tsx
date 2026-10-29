@@ -38,11 +38,16 @@ describe("useScrollProgress", () => {
   it("reads restored scroll on mount and updates when content grows", async () => {
     scroll(500);
     let resize: ResizeObserverCallback | undefined;
-    vi.stubGlobal("ResizeObserver", class {
-      constructor(callback: ResizeObserverCallback) { resize = callback; }
-      observe() {}
-      disconnect() {}
-    });
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        constructor(callback: ResizeObserverCallback) {
+          resize = callback;
+        }
+        observe() {}
+        disconnect() {}
+      },
+    );
     const { result, unmount } = renderHook(() => useScrollProgress());
     expect(result.current).toBe(0.5);
     scroll(500, 3000);

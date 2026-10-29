@@ -7,9 +7,17 @@
   pointer-events: none;
   filter: var(--dock-ignition-glow);
 }
-.dock-progress-trail { opacity: 0.6; }
-.dock-progress-head { opacity: 0.9; }
+.dock-progress-trail {
+  opacity: 0.6;
+}
+.dock-progress-head {
+  opacity: 0.9;
+}
 @media (prefers-reduced-motion: reduce) {
-  .dock-progress { filter: none; }
-  .dock-progress-head { opacity: 0.65; }
+  .dock-progress {
+    filter: none;
+  }
+  .dock-progress-head {
+    opacity: 0.65;
+  }
 }
