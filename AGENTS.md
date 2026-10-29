@@ -33,6 +33,7 @@
 - Offline service worker (vite-plugin-pwa generateSW, /sw.js) registers only via src/features/pwa/register-sw.ts, which refuses dev, iframes, Lovable preview hosts and ?sw=off — stale workers must never serve previews.
 - Controls use pointer cursors; header hover styling follows the nested nav rules.
 - Subpage headers share `PageHeader`; home and subpage docks share `DockPosition`, while reading docks use `DockShell` and `useScrollProgress` for a measured rim trail. Page widgets own destinations; shared shells own safe-area spacing and presentation to prevent drift. Resume retains fixed-tone `dockBar`/`dockItem`.
+- Dock rim paths use measured border-box geometry and a padding-box SVG viewBox to prevent curvature and scaling drift.
 - Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
 - Google ownership verification is configured with site identity and rendered in the root SSR head so Google can verify the published homepage without client scripts.
 - Component CSS lives beside its component, imported atop `src/styles.css` for flash-free SSR; global CSS keeps tokens, themes, base rules and shared utilities.
