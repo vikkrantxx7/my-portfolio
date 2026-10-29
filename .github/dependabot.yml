@@ -1,0 +1,47 @@
+# Dependabot configuration for this repository.
+#
+# Ecosystem: Bun (text lockfile `bun.lock` at the repository root).
+# Schedule: 09:00 UTC on the 1st and 15th of each month.
+# Cooldown: only versions released at least 7 days ago are proposed.
+#   Security updates are NOT delayed — they bypass the cooldown.
+# Groups: one PR for production dependencies, one for development dependencies.
+#
+# HARD REQUIREMENTS — do not auto-update (exact pins in package.json):
+#   @tanstack/react-form, @tanstack/react-router, @tanstack/react-start,
+#   @tanstack/router-plugin — must move in lockstep with the app template;
+#     mismatched versions break routing/SSR.
+#   vite, @lovable.dev/vite-tanstack-config, nitro — pinned by the project
+#     template; updating them independently breaks the build toolchain.
+#   @biomejs/biome — exact pin keeps formatting/lint output stable.
+#   rolldown — pinned via package.json `overrides`; transitive, listed here
+#     so Dependabot never tries to lift it.
+# Update these deliberately, by hand, after checking compatibility.
+
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: cron
+      cronjob: "0 9 1,15 * *"
+    cooldown:
+      default-days: 7
+    groups:
+      dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
+      dev-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "@tanstack/react-form"
+      - dependency-name: "@tanstack/react-router"
+      - dependency-name: "@tanstack/react-start"
+      - dependency-name: "@tanstack/router-plugin"
+      - dependency-name: "vite"
+      - dependency-name: "@lovable.dev/vite-tanstack-config"
+      - dependency-name: "nitro"
+      - dependency-name: "@biomejs/biome"
+      - dependency-name: "rolldown"
