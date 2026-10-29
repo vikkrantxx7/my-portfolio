@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
-- Read nested `AGENTS.md` before editing, including `.github`, nav, theme and resume features.
+- Read nested `AGENTS.md` before editing, including `.github`, nav, theme, resume and shared-ui.
 - Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
 - Social banners use CDN pointers; favicon is local. Compose og/twitter images from site.url, never a request-origin function, to avoid Promise URLs.
@@ -29,11 +29,9 @@
 - Architecture diagrams are typed layer/box/connection data on each case study (checked by validateDiagram) and always list connections as text, so they read without hover or animation.
 - Lab entries are typed content that may reference a timeline achievement as "experienceId/achievementId" (checked by validateContent) and link to it via the deep-link hash.
 - Same-page lab achievement links scroll to the collapsed trigger first, then expand, highlight, and replace the hash once scrolling settles; expanding above the source note first causes scroll anchoring jumps. All disclosure hash updates use router navigation with replace, resetScroll:false, and hashScrollIntoView:false to prevent automatic scrolling.
-- Fixed bottom bars (site dock, project dock) are `pointer-events-none` on their full-width wrappers with `pointer-events-auto` only on the visible pill, toggle and menu, so taps on page content underneath them are not swallowed.
 - Offline service worker (vite-plugin-pwa generateSW, /sw.js) registers only via src/features/pwa/register-sw.ts, which refuses dev, iframes, Lovable preview hosts and ?sw=off — stale workers must never serve previews.
 - Controls use pointer cursors; header hover styling follows the nested nav rules.
-- Subpage headers share `PageHeader`; home and subpage docks share `DockPosition`, while reading docks use `DockShell` and `useScrollProgress` for a measured rim trail. Page widgets own destinations; shared shells own safe-area spacing and presentation to prevent drift. Resume retains fixed-tone `dockBar`/`dockItem`.
-- Dock rim paths use measured border-box geometry and a padding-box SVG viewBox to prevent curvature and scaling drift.
+- Subpage headers share `PageHeader`; all docks share the primitives in `src/shared/ui/dock-shell.tsx` (details in `src/shared/ui/AGENTS.md`).
 - Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
 - Google ownership verification is configured with site identity and rendered in the root SSR head so Google can verify the published homepage without client scripts.
 - Component CSS lives beside its component, imported atop `src/styles.css` for flash-free SSR; global CSS keeps tokens, themes, base rules and shared utilities.
