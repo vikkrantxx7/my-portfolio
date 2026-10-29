@@ -20,6 +20,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
+      - name: Verify agentic wiki lock
+        run: |
+          curl --fail --silent --show-error --location \
+            https://github.com/github/gh-aw/releases/download/v0.88.7/linux-amd64 \
+            --output "$RUNNER_TEMP/gh-aw"
+          echo "37faaaa95f622b910568bc878452f6036f01e951380fdfc41441944a95da43bf  $RUNNER_TEMP/gh-aw" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/gh-aw"
+          "$RUNNER_TEMP/gh-aw" compile agentic-wiki-writer --no-check-update --schedule-seed "$GITHUB_REPOSITORY"
+          git diff --exit-code -- .github/workflows/agentic-wiki-writer.lock.yml .github/aw/actions-lock.json
       - name: Lint
         run: bun run lint
       - name: Test with coverage

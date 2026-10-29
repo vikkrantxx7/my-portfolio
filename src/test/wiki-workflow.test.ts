@@ -4,6 +4,19 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
+describe("wiki workflow source integrity", () => {
+  it("preserves nested YAML and executable block indentation", () => {
+    const source = readFileSync(resolve(".github/workflows/agentic-wiki-writer.md"), "utf8");
+    const frontmatter = source.split("\n---\n")[0];
+    expect(frontmatter).toContain("on:\n  workflow_dispatch:\n    inputs:");
+    expect(frontmatter).toContain("engine:\n  id: gemini");
+    expect(frontmatter).toContain('      cp "$GITHUB_EVENT_PATH" /tmp/gh-aw/event.json');
+    expect(frontmatter).toContain("safe-outputs:\n  create-pull-request:");
+    expect(frontmatter).toContain("  jobs:\n    push-wiki:");
+    expect(frontmatter).toContain("            import re, glob");
+  });
+});
+
 describe("wiki Gemini authentication", () => {
   it("selects API-key authentication while preserving MCP configuration and the proxy", () => {
     const dir = mkdtempSync(join(tmpdir(), "wiki-auth-"));
