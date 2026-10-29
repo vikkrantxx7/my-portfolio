@@ -6,6 +6,7 @@ import { prefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { Button } from "./button";
 import { dockBar, dockItem } from "./dock";
 import { DockProgress } from "./dock-progress";
+import { useDockRipple } from "./dock-ripple";
 
 /** Shared safe-area positioning also used by the expandable home menu. */
 export function DockPosition({
@@ -73,10 +74,12 @@ export function DockDisabled({ children, className }: { children: ReactNode; cla
 }
 
 export function DockTop({ className }: { className?: string }) {
+  const ripple = useDockRipple();
   return (
     <Button
       variant="ghost"
       aria-label="Back to top"
+      {...ripple}
       onClick={() =>
         window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" })
       }

@@ -16,6 +16,7 @@ import {
   type AnchorHTMLAttributes,
   type KeyboardEvent,
   type MouseEvent,
+  type PointerEvent,
   type ReactNode,
   useEffect,
   useRef,
@@ -28,6 +29,7 @@ import { ThemeToggle } from "@/features/theme-toggle/theme-toggle";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { Button } from "@/shared/ui/button";
+import { useDockRipple } from "@/shared/ui/dock-ripple";
 import { DockPosition } from "@/shared/ui/dock-shell";
 import { SectionNavigation } from "@/shared/ui/section-navigation";
 import { AvatarPreview } from "./avatar-preview";
@@ -63,6 +65,7 @@ export function SiteNav() {
   const reduce = usePrefersReducedMotion();
   const [open, setOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
+  const ripple = useDockRipple();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -215,7 +218,11 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <BlogLink hasRouter={Boolean(router)} className={dockLinkCls()}>
+                  <BlogLink
+                    hasRouter={Boolean(router)}
+                    className={dockLinkCls()}
+                    onPointerDown={ripple.onPointerDown}
+                  >
                     <DockInner icon={PenLine} label="Blog" />
                   </BlogLink>
                 </li>
@@ -223,6 +230,7 @@ export function SiteNav() {
                   <Button
                     variant="ghost"
                     aria-label="CV"
+                    {...ripple}
                     onClick={() => {
                       setOpen(false);
                       setResumeOpen(true);
@@ -252,8 +260,9 @@ export function SiteNav() {
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
               onClick={() => (open ? close() : setOpen(true))}
+              {...ripple}
               className={cn(
-                "pointer-events-auto flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95",
+                "pointer-events-auto relative flex h-12 touch-manipulation items-center justify-center gap-1 overflow-hidden rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95",
                 open ? "w-12 px-0" : "px-3",
               )}
             >
@@ -278,7 +287,7 @@ export function SiteNav() {
 
 const dockLinkCls = (active?: boolean) =>
   cn(
-    "flex min-h-12 min-w-0 w-full touch-manipulation flex-col items-center justify-center gap-1 rounded-xl px-0.5 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+    "relative flex min-h-12 min-w-0 w-full touch-manipulation flex-col items-center justify-center gap-1 overflow-hidden rounded-xl px-0.5 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
     active ? "text-primary" : "text-muted-foreground",
   );
 
@@ -312,19 +321,21 @@ function BlogLink({
   hasRouter,
   className,
   children,
+  onPointerDown,
 }: {
   hasRouter: boolean;
   className: string;
   children: ReactNode;
+  onPointerDown?: (event: PointerEvent<HTMLElement>) => void;
 }) {
   if (!hasRouter)
     return (
-      <a href="/blog" className={className}>
+      <a href="/blog" className={className} onPointerDown={onPointerDown}>
         {children}
       </a>
     );
   return (
-    <Link to="/blog" className={className}>
+    <Link to="/blog" className={className} onPointerDown={onPointerDown}>
       {children}
     </Link>
   );
@@ -340,8 +351,14 @@ function DockLink({
   label: string;
   active?: boolean;
 }) {
+  const ripple = useDockRipple();
   return (
-    <a {...props} aria-current={active ? "true" : undefined} className={dockLinkCls(active)}>
+    <a
+      {...props}
+      {...ripple}
+      aria-current={active ? "true" : undefined}
+      className={dockLinkCls(active)}
+    >
       <DockInner icon={icon} label={label} active={active} />
     </a>
   );

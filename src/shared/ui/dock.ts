@@ -19,7 +19,7 @@ export const dockBar = cva(
 );
 
 export const dockItem = cva(
-  "flex min-h-12 min-w-14 touch-manipulation flex-col items-center justify-center gap-1 rounded-full px-2 font-mono text-[10px] uppercase tracking-[0.14em] transition active:scale-95 focus-visible:outline-none focus-visible:ring-2",
+  "relative flex min-h-12 min-w-14 touch-manipulation flex-col items-center justify-center gap-1 overflow-hidden rounded-full px-2 font-mono text-[10px] uppercase tracking-[0.14em] transition active:scale-95 focus-visible:outline-none focus-visible:ring-2",
   {
     variants: {
       tone: {

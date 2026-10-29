@@ -1,0 +1,29 @@
+/* Soft tap ripple for dock controls: a cyan glow that blooms from the finger. */
+.dock-ripple {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-primary) 42%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary) 14%, transparent) 55%,
+    transparent 72%
+  );
+  transform: scale(0);
+  opacity: 0.9;
+  animation: dock-ripple-expand 480ms ease-out forwards;
+}
+
+@keyframes dock-ripple-expand {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock-ripple {
+    animation: none;
+    opacity: 0;
+  }
+}

@@ -50,3 +50,4 @@
 - [x] Template: rebrand colour notes; reusable lightning navigation; component styles beside components; TEMPLATE.md guide.
 
 - [x] PrepForge case study MDX proof of concept (M1–M5)
+- [x] Dock tap ripple: shared spawnDockRipple/useDockRipple + dock-ripple.css on all mobile dock controls (305 tests)

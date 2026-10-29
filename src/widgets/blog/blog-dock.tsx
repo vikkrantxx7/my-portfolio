@@ -3,6 +3,7 @@ import { BookOpen, ChevronLeft, ChevronRight, House } from "lucide-react";
 import type { BlogPost } from "@/content/blog";
 import { cn } from "@/lib/utils";
 import { dockItem } from "@/shared/ui/dock";
+import { useDockRipple } from "@/shared/ui/dock-ripple";
 
 import { DockDisabled, DockShell, DockTop, DockIcon as Inner } from "@/shared/ui/dock-shell";
 
@@ -22,6 +23,7 @@ export function adjacentPosts(posts: BlogPost[], slug: string) {
 
 export function BlogArticleDock({ posts, slug }: { posts: BlogPost[]; slug: string }) {
   const { newer, older } = adjacentPosts(posts, slug);
+  const ripple = useDockRipple();
   return (
     <DockShell label="Article controls" progress>
       {newer ? (
@@ -30,6 +32,7 @@ export function BlogArticleDock({ posts, slug }: { posts: BlogPost[]; slug: stri
           params={{ slug: newer.slug }}
           aria-label={`Newer article: ${newer.frontmatter.title}`}
           className={articleItem}
+          {...ripple}
         >
           <Inner icon={ChevronLeft} label="Newer" />
         </Link>
@@ -38,10 +41,10 @@ export function BlogArticleDock({ posts, slug }: { posts: BlogPost[]; slug: stri
           <Inner icon={ChevronLeft} label="Newer" />
         </DockDisabled>
       )}
-      <Link to="/" aria-label="Home" className={articleItem}>
+      <Link to="/" aria-label="Home" className={articleItem} {...ripple}>
         <Inner icon={House} label="Home" />
       </Link>
-      <Link to="/blog" aria-label="All articles" className={articleItem}>
+      <Link to="/blog" aria-label="All articles" className={articleItem} {...ripple}>
         <Inner icon={BookOpen} label="Articles" />
       </Link>
       <DockTop className={articleItem} />
@@ -51,6 +54,7 @@ export function BlogArticleDock({ posts, slug }: { posts: BlogPost[]; slug: stri
           params={{ slug: older.slug }}
           aria-label={`Older article: ${older.frontmatter.title}`}
           className={articleItem}
+          {...ripple}
         >
           <Inner icon={ChevronRight} label="Older" />
         </Link>
@@ -64,9 +68,10 @@ export function BlogArticleDock({ posts, slug }: { posts: BlogPost[]; slug: stri
 }
 
 export function BlogIndexDock() {
+  const ripple = useDockRipple();
   return (
     <DockShell label="Blog controls" size="compact">
-      <Link to="/" aria-label="Back to home" className={item}>
+      <Link to="/" aria-label="Back to home" className={item} {...ripple}>
         <Inner icon={House} label="Home" />
       </Link>
       <DockTop />
