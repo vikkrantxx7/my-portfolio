@@ -90,9 +90,11 @@ export function SiteNav() {
   };
 
   const onMenuKey = (e: KeyboardEvent) => {
+    if (!open) return;
     if (e.key === "Escape") return close();
     if (e.key !== "Tab" || !menuRef.current) return;
     const items = [...menuRef.current.querySelectorAll<HTMLElement>("a,button")];
+    if (toggleRef.current) items.push(toggleRef.current);
     const first = items[0];
     const last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) {
@@ -168,7 +170,7 @@ export function SiteNav() {
             onClick={close}
           />
         )}
-        <div className={cn("relative h-16 w-full max-w-sm items-center", open ? "grid grid-cols-[minmax(0,2fr)_3rem_minmax(0,3fr)] px-2" : "flex justify-center")}>
+        <div onKeyDown={onMenuKey} className="relative flex h-16 w-full max-w-sm items-center justify-center">
           {open && (
             <motion.div
               id="mobile-menu"
@@ -176,7 +178,6 @@ export function SiteNav() {
               role="dialog"
               aria-modal="true"
               aria-label="Menu"
-              onKeyDown={onMenuKey}
               initial={
                 reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }
               }
@@ -184,7 +185,7 @@ export function SiteNav() {
               transition={
                 reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }
               }
-              className="pointer-events-auto absolute inset-0 grid grid-cols-[minmax(0,2fr)_3rem_minmax(0,3fr)] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
+              className="pointer-events-auto absolute inset-0 grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
             >
               <DockIgnition reducedMotion={reduce} />
               <ul data-testid="dock-left" className="grid min-w-0 grid-cols-2">
@@ -200,7 +201,6 @@ export function SiteNav() {
                   </li>
                 ))}
               </ul>
-              <span aria-hidden />
               <ul data-testid="dock-right" className="grid min-w-0 grid-cols-3">
                 <li>
                   <DockLink
@@ -235,14 +235,21 @@ export function SiteNav() {
               </ul>
             </motion.div>
           )}
-          <button
+          <motion.div
+            className="pointer-events-none relative z-10"
+            initial={false}
+            animate={{ y: open ? -64 : 0 }}
+            transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 340, damping: 30 }}
+          >
+          <Button
+            variant="ghost"
             ref={toggleRef}
             type="button"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => (open ? close() : setOpen(true))}
-            className={cn("pointer-events-auto relative z-10 flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95", open ? "col-start-2 w-12 px-0" : "px-3")}
+            className={cn("pointer-events-auto flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95", open ? "w-12 px-0" : "px-3")}
           >
             {open ? (
               <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
@@ -253,7 +260,8 @@ export function SiteNav() {
                 <ChevronRight className="dock-hint-right size-4" />
               </>
             )}
-          </button>
+          </Button>
+          </motion.div>
         </div>
       </DockPosition>
       {/* Lives outside the menu so it survives the menu closing on open. */}
