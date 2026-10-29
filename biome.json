@@ -8,7 +8,8 @@
       "!**/dist",
       "!**/.output",
       "!src/components/ui",
-      "!.github/workflows/*.md"
+      "!.github/workflows/*.md",
+      "!.github/workflows/*.lock.yml"
     ]
   },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2, "lineWidth": 100 },
