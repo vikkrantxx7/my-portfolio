@@ -32,6 +32,26 @@ export function DockPosition({
   );
 }
 
+/** The pill itself, for docks that need custom positioning (e.g. inside a dialog). */
+export function DockBar({
+  tone,
+  size = "full",
+  className,
+  children,
+  ...props
+}: {
+  tone?: "theme" | "fixed";
+  size?: "full" | "compact";
+  className?: string;
+  children: ReactNode;
+} & Record<string, unknown>) {
+  return (
+    <div {...props} className={cn(dockBar({ tone, size }), "relative", className)}>
+      {children}
+    </div>
+  );
+}
+
 export function DockShell({
   label,
   size = "full",
@@ -45,19 +65,30 @@ export function DockShell({
 }) {
   return (
     <DockPosition label={label}>
-      <div className={cn(dockBar({ size }), "relative")}>
+      <DockBar size={size}>
         {progress && <DockProgress />}
         {children}
-      </div>
+      </DockBar>
     </DockPosition>
   );
 }
 
-export function DockIcon({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
+export function DockIcon({
+  icon: Icon,
+  label,
+  tone = "theme",
+}: {
+  icon: LucideIcon;
+  label: string;
+  tone?: "theme" | "fixed";
+}) {
   return (
     <>
       <Icon
-        className="size-5 shrink-0 text-primary drop-shadow-[0_0_8px_var(--color-primary)]"
+        className={cn(
+          "size-5 shrink-0 drop-shadow-[0_0_8px_var(--color-primary)]",
+          tone === "fixed" ? "text-[#62F4E0]" : "text-primary",
+        )}
         aria-hidden="true"
       />
       <span>{label}</span>
