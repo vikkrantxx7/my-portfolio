@@ -28,6 +28,7 @@ import { ThemeToggle } from "@/features/theme-toggle/theme-toggle";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { Button } from "@/shared/ui/button";
+import { useDockRipple } from "@/shared/ui/dock-ripple";
 import { DockPosition } from "@/shared/ui/dock-shell";
 import { SectionNavigation } from "@/shared/ui/section-navigation";
 import { AvatarPreview } from "./avatar-preview";
@@ -278,7 +279,7 @@ export function SiteNav() {
 
 const dockLinkCls = (active?: boolean) =>
   cn(
-    "flex min-h-12 min-w-0 w-full touch-manipulation flex-col items-center justify-center gap-1 rounded-xl px-0.5 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+    "relative flex min-h-12 min-w-0 w-full touch-manipulation flex-col items-center justify-center gap-1 overflow-hidden rounded-xl px-0.5 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
     active ? "text-primary" : "text-muted-foreground",
   );
 
@@ -340,8 +341,14 @@ function DockLink({
   label: string;
   active?: boolean;
 }) {
+  const ripple = useDockRipple();
   return (
-    <a {...props} aria-current={active ? "true" : undefined} className={dockLinkCls(active)}>
+    <a
+      {...props}
+      {...ripple}
+      aria-current={active ? "true" : undefined}
+      className={dockLinkCls(active)}
+    >
       <DockInner icon={icon} label={label} active={active} />
     </a>
   );
