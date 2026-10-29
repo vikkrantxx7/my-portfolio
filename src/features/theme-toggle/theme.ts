@@ -64,9 +64,7 @@ export function switchTheme(theme: Theme, reduceMotion: boolean, origin?: BurnOr
     | { finished?: Promise<unknown> }
     | undefined;
   // Re-sync once the burn settles in case the browser dropped the mid-transition update.
-  transition?.finished
-    ?.catch(() => undefined)
-    .then(() => syncBrowserBar(theme));
+  transition?.finished?.catch(() => undefined).then(() => syncBrowserBar(theme));
 }
 
 /** Inline pre-paint script: applies the saved theme before first paint. */

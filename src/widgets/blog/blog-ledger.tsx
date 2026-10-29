@@ -19,12 +19,7 @@ export function BlogLedger({ posts, tag }: { posts: BlogPost[]; tag: string }) {
   return (
     <div className="space-y-8">
       <nav aria-label="Filter by tag" className="flex flex-wrap gap-2">
-        <Link
-          to="/blog"
-          search={{}}
-          aria-current={tag ? undefined : "true"}
-          className={pill(!tag)}
-        >
+        <Link to="/blog" search={{}} aria-current={tag ? undefined : "true"} className={pill(!tag)}>
           All
         </Link>
         {tags.map((t) => (
@@ -59,7 +54,9 @@ export function BlogLedger({ posts, tag }: { posts: BlogPost[]; tag: string }) {
                 className="group relative flex flex-col gap-2 border-b border-border py-5 transition-colors hover:bg-primary/5 md:table-row"
               >
                 <td className="whitespace-nowrap font-mono text-xs text-muted-foreground md:py-5 md:pr-6 md:align-top">
-                  <time dateTime={post.frontmatter.publishedAt}>{post.frontmatter.publishedAt}</time>
+                  <time dateTime={post.frontmatter.publishedAt}>
+                    {post.frontmatter.publishedAt}
+                  </time>
                 </td>
                 <td className="md:py-5 md:pr-6">
                   <Link
@@ -69,7 +66,9 @@ export function BlogLedger({ posts, tag }: { posts: BlogPost[]; tag: string }) {
                   >
                     {post.frontmatter.title}
                   </Link>
-                  <p className="mt-1 text-sm text-muted-foreground">{post.frontmatter.description}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {post.frontmatter.description}
+                  </p>
                 </td>
                 <td className="md:py-5 md:pr-6 md:align-top">
                   <span className="flex flex-wrap gap-1.5">

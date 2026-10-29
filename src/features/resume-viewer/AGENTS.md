@@ -1,3 +1,4 @@
 ## Resume viewer rules
+
 - The resume opens in the in-app viewer (src/features/resume-viewer), never as a raw PDF navigation; it shows the HTML resume (`site.resumeHtmlUrl`, sandboxed frame with injected screen/dark styles) and falls back to the PDF/images if absent or broken, while Save always downloads the PDF, so installed-PWA users keep a way back; its floating controls use fixed dark hex values (not tokens) because they float over the paper-white PDF, and the Paper/Dark viewing toggle (CSS invert filter) is independent of the site theme. The home route loader resolves synchronously on client navigations — the origin is only needed for SSR head tags.
 - HTML resume zoom uses same-origin document-local CSS zoom with native non-passive gesture listeners; iframe events cannot reach a parent transform wrapper, and native document scrolling/text selection must remain intact.

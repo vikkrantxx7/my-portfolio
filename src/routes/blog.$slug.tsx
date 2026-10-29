@@ -99,7 +99,13 @@ function BlogArticle() {
           height={1024}
           className="aspect-[3/2] w-full rounded-xl border border-border object-cover"
         />
-        <article>{Body && <Prose><Body /></Prose>}</article>
+        <article>
+          {Body && (
+            <Prose>
+              <Body />
+            </Prose>
+          )}
+        </article>
       </main>
       <BlogArticleDock posts={blogPosts} slug={slug} />
     </>

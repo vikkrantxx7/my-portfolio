@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+
 - [x] Align reading progress with the measured dock border, starting clockwise at its top centre; eight focused tests pass, verified at 360/703px and Top resets to zero. Not published.
 - [x] Give all five home dock items equal space and slide Close above it; verified 320/360/393/702px, CV opening, keyboard exit and reduced motion. Root guidance is under budget.
 - [ ] Decide whether to hide the visible Close button; outside taps already dismiss the dock. Awaiting user choice.

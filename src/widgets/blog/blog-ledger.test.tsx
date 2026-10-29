@@ -21,9 +21,11 @@ describe("BlogLedger", () => {
   it("marks the active tag filter", async () => {
     await renderWithRouter(() => <BlogLedger posts={blogPosts} tag="testing" />);
     const filters = await screen.findByRole("navigation", { name: /filter by tag/i });
-    expect(within(filters).getByRole("link", { name: "Testing" }).getAttribute("aria-current")).toBe(
-      "true",
-    );
-    expect(within(filters).getByRole("link", { name: "All" }).getAttribute("aria-current")).toBeNull();
+    expect(
+      within(filters).getByRole("link", { name: "Testing" }).getAttribute("aria-current"),
+    ).toBe("true");
+    expect(
+      within(filters).getByRole("link", { name: "All" }).getAttribute("aria-current"),
+    ).toBeNull();
   });
 });

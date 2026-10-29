@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { buttonVariants } from "@/shared/ui/button";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/shared/ui/button";
 
 /**
  * Quick return to the work list. Phones get this from the bottom project dock,

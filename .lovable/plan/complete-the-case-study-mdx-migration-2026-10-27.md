@@ -1,6 +1,7 @@
 # Complete the case-study MDX migration
 
 ## Story 1 — git-contributor-stats in MDX
+
 Move the remaining case study into `src/content/case-studies/git-contributor-stats.mdx`, using the same approach as PrepForge.
 
 **Acceptance criteria**
@@ -10,6 +11,7 @@ Move the remaining case study into `src/content/case-studies/git-contributor-sta
 - Register and validate the new MDX body; write and run tests before implementation.
 
 ## Story 2 — Future case studies follow the same pattern
+
 Document MDX as the default authoring format for upcoming case studies.
 
 **Acceptance criteria**
@@ -18,6 +20,7 @@ Document MDX as the default authoring format for upcoming case studies.
 - Existing typed-section fallback remains supported; no blog section or unrelated redesign is included.
 
 ## Technical details
+
 - Reuse the existing MDX compiler, `caseStudyBodies` registry, frontmatter validator and shared `Prose` components.
 - Update the architecture rule to make MDX the default while retaining the typed fallback.
 - Test registration, valid metadata and coverage of every current project with a case study; run the existing rendering and content tests.

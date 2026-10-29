@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+
 - Read nested `AGENTS.md` before editing, including `.github`, nav, theme, resume and shared-ui.
 - Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
 - Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.

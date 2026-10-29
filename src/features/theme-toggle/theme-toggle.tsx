@@ -43,9 +43,17 @@ export function ThemeToggle() {
           custom={d}
           variants={{
             enter: (dir: number) =>
-              dir === 0 ? { opacity: 1 } : reduce ? { opacity: 0 } : { x: -22 * dir, y: 22, rotate: -90 * dir, opacity: 0 },
+              dir === 0
+                ? { opacity: 1 }
+                : reduce
+                  ? { opacity: 0 }
+                  : { x: -22 * dir, y: 22, rotate: -90 * dir, opacity: 0 },
             leave: (dir: number) =>
-              dir === 0 ? { opacity: 0, transition: { duration: 0 } } : reduce ? { opacity: 0 } : { x: 22 * dir, y: 22, rotate: 90 * dir, opacity: 0 },
+              dir === 0
+                ? { opacity: 0, transition: { duration: 0 } }
+                : reduce
+                  ? { opacity: 0 }
+                  : { x: 22 * dir, y: 22, rotate: 90 * dir, opacity: 0 },
           }}
           initial="enter"
           animate={{ x: 0, y: 0, rotate: 0, opacity: 1 }}

@@ -7,9 +7,7 @@ const { spawnSync } = require("node:child_process");
 
 const filename = path.join(process.cwd(), ".gemini", "settings.json");
 fs.mkdirSync(path.dirname(filename), { recursive: true });
-const settings = fs.existsSync(filename)
-  ? JSON.parse(fs.readFileSync(filename, "utf8"))
-  : {};
+const settings = fs.existsSync(filename) ? JSON.parse(fs.readFileSync(filename, "utf8")) : {};
 settings.security = {
   ...settings.security,
   auth: { ...settings.security?.auth, selectedType: "gemini-api-key" },
