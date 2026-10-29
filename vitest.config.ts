@@ -10,6 +10,13 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/*.test.{ts,tsx}", "src/test/**", "src/routeTree.gen.ts"],
+      reporter: ["text-summary", "json-summary", "lcov", "html"],
+      reportsDirectory: "./coverage",
+    },
   },
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") },
