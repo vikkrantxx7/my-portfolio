@@ -11,6 +11,7 @@ import { content } from "@/content/data";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { dockBar, dockItem } from "@/shared/ui/dock";
+import { useDockRipple } from "@/shared/ui/dock-ripple";
 import { site } from "@/content/site";
 import { ResumeHtmlDocument } from "./resume-html-document";
 import { readResumeDark, writeResumeDark } from "./resume-theme";
@@ -58,6 +59,7 @@ export function ResumeViewer({
   const [page, setPage] = useState(1);
   const zoomRef = useRef<ReactZoomPanPinchContentRef>(null);
   const pagesRef = useRef<HTMLDivElement>(null);
+  const ripple = useDockRipple();
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
