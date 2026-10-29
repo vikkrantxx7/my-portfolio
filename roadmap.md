@@ -1,4 +1,5 @@
 # Portfolio — Current requests
+- [x] Repair agentic wiki workflow: Gemini API-key auth wrapper, pinned installation, lighter model and native safe-output prefix; two regression tests pass. Run 40760772651 passed every job, including wiki publishing; public Home page reads back. Fix is on existing PR #4 branch, not merged.
 - [x] Add resume/portfolio shared-fact consistency checks and document updates and PDF regeneration; all 291 tests pass. PDF full-text review remains manual.
 - [x] Add article Home navigation: desktop icon after All articles; mobile Newer, Home, Articles, Top, Older; verified desktop/mobile destinations and 320px layout.
 - [x] Add the article list and published posts to site search; verified collection and article navigation; all 19 focused tests pass.
