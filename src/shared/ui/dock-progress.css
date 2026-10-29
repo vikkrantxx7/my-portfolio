@@ -1,0 +1,15 @@
+.dock-progress {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  filter: var(--dock-ignition-glow);
+}
+.dock-progress-trail { opacity: 0.6; }
+.dock-progress-head { opacity: 0.9; }
+@media (prefers-reduced-motion: reduce) {
+  .dock-progress { filter: none; }
+  .dock-progress-head { opacity: 0.65; }
+}
