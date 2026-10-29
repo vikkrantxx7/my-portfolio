@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import { FileText } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
-import { DockShell } from "./dock-shell";
+import { DockBar, DockIcon, DockShell } from "./dock-shell";
 
 describe("DockShell reading progress", () => {
   it("reports the restored reading position when enabled", () => {
@@ -26,5 +27,33 @@ describe("DockShell reading progress", () => {
       </DockShell>,
     );
     expect(screen.queryByRole("progressbar")).toBeNull();
+  });
+});
+
+describe("DockBar", () => {
+  it("renders the shared pill with the requested tone", () => {
+    render(
+      <DockBar tone="fixed" data-testid="pill">
+        <span>item</span>
+      </DockBar>,
+    );
+    const pill = screen.getByTestId("pill");
+    expect(pill.className).toContain("rounded-full");
+    expect(pill.className).toContain("bg-[#080A0F]/90");
+  });
+});
+
+describe("DockIcon", () => {
+  it("uses the fixed cyan icon tone for docks floating over the resume paper", () => {
+    render(<DockIcon icon={FileText} label="Save" tone="fixed" />);
+    expect(screen.getByText("Save")).toBeInTheDocument();
+    const icon = document.querySelector("svg");
+    expect(icon?.className.baseVal ?? icon?.getAttribute("class")).toContain("text-[#62F4E0]");
+  });
+
+  it("defaults to the theme primary tone", () => {
+    render(<DockIcon icon={FileText} label="Top" />);
+    const icon = document.querySelector("svg");
+    expect(icon?.className.baseVal ?? icon?.getAttribute("class")).toContain("text-primary");
   });
 });

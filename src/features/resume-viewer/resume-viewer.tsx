@@ -10,7 +10,9 @@ import {
 import { content } from "@/content/data";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
-import { dockBar, dockItem } from "@/shared/ui/dock";
+import { dockItem } from "@/shared/ui/dock";
+import { useDockRipple } from "@/shared/ui/dock-ripple";
+import { DockBar, DockIcon } from "@/shared/ui/dock-shell";
 import { site } from "@/content/site";
 import { ResumeHtmlDocument } from "./resume-html-document";
 import { readResumeDark, writeResumeDark } from "./resume-theme";
@@ -58,6 +60,7 @@ export function ResumeViewer({
   const [page, setPage] = useState(1);
   const zoomRef = useRef<ReactZoomPanPinchContentRef>(null);
   const pagesRef = useRef<HTMLDivElement>(null);
+  const ripple = useDockRipple();
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
@@ -150,47 +153,47 @@ export function ResumeViewer({
               data-resume-dock
               className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]"
             >
-              <div className={dockBar({ tone: "fixed" })}>
-                <DialogPrimitive.Close aria-label="Back to portfolio" className={dockButton}>
-                  <ArrowLeft aria-hidden className="size-5 text-[#62F4E0]" />
-                  <span>Back</span>
+              <DockBar tone="fixed">
+                <DialogPrimitive.Close
+                  aria-label="Back to portfolio"
+                  className={dockButton}
+                  {...ripple}
+                >
+                  <DockIcon icon={ArrowLeft} label="Back" tone="fixed" />
                 </DialogPrimitive.Close>
                 <button
                   type="button"
                   aria-label="Zoom out"
+                  {...ripple}
                   onClick={() => zoomRef.current?.zoomOut(0.5)}
                   className={cn(dockButton, "md:hidden", useHtml && "hidden")}
                 >
-                  <ZoomOut aria-hidden className="size-5 text-[#62F4E0]" />
-                  <span>Out</span>
+                  <DockIcon icon={ZoomOut} label="Out" tone="fixed" />
                 </button>
                 <button
                   type="button"
                   aria-label="Zoom in"
+                  {...ripple}
                   onClick={() => zoomRef.current?.zoomIn(0.5)}
                   className={cn(dockButton, "md:hidden", useHtml && "hidden")}
                 >
-                  <ZoomIn aria-hidden className="size-5 text-[#62F4E0]" />
-                  <span>In</span>
+                  <DockIcon icon={ZoomIn} label="In" tone="fixed" />
                 </button>
                 <button
                   type="button"
                   aria-label={darkView ? "Paper view" : "Dark view"}
                   aria-pressed={darkView}
+                  {...ripple}
                   onClick={() => setDarkView((v) => !v)}
                   className={dockButton}
                 >
-                  {darkView ? (
-                    <Sun aria-hidden className="size-5 text-[#62F4E0]" />
-                  ) : (
-                    <Moon aria-hidden className="size-5 text-[#62F4E0]" />
-                  )}
-                  <span>{darkView ? "Paper" : "Dark"}</span>
+                  <DockIcon icon={darkView ? Sun : Moon} label={darkView ? "Paper" : "Dark"} tone="fixed" />
                 </button>
                 <a
                   href={profile.resumeUrl}
                   download={profile.resumeFileName}
                   aria-label="Download PDF"
+                  {...ripple}
                   onClick={(e) => {
                     e.preventDefault();
                     void saveResume(profile.resumeUrl, profile.resumeFileName).catch(() => {
@@ -199,10 +202,9 @@ export function ResumeViewer({
                   }}
                   className={dockButton}
                 >
-                  <FileDown aria-hidden className="size-5 text-[#62F4E0]" />
-                  <span>Save</span>
+                  <DockIcon icon={FileDown} label="Save" tone="fixed" />
                 </a>
-              </div>
+              </DockBar>
             </nav>
           </motion.div>
         </DialogPrimitive.Content>
