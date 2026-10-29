@@ -168,7 +168,7 @@ export function SiteNav() {
             onClick={close}
           />
         )}
-        <div className="relative flex h-16 w-full max-w-sm items-center justify-center">
+        <div className={cn("relative h-16 w-full max-w-sm items-center", open ? "grid grid-cols-[minmax(0,2fr)_3rem_minmax(0,3fr)] px-2" : "flex justify-center")}>
           {open && (
             <motion.div
               id="mobile-menu"
@@ -242,7 +242,7 @@ export function SiteNav() {
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => (open ? close() : setOpen(true))}
-            className="pointer-events-auto relative z-10 flex h-12 touch-manipulation items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
+            className={cn("pointer-events-auto relative z-10 flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95", open ? "col-start-2 w-12 px-0" : "px-3")}
           >
             {open ? (
               <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
