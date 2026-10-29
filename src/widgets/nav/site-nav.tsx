@@ -6,8 +6,8 @@ import {
   FileText,
   GitCommitVertical,
   LayoutGrid,
-  PenLine,
   type LucideIcon,
+  PenLine,
   User,
   X,
 } from "lucide-react";
@@ -27,6 +27,8 @@ import { ResumeViewer } from "@/features/resume-viewer/resume-viewer";
 import { ThemeToggle } from "@/features/theme-toggle/theme-toggle";
 import { cn } from "@/lib/utils";
 import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import { Button } from "@/shared/ui/button";
+import { DockPosition } from "@/shared/ui/dock-shell";
 import { SectionNavigation } from "@/shared/ui/section-navigation";
 import { AvatarPreview } from "./avatar-preview";
 import { DockIgnition } from "./dock-ignition";
@@ -37,6 +39,7 @@ const siteNavTargets: EnergyTargetResolver = (id, nav) => {
   const element = nav.querySelector<HTMLElement>(id ? `a[href="#${id}"]` : "[data-avatar-frame]");
   return element ? { element, kind: id ? "pill" : "avatar" } : null;
 };
+
 import { ScrollProgress } from "./scroll-progress";
 import { useActiveSection } from "./use-active-section";
 
@@ -87,9 +90,11 @@ export function SiteNav() {
   };
 
   const onMenuKey = (e: KeyboardEvent) => {
+    if (!open) return;
     if (e.key === "Escape") return close();
     if (e.key !== "Tab" || !menuRef.current) return;
     const items = [...menuRef.current.querySelectorAll<HTMLElement>("a,button")];
+    if (toggleRef.current) items.push(toggleRef.current);
     const first = items[0];
     const last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) {
@@ -155,10 +160,7 @@ export function SiteNav() {
         </nav>
         <ScrollProgress />
       </header>
-      <div
-        data-dock
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] md:hidden"
-      >
+      <DockPosition label="Mobile menu controls" home>
         {open && (
           <button
             type="button"
@@ -168,7 +170,10 @@ export function SiteNav() {
             onClick={close}
           />
         )}
-        <div className="relative flex h-16 w-full max-w-sm items-center justify-center">
+        <div
+          onKeyDown={onMenuKey}
+          className="relative flex h-16 w-full max-w-sm items-center justify-center"
+        >
           {open && (
             <motion.div
               id="mobile-menu"
@@ -176,7 +181,6 @@ export function SiteNav() {
               role="dialog"
               aria-modal="true"
               aria-label="Menu"
-              onKeyDown={onMenuKey}
               initial={
                 reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }
               }
@@ -184,10 +188,10 @@ export function SiteNav() {
               transition={
                 reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }
               }
-              className="pointer-events-auto absolute inset-0 grid grid-cols-[1fr_4rem_1fr] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
+              className="pointer-events-auto absolute inset-0 grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center rounded-full border border-primary/30 bg-background/85 px-2 shadow-glow backdrop-blur-xl"
             >
               <DockIgnition reducedMotion={reduce} />
-              <ul data-testid="dock-left" className="flex justify-around">
+              <ul data-testid="dock-left" className="grid min-w-0 grid-cols-2">
                 {LEFT.map((s) => (
                   <li key={s.id}>
                     <DockLink
@@ -200,8 +204,7 @@ export function SiteNav() {
                   </li>
                 ))}
               </ul>
-              <span aria-hidden />
-              <ul data-testid="dock-right" className="flex justify-around">
+              <ul data-testid="dock-right" className="grid min-w-0 grid-cols-3">
                 <li>
                   <DockLink
                     href="#about"
@@ -217,42 +220,56 @@ export function SiteNav() {
                   </BlogLink>
                 </li>
                 <li>
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghost"
                     aria-label="CV"
                     onClick={() => {
                       setOpen(false);
                       setResumeOpen(true);
                     }}
-                    className={dockLinkCls()}
+                    className={cn(
+                      dockLinkCls(),
+                      "h-auto gap-1 border-0 bg-transparent text-[10px] tracking-normal",
+                    )}
                   >
                     <DockInner icon={FileText} label="CV" />
-                  </button>
+                  </Button>
                 </li>
               </ul>
             </motion.div>
           )}
-          <button
-            ref={toggleRef}
-            type="button"
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => (open ? close() : setOpen(true))}
-            className="pointer-events-auto relative z-10 flex h-12 touch-manipulation items-center gap-1 rounded-full border border-primary/40 bg-background/85 px-3 text-primary shadow-glow backdrop-blur-xl transition active:scale-95"
+          <motion.div
+            className="pointer-events-none relative z-10"
+            initial={false}
+            animate={{ y: open ? -64 : 0 }}
+            transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 340, damping: 30 }}
           >
-            {open ? (
-              <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
-            ) : (
-              <>
-                <ChevronLeft className="dock-hint-left size-4" />
-                <LayoutGrid className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
-                <ChevronRight className="dock-hint-right size-4" />
-              </>
-            )}
-          </button>
+            <Button
+              variant="ghost"
+              ref={toggleRef}
+              type="button"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? "Close menu" : "Open menu"}
+              onClick={() => (open ? close() : setOpen(true))}
+              className={cn(
+                "pointer-events-auto flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95",
+                open ? "w-12 px-0" : "px-3",
+              )}
+            >
+              {open ? (
+                <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+              ) : (
+                <>
+                  <ChevronLeft className="dock-hint-left size-4" />
+                  <LayoutGrid className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+                  <ChevronRight className="dock-hint-right size-4" />
+                </>
+              )}
+            </Button>
+          </motion.div>
         </div>
-      </div>
+      </DockPosition>
       {/* Lives outside the menu so it survives the menu closing on open. */}
       <ResumeViewer open={resumeOpen} onOpenChange={setResumeOpen} />
     </>
@@ -261,7 +278,7 @@ export function SiteNav() {
 
 const dockLinkCls = (active?: boolean) =>
   cn(
-    "flex min-h-12 min-w-12 touch-manipulation flex-col items-center justify-center gap-1 rounded-xl px-1 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+    "flex min-h-12 min-w-0 w-full touch-manipulation flex-col items-center justify-center gap-1 rounded-xl px-0.5 transition active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
     active ? "text-primary" : "text-muted-foreground",
   );
 
@@ -285,7 +302,7 @@ function DockInner({
             : "opacity-80 drop-shadow-[0_0_4px_var(--color-primary)]",
         )}
       />
-      <span className="font-mono text-[10px] uppercase tracking-[0.14em]">{label}</span>
+      <span className="font-mono text-[10px] uppercase tracking-normal">{label}</span>
     </>
   );
 }

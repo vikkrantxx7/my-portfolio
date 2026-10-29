@@ -1,4 +1,7 @@
 # Portfolio — Current requests
+- [x] Give all five home dock items equal space and slide Close above it; verified 320/360/393/702px, CV opening, keyboard exit and reduced motion. Root guidance is under budget.
+- [ ] Decide whether to hide the visible Close button; outside taps already dismiss the dock. Awaiting user choice.
+- [x] Share header/dock shells, contain the Android CV control, and track project/article reading progress along the dock rim; 298 tests pass. Verified CV opening without overflow/overlap at 320/360/393/702px, progress 0/50/100 and Top in both themes, reduced motion and desktop headers. Not published.
 - [x] Repair agentic wiki workflow: Gemini API-key auth wrapper, pinned installation, lighter model and native safe-output prefix; two regression tests pass. Run 40760772651 passed every job, including wiki publishing; public Home page reads back. Fix is on existing PR #4 branch, not merged.
 - [x] Add resume/portfolio shared-fact consistency checks and document updates and PDF regeneration; all 291 tests pass. PDF full-text review remains manual.
 - [x] Add article Home navigation: desktop icon after All articles; mobile Newer, Home, Articles, Top, Older; verified desktop/mobile destinations and 320px layout.
