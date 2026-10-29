@@ -153,13 +153,18 @@ export function ResumeViewer({
               className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]"
             >
               <div className={dockBar({ tone: "fixed" })}>
-                <DialogPrimitive.Close aria-label="Back to portfolio" className={dockButton}>
+                <DialogPrimitive.Close
+                  aria-label="Back to portfolio"
+                  className={dockButton}
+                  {...ripple}
+                >
                   <ArrowLeft aria-hidden className="size-5 text-[#62F4E0]" />
                   <span>Back</span>
                 </DialogPrimitive.Close>
                 <button
                   type="button"
                   aria-label="Zoom out"
+                  {...ripple}
                   onClick={() => zoomRef.current?.zoomOut(0.5)}
                   className={cn(dockButton, "md:hidden", useHtml && "hidden")}
                 >
@@ -169,6 +174,7 @@ export function ResumeViewer({
                 <button
                   type="button"
                   aria-label="Zoom in"
+                  {...ripple}
                   onClick={() => zoomRef.current?.zoomIn(0.5)}
                   className={cn(dockButton, "md:hidden", useHtml && "hidden")}
                 >
@@ -179,6 +185,7 @@ export function ResumeViewer({
                   type="button"
                   aria-label={darkView ? "Paper view" : "Dark view"}
                   aria-pressed={darkView}
+                  {...ripple}
                   onClick={() => setDarkView((v) => !v)}
                   className={dockButton}
                 >
@@ -193,6 +200,7 @@ export function ResumeViewer({
                   href={profile.resumeUrl}
                   download={profile.resumeFileName}
                   aria-label="Download PDF"
+                  {...ripple}
                   onClick={(e) => {
                     e.preventDefault();
                     void saveResume(profile.resumeUrl, profile.resumeFileName).catch(() => {
