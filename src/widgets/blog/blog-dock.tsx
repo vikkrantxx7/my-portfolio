@@ -3,6 +3,7 @@ import { BookOpen, ChevronLeft, ChevronRight, House } from "lucide-react";
 import type { BlogPost } from "@/content/blog";
 import { cn } from "@/lib/utils";
 import { dockItem } from "@/shared/ui/dock";
+import { useDockRipple } from "@/shared/ui/dock-ripple";
 
 import { DockDisabled, DockShell, DockTop, DockIcon as Inner } from "@/shared/ui/dock-shell";
 
