@@ -9,7 +9,6 @@ import { FilterSelect } from "@/shared/ui/filter-select";
 import { SectionHeading } from "@/shared/ui/section-heading";
 import { Tag } from "@/shared/ui/tag";
 
-
 export function ProjectGallery({
   filters,
   onFiltersChange,

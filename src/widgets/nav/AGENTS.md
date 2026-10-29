@@ -1,4 +1,5 @@
 ## Navigation rules
+
 - Interactive controls use the base-layer cursor rule and `cursor-pointer` on shared Button/theme toggle. Header name uses `header-name` and currentColor hover glow; letter spans carry the inherited text-shadow fade.
 
 - Profile card charge is a decorative measured SVG with deterministic rounded-perimeter geometry and brightness-only CSS shimmer, keeping content interactive and reduced motion static. Two faint spark lines escape opposite corners (top-left cyan, bottom-right violet), gradient-fading outward with the same deterministic geometry and staggered shimmer.

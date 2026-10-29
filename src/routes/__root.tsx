@@ -9,10 +9,10 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { type ReactNode, useEffect } from "react";
+import { site } from "@/content/site";
 import { CommandPalette } from "@/features/command-palette/command-palette";
 import { THEME_SCRIPT } from "@/features/theme-toggle/theme";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { site } from "@/content/site";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {

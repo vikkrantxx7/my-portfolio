@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { blogPosts } from "@/content/blog";
 import { site } from "@/content/site";
 import { pageUrl } from "@/shared/lib/seo";
-import { BlogHeader } from "@/widgets/blog/blog-header";
 import { BlogIndexDock } from "@/widgets/blog/blog-dock";
+import { BlogHeader } from "@/widgets/blog/blog-header";
 import { BlogLedger } from "@/widgets/blog/blog-ledger";
 
 const title = `Engineering blog — ${site.titleSuffix}`;

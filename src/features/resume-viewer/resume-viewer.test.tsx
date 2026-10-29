@@ -12,6 +12,7 @@ vi.mock("@/content/site", async (orig) => {
     }),
   };
 });
+
 import { ResumeViewer } from "./resume-viewer";
 
 function renderViewer(triggerClassName?: string) {

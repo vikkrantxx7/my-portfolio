@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
 import { existsSync } from "node:fs";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { ResumeHtmlDocument, DARK_STYLE_ID } from "./resume-html-document";
+import { DARK_STYLE_ID, ResumeHtmlDocument } from "./resume-html-document";
 
 function stubDoc(frame: HTMLIFrameElement, body: string) {
   const doc = document.implementation.createHTMLDocument("r");

@@ -23,6 +23,7 @@ Your uploaded resume page (no scripts, ~29 KB) becomes what visitors read; the P
 - AC: fallback test; download link test.
 
 ## Technical details
+
 - Frame: `sandbox="allow-same-origin"` (no scripts), height measured from `contentDocument` on load + ResizeObserver.
 - Content config gains optional `resumeHtmlUrl` in `src/content/site.ts` to keep the template rebrandable; absent → existing behaviour.
 - Update TEMPLATE.md and AGENTS.md rule for the resume viewer.

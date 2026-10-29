@@ -6,4 +6,5 @@
 - No visual or content changes. The live site receives the correction on the next publish.
 
 ## Technical details
+
 Use a shared, browser-safe URL helper in the existing SEO module; canonical tags remain on leaf routes only.

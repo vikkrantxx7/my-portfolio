@@ -25,7 +25,9 @@ describe("theme", () => {
   });
 
   const barColor = () =>
-    [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map((m) => m.content);
+    [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map(
+      (m) => m.content,
+    );
 
   it("syncs the browser bar colour (theme-color) with the theme via a single fresh tag", () => {
     const meta = document.createElement("meta");
@@ -46,7 +48,6 @@ describe("theme", () => {
     new Function(THEME_SCRIPT)();
     expect(barColor()).toEqual(["#F6F7FB"]);
   });
-
 
   it("burns from the toggle origin when view transitions are supported", () => {
     const start = vi.fn((cb: () => void) => cb());

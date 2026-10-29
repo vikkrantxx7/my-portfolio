@@ -25,7 +25,8 @@ export function validateBlogFrontmatter(fm: BlogFrontmatter): string[] {
   const errors: string[] = [];
   if (!fm.title?.trim()) errors.push("title is required");
   if (!fm.description?.trim()) errors.push("description is required");
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(fm.publishedAt ?? "")) errors.push("publishedAt must be YYYY-MM-DD");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fm.publishedAt ?? ""))
+    errors.push("publishedAt must be YYYY-MM-DD");
   if (!(fm.readingMinutes > 0)) errors.push("readingMinutes must be positive");
   if (!fm.tags?.length) errors.push("at least one tag is required");
   return errors;

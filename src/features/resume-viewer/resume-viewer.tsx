@@ -8,12 +8,12 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 import { content } from "@/content/data";
+import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
 import { dockItem } from "@/shared/ui/dock";
 import { useDockRipple } from "@/shared/ui/dock-ripple";
 import { DockBar, DockIcon } from "@/shared/ui/dock-shell";
-import { site } from "@/content/site";
 import { ResumeHtmlDocument } from "./resume-html-document";
 import { readResumeDark, writeResumeDark } from "./resume-theme";
 import { saveResume } from "./save-resume";
@@ -187,7 +187,11 @@ export function ResumeViewer({
                   onClick={() => setDarkView((v) => !v)}
                   className={dockButton}
                 >
-                  <DockIcon icon={darkView ? Sun : Moon} label={darkView ? "Paper" : "Dark"} tone="fixed" />
+                  <DockIcon
+                    icon={darkView ? Sun : Moon}
+                    label={darkView ? "Paper" : "Dark"}
+                    tone="fixed"
+                  />
                 </button>
                 <a
                   href={profile.resumeUrl}

@@ -1,6 +1,6 @@
-import { blogPosts } from "@/content/blog";
 import { createFileRoute } from "@tanstack/react-router";
 import { getRouterInstance } from "@tanstack/react-start";
+import { blogPosts } from "@/content/blog";
 import { content } from "@/content/data";
 import {
   isSitemapRouteIncluded,

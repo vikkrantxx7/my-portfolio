@@ -4,7 +4,9 @@
 # Schedule: 09:00 UTC on the 1st and 15th of each month.
 # Cooldown: only versions released at least 7 days ago are proposed.
 #   Security updates are NOT delayed — they bypass the cooldown.
-# Groups: one PR for production dependencies, one for development dependencies.
+# Groups: minor/patch updates are batched into one PR for production and one
+#   for development dependencies. Major updates are NOT grouped: each opens
+#   its own isolated PR with its own changelog and CI run.
 #
 # HARD REQUIREMENTS — do not auto-update (exact pins in package.json):
 #   @tanstack/react-form, @tanstack/react-router, @tanstack/react-start,
@@ -29,10 +31,12 @@ updates:
     groups:
       dependencies:
         dependency-type: production
+        update-types: ["minor", "patch"]
         patterns:
           - "*"
       dev-dependencies:
         dependency-type: development
+        update-types: ["minor", "patch"]
         patterns:
           - "*"
     ignore:
