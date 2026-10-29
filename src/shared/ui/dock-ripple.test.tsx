@@ -29,7 +29,10 @@ describe("dock ripple", () => {
       toJSON: () => ({}),
     });
 
-    fireEvent.pointerDown(button, { clientX: 128, clientY: 224 });
+    fireEvent(
+      button,
+      new window.MouseEvent("pointerdown", { bubbles: true, clientX: 128, clientY: 224 }),
+    );
 
     const ripple = button.querySelector(".dock-ripple");
     expect(ripple).not.toBeNull();
