@@ -170,7 +170,10 @@ export function SiteNav() {
             onClick={close}
           />
         )}
-        <div onKeyDown={onMenuKey} className="relative flex h-16 w-full max-w-sm items-center justify-center">
+        <div
+          onKeyDown={onMenuKey}
+          className="relative flex h-16 w-full max-w-sm items-center justify-center"
+        >
           {open && (
             <motion.div
               id="mobile-menu"
@@ -241,26 +244,29 @@ export function SiteNav() {
             animate={{ y: open ? -64 : 0 }}
             transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 340, damping: 30 }}
           >
-          <Button
-            variant="ghost"
-            ref={toggleRef}
-            type="button"
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => (open ? close() : setOpen(true))}
-            className={cn("pointer-events-auto flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95", open ? "w-12 px-0" : "px-3")}
-          >
-            {open ? (
-              <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
-            ) : (
-              <>
-                <ChevronLeft className="dock-hint-left size-4" />
-                <LayoutGrid className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
-                <ChevronRight className="dock-hint-right size-4" />
-              </>
-            )}
-          </Button>
+            <Button
+              variant="ghost"
+              ref={toggleRef}
+              type="button"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? "Close menu" : "Open menu"}
+              onClick={() => (open ? close() : setOpen(true))}
+              className={cn(
+                "pointer-events-auto flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95",
+                open ? "w-12 px-0" : "px-3",
+              )}
+            >
+              {open ? (
+                <X className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+              ) : (
+                <>
+                  <ChevronLeft className="dock-hint-left size-4" />
+                  <LayoutGrid className="size-5 drop-shadow-[0_0_6px_var(--color-primary)]" />
+                  <ChevronRight className="dock-hint-right size-4" />
+                </>
+              )}
+            </Button>
           </motion.div>
         </div>
       </DockPosition>
