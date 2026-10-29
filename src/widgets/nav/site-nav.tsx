@@ -16,6 +16,7 @@ import {
   type AnchorHTMLAttributes,
   type KeyboardEvent,
   type MouseEvent,
+  type PointerEvent,
   type ReactNode,
   useEffect,
   useRef,
@@ -313,19 +314,21 @@ function BlogLink({
   hasRouter,
   className,
   children,
+  onPointerDown,
 }: {
   hasRouter: boolean;
   className: string;
   children: ReactNode;
+  onPointerDown?: (event: PointerEvent<HTMLElement>) => void;
 }) {
   if (!hasRouter)
     return (
-      <a href="/blog" className={className}>
+      <a href="/blog" className={className} onPointerDown={onPointerDown}>
         {children}
       </a>
     );
   return (
-    <Link to="/blog" className={className}>
+    <Link to="/blog" className={className} onPointerDown={onPointerDown}>
       {children}
     </Link>
   );
