@@ -216,7 +216,7 @@ describe("SiteNav", () => {
     expect(links[0]).toHaveFocus();
     // Shift+Tab from first wraps to last focusable
     await user.tab({ shift: true });
-    expect(dialog.contains(document.activeElement)).toBe(true);
+    expect(screen.getByRole("button", { name: /close menu/i })).toHaveFocus();
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /open menu/i })).toHaveFocus();
