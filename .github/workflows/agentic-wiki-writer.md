@@ -1,97 +1,96 @@
 ---
-
 name: Agentic Wiki Writer
 description: >
-Generates GitHub wiki pages from source code using a PAGES.md template.
-Runs once a day if any merges to the default branch have happened, or on manual dispatch.
+  Generates GitHub wiki pages from source code using a PAGES.md template.
+  Runs once a day if any merges to the default branch have happened, or on manual dispatch.
 
 on:
-workflow_dispatch:
-inputs:
-regenerate-template:
-description: "Regenerate PAGES.md from scratch (full regen)"
-type: boolean
-default: false
-schedule: daily
+  workflow_dispatch:
+    inputs:
+      regenerate-template:
+        description: "Regenerate PAGES.md from scratch (full regen)"
+        type: boolean
+        default: false
+  schedule: daily
 
 engine:
-id: gemini
-model: gemini-3.1-flash-lite
-command: node .github/aw/gemini-api-key.cjs
+  id: gemini
+  model: gemini-3.1-flash-lite
+  command: node .github/aw/gemini-api-key.cjs
 
 permissions:
-contents: read
-issues: read
-pull-requests: read
+  contents: read
+  issues: read
+  pull-requests: read
 
 steps:
-- name: Install pinned Gemini CLI for custom auth wrapper
-  run: npm install --ignore-scripts -g @google/gemini-cli@0.55.1
-- name: Pre-stage event payload for sandbox
-  run: |
-  cp "$GITHUB_EVENT_PATH" /tmp/gh-aw/event.json
-  echo "Event payload staged to /tmp/gh-aw/event.json"
-  cat /tmp/gh-aw/event.json
-- name: Create agentic-wiki directory
-  run: mkdir -p .github/agentic-wiki
+  - name: Install pinned Gemini CLI for custom auth wrapper
+    run: npm install --ignore-scripts -g @google/gemini-cli@0.55.1
+  - name: Pre-stage event payload for sandbox
+    run: |
+      cp "$GITHUB_EVENT_PATH" /tmp/gh-aw/event.json
+      echo "Event payload staged to /tmp/gh-aw/event.json"
+      cat /tmp/gh-aw/event.json
+  - name: Create agentic-wiki directory
+    run: mkdir -p .github/agentic-wiki
 
 tools:
-bash:
-- "safeoutputs *"
-- "find * -type f -not -path"
-- "tree *"
-- "wc *"
-- "ls"
-- "cat *"
-- "head *"
-edit:
-repo-memory:
-branch-name: memory/agentic-wiki
-description: "Source file mappings, content hashes, and file summaries for incremental wiki regeneration"
-allowed-extensions: [".json", ".md"]
-max-file-size: 1048576
-max-file-count: 50
-github:
-toolsets: [default]
+  bash:
+    - "safeoutputs *"
+    - "find * -type f -not -path"
+    - "tree *"
+    - "wc *"
+    - "ls"
+    - "cat *"
+    - "head *"
+  edit:
+  repo-memory:
+    branch-name: memory/agentic-wiki
+    description: "Source file mappings, content hashes, and file summaries for incremental wiki regeneration"
+    allowed-extensions: [".json", ".md"]
+    max-file-size: 1048576
+    max-file-count: 50
+  github:
+    toolsets: [default]
 
 safe-outputs:
-create-pull-request:
-title-prefix: "[agentic-wiki]"
-labels: [documentation, automated]
-allowed-files:
-- ".github/agentic-wiki/**"
-protected-files: allowed
-jobs:
-push-wiki:
-description: >
-Push generated wiki pages to the repository wiki.
-Pass a JSON object mapping filenames to markdown content.
-runs-on: ubuntu-latest
-output: "Wiki pages pushed successfully"
-permissions:
-contents: write
-inputs:
-files:
-description: "JSON object mapping filenames to markdown content, e.g. {\"Home.md\": \"...\", \"_Sidebar.md\": \"...\"}"
-required: true
-type: string
-steps:
-- name: Checkout wiki
-uses: actions/checkout@v7.0.1
-with:
-repository: ${{ github.repository }}.wiki
-token: ${{ secrets.GITHUB_TOKEN }}
-- name: Write wiki pages
-run: |
-jq -r '.items[] | select(.type == "push_wiki") | .files | fromjson | to_entries[] | @base64' "$GH_AW_AGENT_OUTPUT" | while IFS= read -r entry; do
-FILENAME=$(printf '%s' "$entry" | base64 -d | jq -r '.key')
-CONTENT=$(printf '%s' "$entry" | base64 -d | jq -r '.value')
-printf '%s\n' "$CONTENT" > "$FILENAME"
-done
-- name: Sanitize Mermaid diagrams
-run: |
-python3 - <<'EOF'
-import re, glob
+  create-pull-request:
+    title-prefix: "[agentic-wiki]"
+    labels: [documentation, automated]
+    allowed-files:
+      - ".github/agentic-wiki/**"
+    protected-files: allowed
+  jobs:
+    push-wiki:
+      description: >
+        Push generated wiki pages to the repository wiki.
+        Pass a JSON object mapping filenames to markdown content.
+      runs-on: ubuntu-latest
+      output: "Wiki pages pushed successfully"
+      permissions:
+        contents: write
+      inputs:
+        files:
+          description: "JSON object mapping filenames to markdown content, e.g. {\"Home.md\": \"...\", \"_Sidebar.md\": \"...\"}"
+          required: true
+          type: string
+      steps:
+        - name: Checkout wiki
+          uses: actions/checkout@v7.0.1
+          with:
+            repository: ${{ github.repository }}.wiki
+            token: ${{ secrets.GITHUB_TOKEN }}
+        - name: Write wiki pages
+          run: |
+            jq -r '.items[] | select(.type == "push_wiki") | .files | fromjson | to_entries[] | @base64' "$GH_AW_AGENT_OUTPUT" | while IFS= read -r entry; do
+              FILENAME=$(printf '%s' "$entry" | base64 -d | jq -r '.key')
+              CONTENT=$(printf '%s' "$entry" | base64 -d | jq -r '.value')
+              printf '%s\n' "$CONTENT" > "$FILENAME"
+            done
+        - name: Sanitize Mermaid diagrams
+          run: |
+            python3 - <<'EOF'
+            import re, glob
 
             def fix_mermaid_block(block):
                 # Remove backtick markdown-string syntax from node labels.
