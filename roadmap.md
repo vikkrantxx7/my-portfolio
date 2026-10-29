@@ -1,5 +1,6 @@
 # Portfolio — Current requests
 
+- [ ] Add a top-right copy icon to MDX code blocks and verify copying the original code.
 - [ ] Repair the open GitHub issue for the Agentic Wiki Writer stale lock; regenerate with its pinned compiler and verify on GitHub.
 - [x] Align reading progress with the measured dock border, starting clockwise at its top centre; eight focused tests pass, verified at 360/703px and Top resets to zero. Not published.
 - [x] Give all five home dock items equal space and slide Close above it; verified 320/360/393/702px, CV opening, keyboard exit and reduced motion. Root guidance is under budget.
