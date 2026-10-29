@@ -65,6 +65,7 @@ export function SiteNav() {
   const reduce = usePrefersReducedMotion();
   const [open, setOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
+  const ripple = useDockRipple();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -217,7 +218,11 @@ export function SiteNav() {
                   />
                 </li>
                 <li>
-                  <BlogLink hasRouter={Boolean(router)} className={dockLinkCls()}>
+                  <BlogLink
+                    hasRouter={Boolean(router)}
+                    className={dockLinkCls()}
+                    onPointerDown={ripple.onPointerDown}
+                  >
                     <DockInner icon={PenLine} label="Blog" />
                   </BlogLink>
                 </li>
@@ -225,6 +230,7 @@ export function SiteNav() {
                   <Button
                     variant="ghost"
                     aria-label="CV"
+                    {...ripple}
                     onClick={() => {
                       setOpen(false);
                       setResumeOpen(true);
@@ -254,8 +260,9 @@ export function SiteNav() {
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
               onClick={() => (open ? close() : setOpen(true))}
+              {...ripple}
               className={cn(
-                "pointer-events-auto flex h-12 touch-manipulation items-center justify-center gap-1 rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95",
+                "pointer-events-auto relative flex h-12 touch-manipulation items-center justify-center gap-1 overflow-hidden rounded-full border border-primary/40 bg-background/85 text-primary shadow-glow backdrop-blur-xl transition active:scale-95",
                 open ? "w-12 px-0" : "px-3",
               )}
             >
