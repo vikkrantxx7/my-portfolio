@@ -11,29 +11,48 @@ describe("MDX code copying", () => {
     render(
       <CodeBlock>
         <code>
-          <span data-line=""><span>function run() {"{"}</span></span>
-          <span data-line=""><span>{"  return 42;"}</span></span>
-          <span data-line=""><span>{"}"}</span></span>
+          <span data-line="">
+            <span>function run() {"{"}</span>
+          </span>
+          <span data-line="">
+            <span>{"  return 42;"}</span>
+          </span>
+          <span data-line="">
+            <span>{"}"}</span>
+          </span>
         </code>
       </CodeBlock>,
     );
     fireEvent.click(screen.getByRole("button", { name: "Copy code" }));
-    await waitFor(() => expect(writeText).toHaveBeenCalledWith("function run() {\n  return 42;\n}"));
+    await waitFor(() =>
+      expect(writeText).toHaveBeenCalledWith("function run() {\n  return 42;\n}"),
+    );
     expect(await screen.findByRole("button", { name: "Copied" })).toBeEnabled();
   });
 
   it("copies unhighlighted code and preserves blank lines", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { clipboard: { writeText } });
-    render(<CodeBlock><code>{"first\n\n  last\n"}</code></CodeBlock>);
+    render(
+      <CodeBlock>
+        <code>{"first\n\n  last\n"}</code>
+      </CodeBlock>,
+    );
     fireEvent.click(screen.getByRole("button", { name: "Copy code" }));
     await waitFor(() => expect(writeText).toHaveBeenCalledWith("first\n\n  last\n"));
   });
 
   it("reports clipboard rejection and allows retry", async () => {
-    const writeText = vi.fn().mockRejectedValueOnce(new Error("Denied")).mockResolvedValue(undefined);
+    const writeText = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("Denied"))
+      .mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { clipboard: { writeText } });
-    render(<CodeBlock><code>retry me</code></CodeBlock>);
+    render(
+      <CodeBlock>
+        <code>retry me</code>
+      </CodeBlock>,
+    );
     fireEvent.click(screen.getByRole("button", { name: "Copy code" }));
     const retry = await screen.findByRole("button", { name: "Copy failed — retry" });
     fireEvent.click(retry);

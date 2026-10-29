@@ -9,7 +9,8 @@ export function CodeBlock({ children, className, ...props }: ComponentProps<"pre
   const resetRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
   useEffect(() => () => clearTimeout(resetRef.current), []);
-  const label = status === "copied" ? "Copied" : status === "failed" ? "Copy failed — retry" : "Copy code";
+  const label =
+    status === "copied" ? "Copied" : status === "failed" ? "Copy failed — retry" : "Copy code";
 
   async function copy() {
     const code = preRef.current?.querySelector("code");
@@ -17,7 +18,7 @@ export function CodeBlock({ children, className, ...props }: ComponentProps<"pre
     const lines = Array.from(code.querySelectorAll("[data-line]"));
     const text = lines.length
       ? lines.map((line) => line.textContent ?? "").join("\n")
-      : code.textContent ?? "";
+      : (code.textContent ?? "");
     clearTimeout(resetRef.current);
     try {
       await navigator.clipboard.writeText(text);
@@ -33,7 +34,10 @@ export function CodeBlock({ children, className, ...props }: ComponentProps<"pre
       <pre
         {...props}
         ref={preRef}
-        className={cn("overflow-x-auto rounded-lg border border-border bg-card p-4 pr-16 font-mono text-sm", className)}
+        className={cn(
+          "overflow-x-auto rounded-lg border border-border bg-card p-4 pr-16 font-mono text-sm",
+          className,
+        )}
       >
         {children}
       </pre>
@@ -47,13 +51,19 @@ export function CodeBlock({ children, className, ...props }: ComponentProps<"pre
               aria-label={label}
               onClick={copy}
             >
-              {status === "copied" ? <Check className="size-4 text-primary" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+              {status === "copied" ? (
+                <Check className="size-4 text-primary" aria-hidden="true" />
+              ) : (
+                <Copy className="size-4" aria-hidden="true" />
+              )}
             </Button>
           </TooltipTrigger>
           <TooltipContent>{label}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <span className="sr-only" role="status">{status === "idle" ? "" : label}</span>
+      <span className="sr-only" role="status">
+        {status === "idle" ? "" : label}
+      </span>
     </div>
   );
 }
