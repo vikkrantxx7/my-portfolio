@@ -2,6 +2,7 @@ import { MDXProvider } from "@mdx-js/react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { Children, type ComponentProps, isValidElement, type ReactNode } from "react";
+import { CodeBlock } from "./code-block";
 
 function textOf(node: ReactNode): string {
   return Children.toArray(node)
@@ -77,12 +78,7 @@ export const proseComponents = {
   code: (props: ComponentProps<"code">) => (
     <code className="rounded bg-card px-1.5 py-0.5 font-mono text-sm text-foreground" {...props} />
   ),
-  pre: (props: ComponentProps<"pre">) => (
-    <pre
-      className="overflow-x-auto rounded-lg border border-border bg-card p-4 font-mono text-sm"
-      {...props}
-    />
-  ),
+  pre: CodeBlock,
   blockquote: (props: ComponentProps<"blockquote">) => (
     <blockquote
       className="border-l-2 border-primary pl-4 italic text-muted-foreground"
