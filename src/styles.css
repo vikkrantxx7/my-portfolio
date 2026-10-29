@@ -11,6 +11,7 @@
 @import "./widgets/hero/hero.css";
 @import "./shared/ui/gradient-frame.css";
 @import "./shared/ui/dock-progress.css";
+@import "./shared/ui/dock-ripple.css";
 @source "../src";
 
 @custom-variant dark (&:is(.dark *));
