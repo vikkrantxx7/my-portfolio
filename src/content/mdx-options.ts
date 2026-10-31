@@ -2,6 +2,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import type { Options } from "@mdx-js/rollup";
 
 /**
  * Shared MDX compiler options for the app build, Vitest, and tests.
@@ -11,13 +12,13 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
  * SSR bundle compiled with the dev runtime crashes because the published
  * React build has no `jsxDEV` export.
  */
-export const mdxOptions = {
+export const mdxOptions: Options = {
   development: false,
   providerImportSource: "@mdx-js/react",
   remarkPlugins: [
     remarkFrontmatter,
     remarkGfm,
-    [remarkMdxFrontmatter, { name: "frontmatter" }] as const,
+    [remarkMdxFrontmatter, { name: "frontmatter" }],
   ],
   rehypePlugins: [
     [
@@ -27,6 +28,6 @@ export const mdxOptions = {
         keepBackground: false,
         defaultLang: { block: "plaintext" },
       },
-    ] as const,
+    ],
   ],
-} as const;
+};
