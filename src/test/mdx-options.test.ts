@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mdxOptions } from "../mdx.config";
+import { mdxOptions } from "../mdx.config.ts";
 
 /**
  * Regression guard for the production blog crash: compiled MDX must use the
