@@ -57,7 +57,6 @@ export function ResumeHtmlDocument({
 
   useEffect(applyDark, [applyDark]);
   // A cached page can finish loading before React attaches onLoad; check once on mount.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only check
   useEffect(() => {
     const doc = ref.current?.contentDocument;
     if (doc?.readyState === "complete" && doc.querySelector(".page")) {

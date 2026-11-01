@@ -1,8 +1,8 @@
+import type { Options } from "@mdx-js/rollup";
 import rehypePrettyCode from "rehype-pretty-code";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
-import type { Options } from "@mdx-js/rollup";
 
 /**
  * Shared MDX compiler options for the app build, Vitest, and tests.
@@ -15,11 +15,7 @@ import type { Options } from "@mdx-js/rollup";
 export const mdxOptions: Options = {
   development: false,
   providerImportSource: "@mdx-js/react",
-  remarkPlugins: [
-    remarkFrontmatter,
-    remarkGfm,
-    [remarkMdxFrontmatter, { name: "frontmatter" }],
-  ],
+  remarkPlugins: [remarkFrontmatter, remarkGfm, [remarkMdxFrontmatter, { name: "frontmatter" }]],
   rehypePlugins: [
     [
       rehypePrettyCode,
