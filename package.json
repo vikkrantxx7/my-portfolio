@@ -65,7 +65,7 @@
     "react": "19.3.1",
     "react-day-picker": "9.14.0",
     "react-dom": "19.3.1",
-    "react-resizable-panels": "4.14.8",
+    "react-resizable-panels": "4.15.0",
     "react-zoom-pan-pinch": "4.2.0",
     "recharts": "2.15.4",
     "rehype-pretty-code": "0.14.5",
