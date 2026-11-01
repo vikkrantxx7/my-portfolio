@@ -4,7 +4,6 @@ import { applyTheme, contrastRatio, parseTheme, switchTheme, THEME_SCRIPT } from
 afterEach(() => {
   document.documentElement.className = "";
   localStorage.clear();
-  // biome-ignore lint/suspicious/noExplicitAny: test cleanup
   delete (document as any).startViewTransition;
 });
 
@@ -51,7 +50,6 @@ describe("theme", () => {
 
   it("burns from the toggle origin when view transitions are supported", () => {
     const start = vi.fn((cb: () => void) => cb());
-    // biome-ignore lint/suspicious/noExplicitAny: stub
     (document as any).startViewTransition = start;
     switchTheme("light", false, { x: 1024, y: 40 });
     expect(start).toHaveBeenCalledOnce();
@@ -66,7 +64,6 @@ describe("theme", () => {
 
   it("falls back to a default origin near the top-right toggle", () => {
     const start = vi.fn((cb: () => void) => cb());
-    // biome-ignore lint/suspicious/noExplicitAny: stub
     (document as any).startViewTransition = start;
     switchTheme("light", false);
     expect(document.documentElement.style.getPropertyValue("--burn-x")).toMatch(/px$/);
@@ -75,7 +72,6 @@ describe("theme", () => {
 
   it("switches instantly when reduced motion is requested", () => {
     const start = vi.fn();
-    // biome-ignore lint/suspicious/noExplicitAny: stub
     (document as any).startViewTransition = start;
     switchTheme("light", true);
     expect(start).not.toHaveBeenCalled();
@@ -100,7 +96,6 @@ describe("theme", () => {
           }),
         }) as unknown,
     );
-    // biome-ignore lint/suspicious/noExplicitAny: stub
     (document as any).startViewTransition = start;
 
     switchTheme("dark", false, { x: 10, y: 10 });

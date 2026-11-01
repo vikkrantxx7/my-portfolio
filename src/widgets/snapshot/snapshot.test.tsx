@@ -20,7 +20,6 @@ function setReducedMotion(reduce: boolean) {
 beforeEach(() => {
   observers.length = 0;
   setReducedMotion(false);
-  // biome-ignore lint/suspicious/noExplicitAny: test stub
   (window as any).IntersectionObserver = class {
     cb: (e: Partial<IntersectionObserverEntry>[]) => void;
     constructor(cb: (e: Partial<IntersectionObserverEntry>[]) => void) {

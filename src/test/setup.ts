@@ -41,7 +41,6 @@ if (!("IntersectionObserver" in window)) {
 
 // jsdom lacks ResizeObserver (used by cmdk).
 if (!("ResizeObserver" in globalThis)) {
-  // biome-ignore lint/suspicious/noExplicitAny: test stub
   (globalThis as any).ResizeObserver = class {
     observe() {}
     unobserve() {}
@@ -51,7 +50,6 @@ if (!("ResizeObserver" in globalThis)) {
 
 // jsdom lacks the Pointer Capture API that Radix Select uses on its trigger,
 // and lacks Element.scrollIntoView (Radix keeps highlighted items in view with it).
-// biome-ignore lint/suspicious/noExplicitAny: test stub
 const elementProto = Element.prototype as any;
 if (!elementProto.hasPointerCapture) {
   elementProto.hasPointerCapture = () => false;

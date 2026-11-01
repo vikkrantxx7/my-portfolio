@@ -1,5 +1,6 @@
 # Portfolio — Current requests
 
+- [ ] Reduce analytics loading impact: published homepage uses Lovable-injected /~flock.js and /__l5e/events scripts, not app-owned GA4. Awaiting the Lighthouse script breakdown or confirmation of a separate tracker before choosing a supported change.
 - [x] Add a top-right copy icon to MDX code blocks; copy, blank-line preservation and retry tests pass, and desktop/mobile browser copying matches displayed code.
 - [ ] Wiki stale-lock repair is validated locally with gh-aw v0.88.7, restored YAML, regenerated lock, regression tests and CI drift guard. GitHub execution/issue closure awaits sync of these edits; the attempted dispatch still used the old main commit.
 - [x] Align reading progress with the measured dock border, starting clockwise at its top centre; eight focused tests pass, verified at 360/703px and Top resets to zero. Not published.
