@@ -22,9 +22,15 @@ Object.defineProperty(window, "matchMedia", {
 // jsdom lacks IntersectionObserver; Motion's in-view reveals need a no-op stand-in.
 if (!("IntersectionObserver" in window)) {
   class NoopIntersectionObserver {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
+    observe() {
+      // no-op
+    }
+    unobserve() {
+      // no-op
+    }
+    disconnect() {
+      // no-op
+    }
     takeRecords() {
       return [];
     }
@@ -42,9 +48,15 @@ if (!("IntersectionObserver" in window)) {
 // jsdom lacks ResizeObserver (used by cmdk).
 if (!("ResizeObserver" in globalThis)) {
   (globalThis as any).ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
+    observe() {
+      // no-op
+    }
+    unobserve() {
+      // no-op
+    }
+    disconnect() {
+      // no-op
+    }
   };
 }
 
