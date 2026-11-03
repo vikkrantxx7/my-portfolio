@@ -1,7 +1,8 @@
 {
-  "Home": { "sourceFiles": [], "templateHash": "1", "generatedAt": "2026-10-29T00:00:00Z" },
-  "Architecture": { "sourceFiles": [], "templateHash": "1", "generatedAt": "2026-10-29T00:00:00Z" },
-  "Configuration": { "sourceFiles": [], "templateHash": "1", "generatedAt": "2026-10-29T00:00:00Z" },
-  "Contributing": { "sourceFiles": [], "templateHash": "1", "generatedAt": "2026-10-29T00:00:00Z" },
-  "For-Agents": { "sourceFiles": [], "templateHash": "1", "generatedAt": "2026-10-29T00:00:00Z" }
+  "Home": { "generatedAt": "2026-11-03T12:00:00Z" },
+  "Architecture": { "generatedAt": "2026-11-03T12:00:00Z" },
+  "Components": { "generatedAt": "2026-11-03T12:00:00Z" },
+  "Content": { "generatedAt": "2026-11-03T12:00:00Z" },
+  "Features": { "generatedAt": "2026-11-03T12:00:00Z" },
+  "For-Agents": { "generatedAt": "2026-11-03T12:00:00Z" }
 }
