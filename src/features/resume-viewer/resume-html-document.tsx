@@ -18,12 +18,12 @@ export function ResumeHtmlDocument({
   title,
   dark,
   onFail,
-}: {
+}: Readonly<{
   src: string;
   title: string;
   dark: boolean;
   onFail: () => void;
-}) {
+}>) {
   const ref = useRef<HTMLIFrameElement>(null);
   const unbindZoom = useRef<(() => void) | undefined>(undefined);
 
