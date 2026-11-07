@@ -1,0 +1,93 @@
+/* Reserve room right of the theme toggle for the floating audio player. */
+html[data-audio-player] .theme-toggle {
+  margin-right: var(--audio-gutter, 0px);
+}
+
+.audio-art {
+  transition: filter 0.4s ease;
+}
+.audio-art:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-ring);
+}
+.audio-player[data-playing] .audio-art {
+  filter: drop-shadow(0 0 10px color-mix(in oklab, var(--color-primary) 35%, transparent))
+    drop-shadow(0 0 18px color-mix(in oklab, var(--color-secondary) 25%, transparent));
+}
+
+/* Thin vinyl rim: dark grooves with a single soft reflection; spins only while playing. */
+.audio-rim {
+  background:
+    conic-gradient(from 0deg, transparent 0 12%, rgb(255 255 255 / 0.18) 16%, transparent 22% 62%, rgb(255 255 255 / 0.1) 66%, transparent 72%),
+    repeating-radial-gradient(circle, #0b0d12 0 1px, #1a1e27 1px 2px);
+  animation: audio-spin 6s linear infinite;
+  animation-play-state: paused;
+}
+.audio-player[data-playing] .audio-rim {
+  animation-play-state: running;
+}
+@keyframes audio-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.audio-dot {
+  filter: drop-shadow(0 0 3px var(--color-primary));
+}
+
+.audio-loading {
+  border: 1px dashed color-mix(in oklab, var(--color-primary) 60%, transparent);
+  animation: audio-spin 1.6s linear infinite;
+}
+
+.audio-marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+}
+.audio-marquee-track {
+  animation: audio-marquee 9s linear infinite;
+}
+.audio-title:hover .audio-marquee-track {
+  animation-play-state: paused;
+}
+@keyframes audio-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.audio-marquee-text {
+  white-space: nowrap;
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1.2;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background-clip: text;
+  color: transparent;
+}
+@media (min-width: 768px) {
+  .audio-marquee-text {
+    font-size: 0.6875rem;
+  }
+}
+
+.audio-bar {
+  transform-origin: center;
+  background: color-mix(in oklab, var(--color-primary) calc((1 - var(--i)) * 100%), var(--color-secondary));
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-rim,
+  .audio-loading,
+  .audio-marquee-track {
+    animation: none;
+  }
+  .audio-marquee {
+    mask-image: none;
+  }
+  .audio-marquee-track > :last-child {
+    display: none;
+  }
+  .audio-marquee-text {
+    padding-right: 0;
+  }
+}
