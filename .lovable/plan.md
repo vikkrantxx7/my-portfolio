@@ -26,7 +26,8 @@
 - Radix: `@radix-ui/react-tooltip` (already in style of the project) for a small "Now playing" hint; no media-player libraries.
 
 **A4 — Placement & integration**
-- Fixed top-right **directly below the theme toggle** (toggle keeps its top-right spot on all devices), mounted once in the root layout so it persists across pages and playback isn't interrupted by navigation.
+- Fixed top-right, **immediately to the right of the theme toggle** on desktop and mobile (toggle shifts left by the widget's width; both share one top-right cluster), mounted once in the root layout so playback continues across pages.
+- Visual follows the reference: artwork inside a cyan→violet ring with a bright end dot, title in a slim glass pill with a music-note icon (no arrows, per the brief), dotted/bar waveform underneath brightest at the centre.
 - Must not overlap header nav, mobile dock or theme toggle; reserved size so no layout shift.
 - Playwright: no audio request on load; request after click returns 206 and playback starts before full download; desktop/tablet/mobile screenshots; light theme check.
 
