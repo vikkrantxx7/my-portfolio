@@ -1,8 +1,8 @@
 {
-  "Home": { "generatedAt": "2026-11-03T12:00:00Z" },
-  "Architecture": { "generatedAt": "2026-11-03T12:00:00Z" },
-  "Components": { "generatedAt": "2026-11-03T12:00:00Z" },
-  "Content": { "generatedAt": "2026-11-03T12:00:00Z" },
-  "Features": { "generatedAt": "2026-11-03T12:00:00Z" },
-  "For-Agents": { "generatedAt": "2026-11-03T12:00:00Z" }
+  "Home": { "sourceFiles": [{ "path": "README.md", "hash": "1251" }], "templateHash": "initial", "generatedAt": "2026-11-07T12:00:00Z" },
+  "Architecture": { "sourceFiles": [], "templateHash": "initial", "generatedAt": "2026-11-07T12:00:00Z" },
+  "Features": { "sourceFiles": [{ "path": "src/features/command-palette/command-palette.tsx", "hash": "8259" }], "templateHash": "initial", "generatedAt": "2026-11-07T12:00:00Z" },
+  "Components": { "sourceFiles": [], "templateHash": "initial", "generatedAt": "2026-11-07T12:00:00Z" },
+  "Content": { "sourceFiles": [], "templateHash": "initial", "generatedAt": "2026-11-07T12:00:00Z" },
+  "For-Agents": { "sourceFiles": [], "templateHash": "initial", "generatedAt": "2026-11-07T12:00:00Z" }
 }
