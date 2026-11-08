@@ -7,6 +7,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { VitePWA } from "vite-plugin-pwa";
 import { mdxPlugin } from "./mdx.config";
+import { site } from "./src/content/site";
 
 export default defineConfig({
   tanstackStart: {
@@ -15,6 +16,14 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    server: {
+      proxy: {
+        "/__l5e": {
+          target: site.url,
+          changeOrigin: true,
+        },
+      },
+    },
     plugins: [
       mdxPlugin(),
       VitePWA({
