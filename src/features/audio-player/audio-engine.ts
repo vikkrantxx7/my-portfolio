@@ -77,8 +77,7 @@ export class AudioEngine {
       this.ctx = ctx;
       this.analyser = analyser;
       this.bins = new Uint8Array(analyser.frequencyBinCount);
-    } catch (err) {
-      console.warn('[audio] analyser unavailable', err);
+    } catch {
       this.ctx = null;
       this.analyser = null;
     }

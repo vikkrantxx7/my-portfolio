@@ -41,3 +41,4 @@
 - Blog MDX uses shared Prose and the case-study pipeline; `src/content/blog.ts` validates/registers posts for pages and search. `/blog` filters by `?tag=`; search uses typed router destinations.
 - MDX code is Shiki-highlighted at build time (dual themes via root class) so no highlighter ships.
 - Latin variable fonts live in `public/fonts` with licenses; `src/fonts.css` URLs match root-head anonymous preloads to avoid CSS-dependent discovery and duplicate downloads.
+- The floating audio player is mounted once in the root layout so playback survives navigation; `AudioEngine` owns one native `<audio preload="none">` (src set on first tap, CDN byte-range streaming) and its single analyser graph, and visuals paint via rAF refs, never per-frame React state. It positions itself right of the visible `.theme-toggle`, which reserves the gap through `--audio-gutter`.
