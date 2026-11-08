@@ -12,6 +12,7 @@ describe("resume-only zoom", () => {
     const doc = document.implementation.createHTMLDocument("Resume");
     const host = document.createElement("div");
     const frame = document.createElement("iframe");
+    const appZoom = document.body.style.zoom;
     host.appendChild(frame);
     const cleanup = bindResumeZoom(doc, frame, host);
     doc.documentElement.scrollTop = 300;
@@ -27,7 +28,7 @@ describe("resume-only zoom", () => {
     doc.dispatchEvent(pinch);
     expect(pinch.defaultPrevented).toBe(true);
     expect(Number(doc.body.style.zoom)).toBeCloseTo(Math.exp(0.15));
-    expect(document.body.style.zoom).toBeUndefined();
+    expect(document.body.style.zoom).toBe(appZoom);
     expect(doc.documentElement.scrollTop).toBeCloseTo(500 * Math.exp(0.15) - 200);
     cleanup();
     const later = new WheelEvent("wheel", { ctrlKey: true, cancelable: true });

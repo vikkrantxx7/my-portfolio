@@ -6,6 +6,7 @@ import { mdxPlugin } from "./mdx.config";
 export default defineConfig({
   plugins: [mdxPlugin(), react()],
   test: {
+    pool: "vmThreads",
     environment: "jsdom",
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
