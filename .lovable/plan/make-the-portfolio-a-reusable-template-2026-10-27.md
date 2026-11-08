@@ -7,6 +7,7 @@ Goal: anyone can rebrand the site by editing only `src/content/`, and the lightn
 Add a typed `site` config (site URL, name, short name, tagline, SEO title/description, social banner, favicon) next to the existing profile data, checked by `validateContent`.
 
 ACs
+
 - No personal name, email, avatar or domain appears outside `src/content/` (checked by a test that scans source files).
 - Page titles, descriptions, canonical URLs, sitemap URLs, JSON-LD and the contact aria-label all read from config.
 - Changing the site URL in config changes every canonical/og:url.
@@ -16,6 +17,7 @@ ACs
 Move brand colours (both themes) into documented token blocks at the top of the stylesheet with a short "how to rebrand" comment; the dark/light palettes stay token-driven.
 
 ACs
+
 - Every brand colour is defined once per theme; no component uses a raw brand hex (except the resume viewer controls, which are intentionally fixed).
 
 ## Story T3 — Reusable lightning navigation
@@ -23,6 +25,7 @@ ACs
 Generalise the header energy effect so it is not tied to the avatar or `#section` links.
 
 ACs
+
 - Accepts a container plus a resolver (default: elements marked `data-energy-target="<key>"`) and an active key.
 - Site nav keeps identical behaviour; existing tests stay green.
 - A new test renders it in a plain tab bar to prove independence.
@@ -33,6 +36,7 @@ ACs
 Move component-only CSS (lightning nav, dock ignition, scroll progress, gradient-frame CTA, theme-toggle transitions, glow halo) out of the global stylesheet into a stylesheet beside each component, imported by that component.
 
 ACs
+
 - The global stylesheet keeps only tokens, theme blocks, base rules and shared utilities.
 - Each moved component's styles live in its own folder, so copying the folder copies its look.
 - Visual output unchanged in both themes and with reduced motion (Playwright screenshot comparison before/after).

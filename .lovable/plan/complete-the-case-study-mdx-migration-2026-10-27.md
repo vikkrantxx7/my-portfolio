@@ -5,6 +5,7 @@
 Move the remaining case study into `src/content/case-studies/git-contributor-stats.mdx`, using the same approach as PrepForge.
 
 **Acceptance criteria**
+
 - Preserve the existing overview, system design, decisions, implementation, results and source citations without inventing outcomes.
 - Keep the current project page layout, architecture diagram, theme support, navigation and download-free reading experience.
 - Keep the existing project address and SEO metadata unchanged.
@@ -15,6 +16,7 @@ Move the remaining case study into `src/content/case-studies/git-contributor-sta
 Document MDX as the default authoring format for upcoming case studies.
 
 **Acceptance criteria**
+
 - The template guide explains where to add an MDX file, its required frontmatter, how to register it and how to include the existing diagram.
 - Project summaries and typed architecture diagrams remain in the existing content layer.
 - Existing typed-section fallback remains supported; no blog section or unrelated redesign is included.
