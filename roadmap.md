@@ -56,3 +56,4 @@
 - [x] PrepForge case study MDX proof of concept (M1–M5)
 - [x] Dock tap ripple: shared spawnDockRipple/useDockRipple + dock-ripple.css on all mobile dock controls (305 tests)
 - [x] Share dock primitives with resume preview dock (DockBar pill + DockIcon tone) instead of local markup
+- [x] Floating audio player 'From URL to Pixels' beside the theme toggle (CDN streaming, real waveform)
