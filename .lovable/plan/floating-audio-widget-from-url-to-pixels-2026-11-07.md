@@ -1,6 +1,7 @@
 # Floating Audio Widget — "From URL to Pixels"
 
 ## Storage decision (verified before planning)
+
 - The site already uses **Lovable Assets** (Cloudflare R2 + CDN) for the banner and project artwork, served same-origin under `/__l5e/assets-v1/...`.
 - A live range probe against an existing asset on `vikrantfullstack.in` returned **HTTP/2 206**, `Accept-Ranges: bytes`, a valid `Content-Range`, `Cache-Control: public, max-age=31536000, immutable`, an ETag, and HTTPS via Cloudflare.
 - So: no Lovable Cloud, database, bucket, API or signed URLs are needed. Both files become separate public CDN objects, same-origin (no CORS / `crossOrigin` complications for the Web Audio analyser).
@@ -32,9 +33,11 @@
 - Playwright: no audio request on load; request after click returns 206 and playback starts before full download; desktop/tablet/mobile screenshots; light theme check.
 
 ## Final report will include
+
 Storage provider, the two public URLs, range-request verification result, progressive-playback test result, and any CDN limitations.
 
 ## Technical notes
+
 - Same-origin CDN URL means no `crossOrigin` attribute needed; analyser output isn't muted (source → analyser → destination).
 - Offline service worker must not precache or intercept the MP3 (exclude `/__l5e/assets-v1/*.mp3` from runtime caching) so range requests aren't broken.
 - Out of scope: video, lyrics, playlists, autoplay.
