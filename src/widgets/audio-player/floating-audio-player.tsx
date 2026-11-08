@@ -206,7 +206,6 @@ export function FloatingAudioPlayer() {
       <div aria-hidden data-testid="audio-wave" className="flex h-3 items-center gap-[2px] md:h-4">
         {REST.map((rest, i) => (
           <span
-            // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length bar list
             key={i}
             ref={(el) => {
               barsRef.current[i] = el;
