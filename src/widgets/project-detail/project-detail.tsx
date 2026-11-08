@@ -43,7 +43,7 @@ export function ProjectDetail({ project }: { project: Project }) {
       {projectArtwork[project.slug] && (
         <img
           src={projectArtwork[project.slug]?.[theme]}
-          alt=""
+          alt={projectArtwork[project.slug]?.alt ?? `${project.title} concept artwork`}
           width={1024}
           height={640}
           className="aspect-[8/5] w-full rounded-lg object-cover"
