@@ -80,8 +80,9 @@ export function FloatingAudioPlayer() {
     };
     const paintBars = (target: (i: number) => number) => {
       barsRef.current.forEach((bar, i) => {
-        levels[i] += (target(i) - levels[i]) * 0.35;
-        if (bar) bar.style.transform = `scaleY(${levels[i].toFixed(3)})`;
+        const level = (levels[i] ?? 0) + (target(i) - (levels[i] ?? 0)) * 0.35;
+        levels[i] = level;
+        if (bar) bar.style.transform = `scaleY(${level.toFixed(3)})`;
       });
     };
     let frame = 0;
@@ -92,8 +93,8 @@ export function FloatingAudioPlayer() {
         // Bars low→high across the first ~3/4 of the spectrum (bass left, treble right).
         const usable = Math.floor(bins.length * 0.75);
         paintBars((i) => {
-          const v = bins[Math.floor((i / BAR_COUNT) * usable)] / 255;
-          return Math.max(REST[i] * 0.6, Math.min(1, v * (0.8 + i * 0.03)));
+          const v = (bins[Math.floor((i / BAR_COUNT) * usable)] ?? 0) / 255;
+          return Math.max((REST[i] ?? 0) * 0.6, Math.min(1, v * (0.8 + i * 0.03)));
         });
       }
       frame = requestAnimationFrame(tick);
@@ -102,8 +103,8 @@ export function FloatingAudioPlayer() {
       cancelAnimationFrame(frame);
       frame = 0;
       paintProgress();
-      paintBars((i) => REST[i]);
-      for (let k = 0; k < 12; k++) paintBars((i) => REST[i]);
+      paintBars((i) => REST[i] ?? 0);
+      for (let k = 0; k < 12; k++) paintBars((i) => REST[i] ?? 0);
     };
     const sync = () => {
       if (e.state.isPlaying && !document.hidden) {
