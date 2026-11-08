@@ -91,6 +91,10 @@ describe("Case study artwork theme variants", () => {
     expect(first.container.querySelector("img")?.getAttribute("src")).toBe(
       projectArtwork[project.slug]?.dark,
     );
+    expect(first.container.querySelector("img")).toHaveAttribute(
+      "alt",
+      projectArtwork[project.slug]?.alt,
+    );
     first.unmount();
 
     document.documentElement.classList.add("light");

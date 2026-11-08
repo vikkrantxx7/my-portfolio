@@ -71,7 +71,7 @@ export function ProjectGallery({
                 {projectArtwork[project.slug] && (
                   <img
                     src={projectArtwork[project.slug]?.[theme]}
-                    alt=""
+                    alt={projectArtwork[project.slug]?.alt ?? `${project.title} concept artwork`}
                     loading="lazy"
                     width={1024}
                     height={640}

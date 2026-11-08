@@ -146,12 +146,12 @@ export function FloatingAudioPlayer() {
         aria-label={label}
         aria-pressed={state.isPlaying}
         onClick={() => void engine()?.toggle()}
-        className="audio-art pointer-events-auto relative size-16 shrink-0 cursor-pointer rounded-full focus-visible:outline-none md:size-24"
+        className="audio-art pointer-events-auto relative size-15 shrink-0 cursor-pointer rounded-full focus-visible:outline-none"
       >
         <span aria-hidden className="audio-rim absolute inset-[6%] rounded-full" />
         <img
           src={nowPlaying.artworkUrl}
-          alt=""
+          alt={`Cover artwork for ${nowPlaying.title}`}
           width={512}
           height={512}
           decoding="async"
