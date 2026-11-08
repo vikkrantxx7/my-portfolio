@@ -1,5 +1,5 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
-import { type AudioState, AudioEngine } from "./audio-engine";
+import { AudioEngine, type AudioState } from "./audio-engine";
 
 const IDLE: AudioState = { isPlaying: false, isLoading: false, ended: false, error: false };
 

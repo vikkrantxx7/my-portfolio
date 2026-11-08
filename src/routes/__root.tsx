@@ -12,6 +12,7 @@ import { type ReactNode, useEffect } from "react";
 import { site } from "@/content/site";
 import { CommandPalette } from "@/features/command-palette/command-palette";
 import { THEME_SCRIPT } from "@/features/theme-toggle/theme";
+import { FloatingAudioPlayer } from "@/widgets/audio-player/floating-audio-player";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
 
@@ -148,6 +149,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <CommandPalette />
+      <FloatingAudioPlayer />
     </QueryClientProvider>
   );
 }

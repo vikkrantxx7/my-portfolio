@@ -163,7 +163,14 @@ export function FloatingAudioPlayer() {
               <stop offset="1" stopColor="var(--color-secondary)" />
             </linearGradient>
           </defs>
-          <circle cx="50" cy="50" r={RING_R} fill="none" className="stroke-border" strokeWidth="1.5" />
+          <circle
+            cx="50"
+            cy="50"
+            r={RING_R}
+            fill="none"
+            className="stroke-border"
+            strokeWidth="1.5"
+          />
           <circle
             ref={arcRef}
             data-testid="audio-progress"
@@ -181,7 +188,9 @@ export function FloatingAudioPlayer() {
             <circle cx={50 + RING_R} cy="50" r="2.6" className="audio-dot fill-foreground" />
           </g>
         </svg>
-        {state.isLoading && <span aria-hidden className="audio-loading absolute inset-0 rounded-full" />}
+        {state.isLoading && (
+          <span aria-hidden className="audio-loading absolute inset-0 rounded-full" />
+        )}
       </button>
       <div className="audio-title pointer-events-auto flex w-full items-center gap-1 rounded-full border border-border bg-card/60 px-1.5 py-0.5 backdrop-blur-md md:px-2 md:py-1">
         <Music2 aria-hidden className="size-3 shrink-0 text-primary" />
@@ -203,7 +212,9 @@ export function FloatingAudioPlayer() {
               barsRef.current[i] = el;
             }}
             className="audio-bar h-full w-[2px] rounded-full"
-            style={{ transform: `scaleY(${rest})`, "--i": i / (BAR_COUNT - 1) } as React.CSSProperties}
+            style={
+              { transform: `scaleY(${rest})`, "--i": i / (BAR_COUNT - 1) } as React.CSSProperties
+            }
           />
         ))}
       </div>

@@ -7,7 +7,9 @@ html[data-audio-player] .theme-toggle {
   transition: filter 0.4s ease;
 }
 .audio-art:focus-visible {
-  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-ring);
+  box-shadow:
+    0 0 0 2px var(--color-background),
+    0 0 0 4px var(--color-ring);
 }
 .audio-player[data-playing] .audio-art {
   filter: drop-shadow(0 0 10px color-mix(in oklab, var(--color-primary) 35%, transparent))
@@ -17,7 +19,14 @@ html[data-audio-player] .theme-toggle {
 /* Thin vinyl rim: dark grooves with a single soft reflection; spins only while playing. */
 .audio-rim {
   background:
-    conic-gradient(from 0deg, transparent 0 12%, rgb(255 255 255 / 0.18) 16%, transparent 22% 62%, rgb(255 255 255 / 0.1) 66%, transparent 72%),
+    conic-gradient(
+      from 0deg,
+      transparent 0 12%,
+      rgb(255 255 255 / 0.18) 16%,
+      transparent 22% 62%,
+      rgb(255 255 255 / 0.1) 66%,
+      transparent 72%
+    ),
     repeating-radial-gradient(circle, #0b0d12 0 1px, #1a1e27 1px 2px);
   animation: audio-spin 6s linear infinite;
   animation-play-state: paused;
@@ -71,7 +80,11 @@ html[data-audio-player] .theme-toggle {
 
 .audio-bar {
   transform-origin: center;
-  background: color-mix(in oklab, var(--color-primary) calc((1 - var(--i)) * 100%), var(--color-secondary));
+  background: color-mix(
+    in oklab,
+    var(--color-primary) calc((1 - var(--i)) * 100%),
+    var(--color-secondary)
+  );
   opacity: 0.85;
 }
 
