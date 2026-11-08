@@ -21,6 +21,8 @@ describe("Selected work gallery", () => {
     for (const [index, project] of content.projects.entries()) {
       const card = cards[index];
       if (!card) throw new Error("Missing project card");
+      const artwork = projectArtwork[project.slug];
+      if (artwork) expect(within(card).getByRole("img")).toHaveAccessibleName(artwork.alt);
       expect(within(card).getByRole("heading", { name: project.title })).toBeInTheDocument();
       expect(within(card).getByText(project.problem)).toBeInTheDocument();
       expect(within(card).getByText(project.role)).toBeInTheDocument();
