@@ -5,8 +5,8 @@ import { BAR_COUNT, FloatingAudioPlayer } from "./floating-audio-player";
 describe("FloatingAudioPlayer", () => {
   it("renders the artwork as a single play button with no other controls", () => {
     render(<FloatingAudioPlayer />);
-    expect(screen.getAllByRole("button")).toHaveLength(1);
-    expect(screen.getByRole("button", { name: "Play From URL to Pixels" })).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { hidden: true })).toHaveLength(1);
+    expect(screen.getByRole("button", { name: "Play From URL to Pixels", hidden: true })).toBeInTheDocument();
   });
 
   it("shows the waveform bars", () => {

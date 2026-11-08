@@ -17,7 +17,8 @@ export function useAudioEngine(src: string) {
   );
   useEffect(
     () => () => {
-      ref.current?.audio.pause();
+      const a = ref.current?.audio;
+      if (a && !a.paused) a.pause();
     },
     [],
   );

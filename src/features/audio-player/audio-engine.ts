@@ -84,7 +84,7 @@ export class AudioEngine {
   }
 
   async toggle() {
-    if (!this.audio.paused) {
+    if (!this.audio.paused && !this.state.ended && !this.audio.ended) {
       this.audio.pause();
       return;
     }
