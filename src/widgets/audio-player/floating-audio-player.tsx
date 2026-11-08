@@ -110,7 +110,7 @@ export function FloatingAudioPlayer() {
         if (!frame) frame = requestAnimationFrame(tick);
       } else settle();
     };
-    settle();
+    sync();
     const unsub = e.subscribe(sync);
     e.audio.addEventListener("timeupdate", paintProgress);
     document.addEventListener("visibilitychange", sync);
