@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 import { saveResume } from "./save-resume";
 
 const blob = new Blob(["%PDF"], { type: "application/pdf" });
-const fetchOk = vi.fn(async () => new Response(blob));
+const fetchOk = vi.fn(async () => {
+  const response = new Response();
+  vi.spyOn(response, "blob").mockResolvedValue(blob);
+  return response;
+});
 
 describe("saveResume", () => {
   it("uses the native share sheet with the PDF file when sharing files is supported", async () => {
@@ -15,6 +19,7 @@ describe("saveResume", () => {
     expect(result).toBe("shared");
     const files = (share.mock.calls[0] as unknown as [{ files: File[] }])[0].files;
     expect(files[0]?.name).toBe("cv.pdf");
+    expect(files[0]?.size).toBe(blob.size);
   });
 
   it("downloads a blob without navigating when sharing is unavailable", async () => {
@@ -26,6 +31,7 @@ describe("saveResume", () => {
     });
     expect(result).toBe("downloaded");
     expect(download).toHaveBeenCalledWith(expect.any(Blob), "cv.pdf");
+    expect(download.mock.calls[0]?.[0].size).toBe(blob.size);
   });
 
   it("treats a dismissed share sheet as cancelled, not as a download", async () => {

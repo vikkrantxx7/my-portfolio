@@ -10,15 +10,18 @@
 ## Stories (TDD, tests first)
 
 **A1 — Media objects**
+
 - Upload `from-url-to-pixels.mp3` (5.2 MB) and `from-url-to-pixels.avif` (254 KB) as asset pointers; register them in a typed `src/content/now-playing.ts` (title, artwork, audio URL) so the template stays rebrandable.
 - AC: curl confirms 206 + correct MIME + immutable caching for both; validateContent covers the new entry.
 
 **A2 — Audio engine (no UI)** — `src/features/audio-player/`
+
 - `useAudioPlayback`: one native `<audio preload="none">`, `src` assigned only on first play; play/pause/replay-after-end; states `isPlaying`, `isLoading`, `duration`, `audioError`.
 - `createAnalyser`: AudioContext + single MediaElementSource → Analyser → destination, created on first gesture, resumed if suspended.
 - AC tests: no src before interaction; one source node across plays; ended→click restarts at 0; error state surfaces.
 
 **A3 — Visuals** — `FloatingAudioPlayer` widget
+
 - Circular AVIF artwork as the (only) button, 80px desktop / ~64px tablet / ~56px mobile; dynamic "Play/Pause From URL to Pixels" label; visible focus ring.
 - Thin vinyl rim rotating only while playing (CSS, paused via `animation-play-state`).
 - SVG progress ring, cyan→violet, with luminous dot; driven by `currentTime/duration` written to the DOM via rAF refs (no per-frame React renders).
@@ -27,6 +30,7 @@
 - Radix: `@radix-ui/react-tooltip` (already in style of the project) for a small "Now playing" hint; no media-player libraries.
 
 **A4 — Placement & integration**
+
 - Fixed top-right, **immediately to the right of the theme toggle** on desktop and mobile (toggle shifts left by the widget's width; both share one top-right cluster), mounted once in the root layout so playback continues across pages.
 - Visual follows the reference: artwork inside a cyan→violet ring with a bright end dot, title in a slim glass pill with a music-note icon (no arrows, per the brief), dotted/bar waveform underneath brightest at the centre.
 - Must not overlap header nav, mobile dock or theme toggle; reserved size so no layout shift.

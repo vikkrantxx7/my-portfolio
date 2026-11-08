@@ -1,9 +1,9 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Github } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { content } from "@/content/data";
 import { usePrefersReducedMotion } from "@/shared/lib/use-prefers-reduced-motion";
+import { Github } from "@/shared/ui/brand-icons";
 import { ProfileCardRim } from "./profile-card-rim";
 
 const linkProps = { target: "_blank", rel: "noopener noreferrer" } as const;

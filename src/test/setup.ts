@@ -1,4 +1,33 @@
+import { ByteLengthQueuingStrategy } from "node:stream/web";
 import "@testing-library/jest-dom/vitest";
+
+// Vitest's VM context omits the queue strategy used by TanStack's RPC decoder.
+if (!("ByteLengthQueuingStrategy" in globalThis)) {
+  Object.defineProperty(globalThis, "ByteLengthQueuingStrategy", {
+    configurable: true,
+    writable: true,
+    value: ByteLengthQueuingStrategy,
+  });
+}
+
+// jsdom exposes animation styles but no AnimationEvent; React otherwise
+// listens for a vendor-prefixed event instead of the standard animationend.
+if (!("AnimationEvent" in window)) {
+  class TestAnimationEvent extends Event {
+    readonly animationName: string;
+    readonly elapsedTime: number;
+    readonly pseudoElement: string;
+
+    constructor(type: string, init: AnimationEventInit = {}) {
+      super(type, init);
+      this.animationName = init.animationName ?? "";
+      this.elapsedTime = init.elapsedTime ?? 0;
+      this.pseudoElement = init.pseudoElement ?? "";
+    }
+  }
+  Object.defineProperty(window, "AnimationEvent", { value: TestAnimationEvent });
+  Object.defineProperty(globalThis, "AnimationEvent", { value: TestAnimationEvent });
+}
 
 Object.defineProperty(window, "scrollTo", {
   writable: true,

@@ -1,6 +1,7 @@
-import { Copy, Github, Linkedin, Mail } from "lucide-react";
+import { Copy, Mail } from "lucide-react";
 import { useState } from "react";
 import { content } from "@/content/data";
+import { Github, Linkedin } from "@/shared/ui/brand-icons";
 import { Button, buttonVariants } from "@/shared/ui/button";
 import { SectionHeading } from "@/shared/ui/section-heading";
 
