@@ -1,0 +1,77 @@
+.video-popup {
+  width: min(26rem, calc(100vw - 1.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+  max-width: calc(100dvh - 12rem);
+}
+
+.video-frame {
+  --vg-bass: 0;
+  --vg-mid: 0;
+  --vg-high: 0;
+  padding: 1px;
+  border-radius: 1.3rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  box-shadow:
+    -10px 0 calc(28px + 34px * var(--vg-bass))
+      color-mix(in oklab, var(--color-primary) calc(28% + 42% * var(--vg-bass)), transparent),
+    10px 0 calc(28px + 34px * var(--vg-high))
+      color-mix(in oklab, var(--color-secondary) calc(28% + 42% * var(--vg-high)), transparent),
+    0 18px calc(50px + 30px * var(--vg-mid))
+      color-mix(in oklab, var(--color-background) 70%, transparent);
+  transition: box-shadow 120ms linear;
+}
+
+.video-frame:not([data-reactive]) {
+  animation: video-breathe 5s ease-in-out infinite;
+}
+
+@keyframes video-breathe {
+  50% {
+    --vg-bass: 0.25;
+    --vg-high: 0.25;
+  }
+}
+
+@property --vg-bass {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --vg-high {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.video-el {
+  accent-color: var(--color-primary);
+}
+
+.video-close {
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-background) 60%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 22%, transparent);
+  backdrop-filter: blur(8px);
+  transition: box-shadow 160ms ease, border-color 160ms ease;
+}
+.video-close:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 14px color-mix(in oklab, var(--color-secondary) 55%, transparent);
+}
+.video-close:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.audio-art {
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-frame,
+  .video-frame:not([data-reactive]) {
+    animation: none;
+    transition: none;
+  }
+}
