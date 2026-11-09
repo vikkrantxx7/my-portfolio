@@ -1,4 +1,4 @@
-import { content } from "./data";
+import { content } from "./data.ts";
 
 const { name } = content.profile;
 

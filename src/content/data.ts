@@ -1,5 +1,5 @@
-import { gitStatsCaseStudy, prepforgeCaseStudy } from "./case-studies";
-import type { Content } from "./types";
+import { gitStatsCaseStudy, prepforgeCaseStudy } from "./case-studies.ts";
+import type { Content } from "./types.ts";
 
 // Content sourced from Vikrant's resume. Achievement "decisions" are summarised from it.
 export const content: Content = {

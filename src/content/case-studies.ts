@@ -1,4 +1,4 @@
-import type { CaseStudy } from "./types";
+import type { CaseStudy } from "./types.ts";
 
 export const prepforgeCaseStudy: CaseStudy = {
   repository: "https://github.com/vikkrantxx7/prepforge",
