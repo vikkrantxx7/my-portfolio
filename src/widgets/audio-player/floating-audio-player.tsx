@@ -1,7 +1,9 @@
 import { Music2 } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { nowPlaying } from "@/content/now-playing";
 import { useAudioEngine } from "@/features/audio-player/use-audio-engine";
+import { useSecondaryPress } from "@/features/audio-player/use-secondary-press";
+import { VideoPopup } from "./video-popup";
 
 export const BAR_COUNT = 17;
 const RING_R = 46;
@@ -67,6 +69,12 @@ export function FloatingAudioPlayer() {
   const dotRef = useRef<SVGGElement>(null);
   const barsRef = useRef<(HTMLSpanElement | null)[]>([]);
   useDockBesideThemeToggle(rootRef);
+  const artRef = useRef<HTMLButtonElement>(null);
+  const [videoOpen, setVideoOpen] = useState(false);
+  const video = nowPlaying.videoUrl;
+  const { shouldHandleClick, ...secondary } = useSecondaryPress(() => {
+    if (video) setVideoOpen(true);
+  });
 
   // Visual updates go straight to the DOM so React never re-renders per frame.
   useEffect(() => {
@@ -142,10 +150,15 @@ export function FloatingAudioPlayer() {
     >
       <button
         type="button"
+        ref={artRef}
         data-art
         aria-label={label}
         aria-pressed={state.isPlaying}
-        onClick={() => void engine()?.toggle()}
+        aria-describedby={video ? "audio-video-hint" : undefined}
+        {...(video ? secondary : {})}
+        onClick={() => {
+          if (shouldHandleClick()) void engine()?.toggle();
+        }}
         className="audio-art pointer-events-auto relative size-15 shrink-0 cursor-pointer rounded-full focus-visible:outline-none"
       >
         <span aria-hidden className="audio-rim absolute inset-[6%] rounded-full" />
@@ -218,6 +231,25 @@ export function FloatingAudioPlayer() {
           />
         ))}
       </div>
+      {video && (
+        <>
+          <span id="audio-video-hint" className="sr-only">
+            Right-click, long-press or press Shift+F10 to watch the music video
+          </span>
+          <VideoPopup
+            open={videoOpen}
+            onOpenChange={(o) => {
+              setVideoOpen(o);
+              if (!o) artRef.current?.focus({ preventScroll: true });
+            }}
+            anchorRef={artRef}
+            engine={engine}
+            videoUrl={video}
+            posterUrl={nowPlaying.posterUrl ?? nowPlaying.artworkUrl}
+            title={nowPlaying.title}
+          />
+        </>
+      )}
       <span role="status" className="sr-only">
         {status}
       </span>
