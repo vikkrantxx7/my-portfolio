@@ -13,6 +13,7 @@
 @import "./shared/ui/dock-progress.css";
 @import "./shared/ui/dock-ripple.css";
 @import "./widgets/audio-player/floating-audio-player.css";
+@import "./widgets/audio-player/video-popup.css";
 @source "../src";
 
 @custom-variant dark (&:is(.dark *));
