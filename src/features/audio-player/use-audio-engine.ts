@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
-import { AudioEngine, type AudioState } from "./audio-engine";
+import { type AudioEngine, type AudioState, createAudioEngine } from "./audio-engine";
 
 const IDLE: AudioState = { isPlaying: false, isLoading: false, ended: false, error: false };
 
@@ -7,7 +7,7 @@ const IDLE: AudioState = { isPlaying: false, isLoading: false, ended: false, err
 export function useAudioEngine(src: string) {
   const ref = useRef<AudioEngine | null>(null);
   const get = useCallback(() => {
-    if (!ref.current && typeof window !== "undefined") ref.current = new AudioEngine(src);
+    if (!ref.current && typeof window !== "undefined") ref.current = createAudioEngine(src);
     return ref.current;
   }, [src]);
   const state = useSyncExternalStore(

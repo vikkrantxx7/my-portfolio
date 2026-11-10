@@ -1,0 +1,297 @@
+.video-popup {
+  width: min(26rem, calc(100vw - 1.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+  max-width: calc(100dvh - 12rem);
+}
+
+.video-frame {
+  --vg-bass: 0;
+  --vg-mid: 0;
+  --vg-high: 0;
+  padding: 2px;
+  border-radius: 1.3rem;
+  box-shadow:
+    -10px 0 calc(28px + 34px * var(--vg-bass))
+    color-mix(in oklab, var(--color-primary) calc(40% + 50% * var(--vg-bass)), transparent),
+    10px 0 calc(28px + 34px * var(--vg-high))
+    color-mix(in oklab, var(--color-secondary) calc(40% + 50% * var(--vg-high)), transparent),
+    0 18px calc(50px + 30px * var(--vg-mid))
+    color-mix(in oklab, var(--color-background) 70%, transparent);
+  transition: box-shadow 120ms linear;
+}
+
+.video-frame.gradient-frame {
+  --frame-1: var(--primary);
+  --frame-2: var(--secondary);
+  --frame-3: var(--primary);
+  --frame-4: var(--secondary);
+}
+
+.video-frame.gradient-frame::after {
+  inset: -12px;
+  border-radius: calc(1.3rem + 12px);
+  background: conic-gradient(
+    from var(--gf-angle),
+    color-mix(in oklab, var(--frame-1) 55%, transparent),
+    color-mix(in oklab, var(--frame-2) 55%, transparent),
+    color-mix(in oklab, var(--frame-3) 55%, transparent),
+    color-mix(in oklab, var(--frame-4) 55%, transparent),
+    color-mix(in oklab, var(--frame-1) 55%, transparent)
+  );
+  filter: blur(16px);
+  opacity: 1;
+}
+
+.video-frame:not([data-reactive]) {
+  animation: video-breathe 5s ease-in-out infinite;
+}
+
+@keyframes video-breathe {
+  50% {
+    --vg-bass: 0.25;
+    --vg-high: 0.25;
+  }
+}
+
+@property --vg-bass {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --vg-high {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.video-el {
+  accent-color: var(--color-primary);
+}
+
+.video-controls {
+  position: absolute;
+  inset: auto 14px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 20%, transparent);
+  border-radius: 12px;
+  color: var(--color-foreground);
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--color-background) 54%, transparent),
+    color-mix(in oklab, var(--color-background) 38%, transparent)
+  );
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--color-foreground) 18%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, var(--color-primary) 10%, transparent),
+    0 4px 18px color-mix(in oklab, var(--color-background) 30%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.video-controls[data-touch-visible="true"],
+.video-frame:focus-within .video-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .video-frame:hover .video-controls {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .video-controls {
+    background: color-mix(in oklab, var(--color-background) 94%, transparent);
+  }
+}
+
+.video-control-button {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.video-control-button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.video-control-button:hover {
+  color: var(--color-primary);
+  background: color-mix(in oklab, var(--color-primary) 12%, transparent);
+}
+
+.video-control-button:focus-visible,
+.video-controls input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.video-time {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.video-seek {
+  position: relative;
+  flex: 1;
+  min-width: 24px;
+  height: 30px;
+}
+
+.video-seek-track {
+  position: absolute;
+  inset: 13px 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-foreground) 20%, transparent);
+}
+
+.video-seek-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+}
+
+.video-seek input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.video-seek input::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+}
+
+.video-seek input::-moz-range-track {
+  height: 4px;
+  background: transparent;
+}
+
+.video-seek input::-webkit-slider-thumb {
+  width: 10px;
+  height: 10px;
+  margin-top: -3px;
+  appearance: none;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-foreground);
+  box-shadow: 0 0 6px var(--color-secondary);
+}
+
+.video-seek input::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-foreground);
+  box-shadow: 0 0 6px var(--color-secondary);
+}
+
+.video-seek input:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.video-volume {
+  width: 42px;
+  min-width: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.video-control-error {
+  position: absolute;
+  right: 14px;
+  bottom: 70px;
+  left: 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-size: 12px;
+}
+
+.video-frame:fullscreen {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: var(--color-background);
+}
+
+.video-frame:fullscreen .video-el {
+  height: 100%;
+  border-radius: 0;
+  object-fit: contain;
+}
+
+.video-frame:fullscreen::before,
+.video-frame:fullscreen::after {
+  display: none;
+}
+
+@media (max-width: 380px) {
+  .video-controls {
+    gap: 3px;
+    padding-inline: 4px;
+  }
+  .video-volume {
+    width: 28px;
+  }
+}
+
+.video-close {
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-background) 60%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 22%, transparent);
+  backdrop-filter: blur(8px);
+  transition:
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+.video-close:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 14px color-mix(in oklab, var(--color-secondary) 55%, transparent);
+}
+.video-close:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.audio-art {
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-controls {
+    transition: none;
+  }
+
+  .video-frame,
+  .video-frame:not([data-reactive]) {
+    animation: none;
+    transition: none;
+  }
+}

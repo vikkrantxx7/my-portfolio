@@ -9,35 +9,39 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-## Rules
+## Instruction scope
 
-- Read nested `AGENTS.md` before editing, including `.github`, nav, theme, resume and shared-ui.
-- Sitemap static URLs follow required route-level `staticData.sitemap` decisions; dynamic case studies use the same public content collection as their pages, with no invented modification dates.
-- Public page identity uses the shared SEO URL helper for both leaf canonical and og:url tags, keeping previews from changing search identity and avoiding duplicate root canonicals.
-- Social banners use CDN pointers; favicon is local. Compose og/twitter images from site.url, never a request-origin function, to avoid Promise URLs.
-- Document scroll is restored by the SSR inline script; skip only the first client restoration callback to avoid overwriting early user scrolling during hydration, while retaining later navigation and Back/Forward restoration.
-- Typed static `src/content` passes `validateContent` (no DB in v1). Resume tests compare HTML shared facts, not prose; re-export/review PDF separately (only its email is tested) to prevent drift.
+Read applicable nested `AGENTS.md` files before editing files in their scope. Root rules apply throughout the repository; nested files add specialized guidance. For changes spanning directories, read the guidance for each affected area, including when changing its callers or shared configuration and helpers.
+
+| Area                 | Guidance                                                                     |
+| -------------------- | ---------------------------------------------------------------------------- |
+| Automation           | [.github/AGENTS.md](.github/AGENTS.md)                                       |
+| Content and MDX      | [src/content/AGENTS.md](src/content/AGENTS.md)                               |
+| Routes, SEO and SSR  | [src/routes/AGENTS.md](src/routes/AGENTS.md)                                 |
+| Navigation           | [src/widgets/nav/AGENTS.md](src/widgets/nav/AGENTS.md)                       |
+| Audio/video playback | [src/widgets/audio-player/AGENTS.md](src/widgets/audio-player/AGENTS.md)     |
+| Resume viewer        | [src/features/resume-viewer/AGENTS.md](src/features/resume-viewer/AGENTS.md) |
+| Theme                | [src/features/theme-toggle/AGENTS.md](src/features/theme-toggle/AGENTS.md)   |
+| Shared UI            | [src/shared/ui/AGENTS.md](src/shared/ui/AGENTS.md)                           |
+
+## Repository-wide rules
+
 - Reusable UI primitives live in `src/shared/ui` with `cva` variants; features/widgets follow simplified Feature-Sliced Design.
 - Every story ships with Vitest + Testing Library tests written first.
 - Lint/format with Biome only (one fast tool).
-- Career roles are composed in the timeline widget; achievement disclosure state lives in the expand-achievement feature so multiple achievements can open independently. Use the shared reduced-motion hook to bypass Motion springs when requested.
-- Achievement deep links use `#exp-<experienceId>-<achievementId>`, updated with `history.replaceState` (never push) via the deep-link feature; the disclosure trigger carries the hash id so native/router scrolling works, and unknown hashes resolve to null and are ignored.
-- Project filters are validated TanStack search parameters with pure matching in the filter-projects feature; navigation preserves achievement hashes and scroll to keep both sharing flows compatible.
-- Project artwork is a separate typed mapping of concept illustrations, not product screenshots; each entry carries a `dark`/`light` URL pair chosen live via the `useTheme` hook (theme-toggle feature), and both variants are CDN asset pointers shared by gallery cards and case studies. Case studies use typed repository-backed content, cite source files and distinguish implemented features from plans or unverified outcomes.
+- Use the shared reduced-motion hook to bypass Motion springs when requested.
 - Form state uses TanStack Form with reusable context-bound fields and submit controls in shared UI; no React Hook Form or resolver wrappers, to keep form contracts aligned with the TanStack stack.
-- Query-only filter navigation disables both resetScroll and hashScrollIntoView; preserving a hash must not retrigger achievement scrolling.
 - Internal navigation uses TanStack `Link` (never plain `<a href>`) so pages switch in-app without a full reload; tests render such widgets with `src/test/render-with-router.tsx`.
-- Architecture diagrams are typed layer/box/connection data on each case study (checked by validateDiagram) and always list connections as text, so they read without hover or animation.
-- Lab entries are typed content that may reference a timeline achievement as "experienceId/achievementId" (checked by validateContent) and link to it via the deep-link hash.
-- Same-page lab achievement links scroll to the collapsed trigger first, then expand, highlight, and replace the hash once scrolling settles; expanding above the source note first causes scroll anchoring jumps. All disclosure hash updates use router navigation with replace, resetScroll:false, and hashScrollIntoView:false to prevent automatic scrolling.
 - Offline service worker (vite-plugin-pwa generateSW, /sw.js) registers only via src/features/pwa/register-sw.ts, which refuses dev, iframes, Lovable preview hosts and ?sw=off — stale workers must never serve previews.
-- Controls use pointer cursors; header hover styling follows the nested nav rules.
-- Subpage headers share `PageHeader`; all docks share the primitives in `src/shared/ui/dock-shell.tsx` (details in `src/shared/ui/AGENTS.md`).
+- Controls use pointer cursors.
+- Subpage headers share `PageHeader`; all docks share the primitives in `src/shared/ui/dock-shell.tsx`. Read the shared UI guidance when composing docks, not only when editing their primitives.
 - Site identity (URL, author, SEO copy) lives in `src/content/site.ts`; a test forbids personal details outside `src/content`, so the repo stays a rebrandable template (see TEMPLATE.md).
-- Google ownership verification is configured with site identity and rendered in the root SSR head so Google can verify the published homepage without client scripts.
 - Component CSS lives beside its component, imported atop `src/styles.css` for flash-free SSR; global CSS keeps tokens, themes, base rules and shared utilities.
-- Profile-card rim geometry is isolated and measured locally for reuse without blocking controls; see nav rules.
-- Author new case-study bodies in MDX (`src/content/case-studies/*.mdx`, registered in `case-study-bodies.ts`, frontmatter checked by `validateMdxCaseStudy`) and render through shared `Prose` components to preserve the existing page shell; summaries and diagrams stay typed, and projects without MDX retain typed sections. Vite and Vitest share the compiler via `mdx.config.ts`, whose options (`src/content/mdx-options.ts`) pin `development: false` so compiled MDX uses the production JSX runtime — never rely on the rollup plugin's build-mode default, or production SSR crashes on `jsxDEV`.
-- Blog MDX uses shared Prose and the case-study pipeline; `src/content/blog.ts` validates/registers posts for pages and search. `/blog` filters by `?tag=`; search uses typed router destinations.
-- MDX code is Shiki-highlighted at build time (dual themes via root class) so no highlighter ships.
 - Latin variable fonts live in `public/fonts` with licenses; `src/fonts.css` URLs match root-head anonymous preloads to avoid CSS-dependent discovery and duplicate downloads.
+
+## Cross-feature contracts
+
+- Career roles are composed in the timeline widget; achievement disclosure state lives in the expand-achievement feature so multiple achievements can open independently.
+- Achievement deep links use `#exp-<experienceId>-<achievementId>`, replacing history (never pushing) via the deep-link feature. The disclosure trigger carries the hash id so native/router scrolling works; unknown hashes resolve to null and are ignored. Disclosure hash updates use router navigation with replace, resetScroll:false, and hashScrollIntoView:false.
+- Project filters are validated TanStack search parameters with pure matching in the filter-projects feature. Query-only navigation preserves achievement hashes and scroll, disabling both resetScroll and hashScrollIntoView so filtering does not retrigger achievement scrolling.
+- Same-page lab achievement links scroll to the collapsed trigger first, then expand, highlight, and replace the hash once scrolling settles; expanding above the source note first causes scroll anchoring jumps.
