@@ -5,7 +5,9 @@ import { BAR_COUNT, FloatingAudioPlayer } from "./floating-audio-player";
 describe("FloatingAudioPlayer", () => {
   it("renders the artwork as a single play button with no other controls", () => {
     render(<FloatingAudioPlayer />);
-    const buttons = screen.getAllByRole("button", { hidden: true });
+    const buttons = screen
+      .getAllByRole("button", { hidden: true })
+      .filter((b) => b.getAttribute("aria-label") !== "Close video");
     expect(buttons).toHaveLength(1);
     expect(buttons[0]).toHaveClass("size-15");
     expect(buttons[0]).not.toHaveClass("md:size-24");

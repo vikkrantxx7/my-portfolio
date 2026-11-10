@@ -12,11 +12,11 @@
   background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
   box-shadow:
     -10px 0 calc(28px + 34px * var(--vg-bass))
-      color-mix(in oklab, var(--color-primary) calc(28% + 42% * var(--vg-bass)), transparent),
+    color-mix(in oklab, var(--color-primary) calc(28% + 42% * var(--vg-bass)), transparent),
     10px 0 calc(28px + 34px * var(--vg-high))
-      color-mix(in oklab, var(--color-secondary) calc(28% + 42% * var(--vg-high)), transparent),
+    color-mix(in oklab, var(--color-secondary) calc(28% + 42% * var(--vg-high)), transparent),
     0 18px calc(50px + 30px * var(--vg-mid))
-      color-mix(in oklab, var(--color-background) 70%, transparent);
+    color-mix(in oklab, var(--color-background) 70%, transparent);
   transition: box-shadow 120ms linear;
 }
 
@@ -51,7 +51,9 @@
   background: color-mix(in oklab, var(--color-background) 60%, transparent);
   border: 1px solid color-mix(in oklab, var(--color-foreground) 22%, transparent);
   backdrop-filter: blur(8px);
-  transition: box-shadow 160ms ease, border-color 160ms ease;
+  transition:
+    box-shadow 160ms ease,
+    border-color 160ms ease;
 }
 .video-close:hover {
   border-color: var(--color-primary);
