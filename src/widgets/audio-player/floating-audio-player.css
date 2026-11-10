@@ -1,4 +1,8 @@
 /* Reserve room right of the theme toggle for the floating audio player. */
+html[data-audio-player] {
+  --audio-gutter: 0px;
+}
+
 html[data-audio-player] .theme-toggle {
   margin-right: var(--audio-gutter, 0px);
 }
@@ -44,6 +48,38 @@ html[data-audio-player] .theme-toggle {
   filter: drop-shadow(0 0 3px var(--color-primary));
 }
 
+.audio-seek-head {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  appearance: none;
+  opacity: 0;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.audio-seek-head:active {
+  cursor: grabbing;
+}
+
+.audio-seek-head:disabled {
+  pointer-events: none;
+}
+
+.audio-seek-head:focus-visible {
+  opacity: 1;
+  border-radius: 50%;
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  background: color-mix(in oklab, var(--color-primary) 30%, transparent);
+}
+
 .audio-loading {
   border: 1px dashed color-mix(in oklab, var(--color-primary) 60%, transparent);
   animation: audio-spin 1.6s linear infinite;
@@ -79,13 +115,23 @@ html[data-audio-player] .theme-toggle {
 }
 
 .audio-bar {
-  transform-origin: center;
-  background: color-mix(
+  --i: 0;
+  stroke: color-mix(
     in oklab,
     var(--color-primary) calc((1 - var(--i)) * 100%),
     var(--color-secondary)
   );
-  opacity: 0.85;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.audio-player[data-playing] .audio-bar {
+  opacity: 0.9;
+}
+
+.audio-wave {
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

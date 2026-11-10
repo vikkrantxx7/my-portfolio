@@ -1,7 +1,7 @@
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
-import { mdxPlugin } from "./mdx.config";
+import { mdxPlugin } from "./mdx.config.ts";
 
 export default defineConfig({
   plugins: [mdxPlugin(), react()],
@@ -20,6 +20,6 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: { "@": path.resolve(__dirname, "./src") },
+    alias: { "@": path.resolve(import.meta.dirname, "./src") },
   },
 });
