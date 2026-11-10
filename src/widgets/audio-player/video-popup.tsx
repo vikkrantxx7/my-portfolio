@@ -92,8 +92,8 @@ export function VideoPopup({
         bass = damp(bass, b.bass);
         mid = damp(mid, b.mid);
         high = damp(high, b.high);
-        el.dataset.reactive = "";
-      } else delete el.dataset.reactive;
+        el.dataset["reactive"] = "";
+      } else delete el.dataset["reactive"];
       write();
       frame = requestAnimationFrame(tick);
     };
@@ -102,7 +102,7 @@ export function VideoPopup({
       frame = 0;
       bass = mid = high = 0;
       write();
-      delete el.dataset.reactive;
+      delete el.dataset["reactive"];
     };
     const sync = () => {
       if (!v.paused && !v.ended && !document.hidden) {
