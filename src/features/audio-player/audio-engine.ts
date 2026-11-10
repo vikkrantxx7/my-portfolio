@@ -100,6 +100,16 @@ export class AudioEngine {
     }
   }
 
+  pause() {
+    if (!this.audio.paused) this.audio.pause();
+  }
+
+  /** Shared AudioContext (created on demand) so other media can join the same graph. */
+  context(): AudioContext | null {
+    this.ensureGraph();
+    return this.ctx;
+  }
+
   /** Progress 0..1 from the real playback position. */
   progress(): number {
     if (this.state.ended) return 1;
