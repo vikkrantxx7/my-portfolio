@@ -55,7 +55,7 @@ describe("SiteNav", () => {
   it("AC1: shows name, section links and a resume viewer trigger", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    expect(within(nav).getByRole("link", { name: "Vikrant Sharma" })).toBeInTheDocument();
+    expect(within(nav).getByRole("button", { name: "Vikrant Sharma" })).toBeInTheDocument();
     for (const l of ["Work", "Experience", "About"]) {
       expect(within(nav).getByRole("link", { name: l })).toBeInTheDocument();
     }
@@ -72,20 +72,20 @@ describe("SiteNav", () => {
   it("shows the role as a subheading under the name", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    const name = within(nav).getByRole("button", { name: "Vikrant Sharma" });
     expect(within(name).getByText("Lead Fullstack Engineer")).toBeInTheDocument();
   });
 
-  it("marks the name link for the hover glow treatment", () => {
+  it("marks the name button for the hover glow treatment", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    expect(within(nav).getByRole("link", { name: "Vikrant Sharma" })).toHaveClass("header-name");
+    expect(within(nav).getByRole("button", { name: "Vikrant Sharma" })).toHaveClass("header-name");
   });
 
   it("keeps the hover glow on the name letters, not the role subheading", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    const name = within(nav).getByRole("button", { name: "Vikrant Sharma" });
     const glow = name.querySelector(".header-glow");
     expect(glow).not.toBeNull();
     expect(glow?.textContent).toContain("Vikrant Sharma");
@@ -95,7 +95,7 @@ describe("SiteNav", () => {
   it("keeps the name on a single line so it never spills onto the progress ribbon", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    const name = within(nav).getByRole("button", { name: "Vikrant Sharma" });
     expect(name).toHaveClass("whitespace-nowrap");
     expect(name).toHaveClass("shrink-0");
   });
@@ -103,7 +103,7 @@ describe("SiteNav", () => {
   it("shows the role line only where the header has room for it", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: /primary/i });
-    const name = within(nav).getByRole("link", { name: "Vikrant Sharma" });
+    const name = within(nav).getByRole("button", { name: "Vikrant Sharma" });
     const role = within(name).getByText("Lead Fullstack Engineer");
     expect(role).toHaveClass("hidden");
     expect(role).toHaveClass("min-[880px]:block");
@@ -149,7 +149,7 @@ describe("SiteNav", () => {
     setReducedMotion(reduce);
     const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     render(<SiteNav />);
-    await userEvent.click(screen.getByRole("link", { name: "Vikrant Sharma" }));
+    await userEvent.click(screen.getByRole("button", { name: "Vikrant Sharma" }));
     expect(scroll).toHaveBeenCalledWith({ top: 0, behavior: reduce ? "auto" : "smooth" });
     expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
     scroll.mockRestore();
@@ -199,7 +199,7 @@ describe("SiteNav", () => {
       ioCallback([{ isIntersecting: true, target: document.getElementById("work") as Element }]),
     );
     expect(within(nav).getByRole("link", { name: "Work" })).toHaveAttribute("aria-current", "true");
-    await userEvent.click(within(nav).getByRole("link", { name: "Vikrant Sharma" }));
+    await userEvent.click(within(nav).getByRole("button", { name: "Vikrant Sharma" }));
     for (const label of ["Work", "Experience", "About"]) {
       expect(within(nav).getByRole("link", { name: label })).not.toHaveAttribute("aria-current");
     }
@@ -217,6 +217,9 @@ describe("SiteNav", () => {
     // Shift+Tab from first wraps to last focusable
     await user.tab({ shift: true });
     expect(screen.getByRole("button", { name: /close menu/i })).toHaveFocus();
+    await user.tab();
+    expect(links[0]).toHaveFocus();
+    await user.tab({ shift: true });
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /open menu/i })).toHaveFocus();

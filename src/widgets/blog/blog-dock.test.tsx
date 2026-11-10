@@ -50,7 +50,9 @@ describe("BlogArticleDock", () => {
     await renderWithRouter(() => <BlogArticleDock posts={list} slug="mid" />);
     const dock = await screen.findByRole("navigation", { name: /article controls/i });
     expect(dock).toHaveClass("pointer-events-none");
-    expect(dock.firstElementChild).toHaveClass("pointer-events-auto");
+    expect(
+      screen.getByRole("link", { name: /all articles/i }).closest("div.rounded-full"),
+    ).toHaveClass("pointer-events-auto");
   });
 
   it("removes the tap delay on its controls", async () => {
@@ -80,13 +82,15 @@ describe("BlogIndexDock", () => {
     await renderWithRouter(() => <BlogIndexDock />);
     const dock = await screen.findByRole("navigation", { name: /blog controls/i });
     expect(dock).toHaveClass("pointer-events-none");
-    expect(dock.firstElementChild).toHaveClass("pointer-events-auto");
+    expect(
+      screen.getByRole("link", { name: /back to home/i }).closest("div.rounded-full"),
+    ).toHaveClass("pointer-events-auto");
   });
 
   it("hugs the two buttons instead of stretching a full-width pill", async () => {
     await renderWithRouter(() => <BlogIndexDock />);
-    const dock = await screen.findByRole("navigation", { name: /blog controls/i });
-    const pill = dock.firstElementChild;
+    await screen.findByRole("navigation", { name: /blog controls/i });
+    const pill = screen.getByRole("link", { name: /back to home/i }).closest("div.rounded-full");
     if (!pill) throw new Error("Missing dock pill");
     expect(pill.className).not.toContain("w-full");
     expect(pill.className).toContain("justify-center");

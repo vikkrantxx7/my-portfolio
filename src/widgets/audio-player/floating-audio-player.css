@@ -16,8 +16,22 @@ html[data-audio-player] .theme-toggle {
     0 0 0 4px var(--color-ring);
 }
 .audio-player[data-playing] .audio-art {
-  filter: drop-shadow(0 0 10px color-mix(in oklab, var(--color-primary) 35%, transparent))
-    drop-shadow(0 0 18px color-mix(in oklab, var(--color-secondary) 25%, transparent));
+  filter: drop-shadow(
+      0 0 10px
+        color-mix(
+          in oklab,
+          var(--color-primary) calc(20% + var(--music-cyan-intensity, 0) * 15%),
+          transparent
+        )
+    )
+    drop-shadow(
+      0 0 18px
+        color-mix(
+          in oklab,
+          var(--color-secondary) calc(15% + var(--music-violet-intensity, 0) * 10%),
+          transparent
+        )
+    );
 }
 
 /* Thin vinyl rim: dark grooves with a single soft reflection; spins only while playing. */

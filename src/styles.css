@@ -12,6 +12,7 @@
 @import "./shared/ui/gradient-frame.css";
 @import "./shared/ui/dock-progress.css";
 @import "./shared/ui/dock-ripple.css";
+@import "./shared/ui/music-ambient.css";
 @import "./widgets/audio-player/floating-audio-player.css";
 @import "./widgets/audio-player/video-popup.css";
 @source "../src";
@@ -182,7 +183,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -229,15 +230,6 @@
       0 0 48px color-mix(in oklab, currentColor 8%, transparent);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
 }
 
 @utility text-gradient-accent {
@@ -251,3 +243,14 @@
     padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  :root *,
+  :root *::before,
+  :root *::after {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}
+

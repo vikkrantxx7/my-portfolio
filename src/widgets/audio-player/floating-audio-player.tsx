@@ -1,6 +1,7 @@
 import { Music2 } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { nowPlaying } from "@/content/now-playing";
+import { createMusicLighting } from "@/features/audio-player/music-lighting";
 import { logarithmicBands, spectrumLevel } from "@/features/audio-player/spectrum";
 import { useAudioEngine } from "@/features/audio-player/use-audio-engine";
 import { useSecondaryPress } from "@/features/audio-player/use-secondary-press";
@@ -102,6 +103,7 @@ export function FloatingAudioPlayer() {
     const e = engine();
     if (!e) return;
     const levels = [...REST];
+    const lighting = createMusicLighting();
     let bands: ReturnType<typeof logarithmicBands> = [];
     const paintProgress = () => {
       paintSongProgress(e.progress(), arcRef.current, dotRef.current, seekRef.current);
@@ -121,9 +123,12 @@ export function FloatingAudioPlayer() {
       });
     };
     let frame = 0;
-    const tick = () => {
+    let previousTime = 0;
+    const tick = (time: number) => {
       paintProgress();
       const bins = e.readFrequencies();
+      if (bins) lighting.frame(bins, e.frequencyBinWidth, previousTime ? time - previousTime : 16);
+      previousTime = time;
       if (bins && e.frequencyBinWidth > 0) {
         if (!bands.length) {
           bands = logarithmicBands(bins.length, e.frequencyBinWidth, BAR_COUNT / 2);
@@ -139,6 +144,7 @@ export function FloatingAudioPlayer() {
     const settle = () => {
       cancelAnimationFrame(frame);
       frame = 0;
+      previousTime = 0;
       paintProgress();
       barsRef.current.forEach((bar, i) => {
         levels[i] = REST[i] ?? 0;
@@ -146,7 +152,9 @@ export function FloatingAudioPlayer() {
       });
     };
     const sync = () => {
-      if (e.state.isPlaying && !document.hidden && !reduceMotion) {
+      const active = e.state.isPlaying && !e.state.isLoading && !e.state.error && !e.state.ended;
+      lighting.playback(active, reduceMotion, document.hidden);
+      if (active && !document.hidden && !reduceMotion) {
         if (!frame) frame = requestAnimationFrame(tick);
       } else settle();
     };
@@ -161,6 +169,7 @@ export function FloatingAudioPlayer() {
     return () => {
       unsub();
       cancelAnimationFrame(frame);
+      lighting.dispose();
       e.audio.removeEventListener("timeupdate", paintProgress);
       e.audio.removeEventListener("seeking", paintProgress);
       e.audio.removeEventListener("durationchange", syncDuration);

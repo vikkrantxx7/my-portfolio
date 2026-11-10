@@ -30,6 +30,7 @@ Project filters are driven by validated `tech` and `domain` URL search parameter
 ## Navigation and discovery
 
 - The desktop header links to the Work, Experience, and About sections. A compact mobile menu exposes the same destinations plus blog and resume actions.
+- Desktop headers on the home, project, and blog pages share the same document-scroll progress ribbon. It appears after scrolling and remains separate from music lighting; mobile reading docks keep their perimeter progress indicator.
 - Section changes update the URL hash without adding a browser-history entry and scroll to the selected section.
 - The command palette opens with `Ctrl+K` or `⌘K`. It can find home sections, projects, blog articles, and timeline achievements; selecting an item navigates to its page or location.
 - Internal page links use TanStack Router for in-app navigation. The app preloads route chunks on link intent.
@@ -60,6 +61,8 @@ The resume opens in a full-screen in-app dialog rather than navigating away to a
 ## Audio player
 
 A floating audio player sits in the header beside the theme toggle on every page, and playback continues across in-app navigation. Tapping the cover artwork plays or pauses the track; the song is not downloaded until the first tap. The player shows the track title, a progress ring, and cyan-to-purple radial waveform bars surrounding the artwork. Bars react to audio while playing and rest short and dim when paused; reduced-motion preferences keep the waveform static. The player announces loading, playing, paused, and error states to assistive technology. If loading fails, tapping the artwork retries. When a music video is configured, right-click, long-press, or `Shift+F10` on the artwork opens it in a popup.
+
+While music plays, its audio analysis brightens a stationary cyan-to-violet shimmer along the desktop header's lower edge or adds a focused halo around the mobile navigation capsule. The edge shimmer follows music intensity without travelling across the header. Lighting fades when playback pauses or ends; reduced-motion preferences suppress the mobile activation ripple.
 
 Once the song duration is available, drag the progress head around the ring with a mouse or touch to seek without toggling playback. The head is also a keyboard-accessible slider: arrow keys adjust progress, and Home/End jump to the beginning/end.
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-/** Document progress, shared by the home ribbon and reading docks. */
+/** Document progress, shared by header ribbons and reading docks. */
 export function useScrollProgress() {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
@@ -11,7 +11,7 @@ export function useScrollProgress() {
       setProgress(max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0);
     };
     const schedule = () => {
-      if (frame === null) frame = requestAnimationFrame(update);
+      frame ??= requestAnimationFrame(update);
     };
     const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(schedule);
     observer?.observe(document.documentElement);

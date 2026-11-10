@@ -7,6 +7,7 @@ import { Button } from "./button";
 import { dockBar, dockItem } from "./dock";
 import { DockProgress } from "./dock-progress";
 import { useDockRipple } from "./dock-ripple";
+import { MusicAmbient } from "./music-ambient";
 
 /** Shared safe-area positioning also used by the expandable home menu. */
 export function DockPosition({
@@ -46,7 +47,7 @@ export function DockBar({
   children: ReactNode;
 } & Record<string, unknown>) {
   return (
-    <div {...props} className={cn(dockBar({ tone, size }), "relative", className)}>
+    <div {...props} className={cn(dockBar({ tone, size }), "relative z-10 isolate", className)}>
       {children}
     </div>
   );
@@ -65,10 +66,13 @@ export function DockShell({
 }) {
   return (
     <DockPosition label={label}>
-      <DockBar size={size}>
-        {progress && <DockProgress />}
-        {children}
-      </DockBar>
+      <div className={cn("relative isolate", size === "full" ? "w-full max-w-sm" : "w-auto")}>
+        <MusicAmbient kind="dock" />
+        <DockBar size={size}>
+          {progress && <DockProgress />}
+          {children}
+        </DockBar>
+      </div>
     </DockPosition>
   );
 }

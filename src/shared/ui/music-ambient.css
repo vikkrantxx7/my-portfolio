@@ -1,0 +1,170 @@
+:root {
+  --music-energy: 0;
+  --music-cyan-intensity: 0;
+  --music-violet-intensity: 0;
+  --music-header-cyan-opacity: 0;
+  --music-header-violet-opacity: 0;
+  --music-divider-opacity: 0;
+  --music-shimmer-opacity: 0;
+  --music-dock-cyan-opacity: 0;
+  --music-dock-violet-opacity: 0;
+}
+
+.music-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 650ms ease-out;
+}
+
+html[data-music-visible] .music-ambient {
+  opacity: 1;
+  transition-duration: 1800ms;
+}
+
+.music-wash,
+.music-activation {
+  position: absolute;
+  pointer-events: none;
+}
+
+.music-wash {
+  inset: 0;
+  border-radius: inherit;
+}
+
+.music-wash-cyan {
+  background: radial-gradient(ellipse at 18% 100%, var(--primary), transparent 75%);
+  opacity: var(--music-header-cyan-opacity);
+}
+
+.music-wash-violet {
+  background: radial-gradient(ellipse at 85% 100%, var(--secondary), transparent 75%);
+  opacity: var(--music-header-violet-opacity);
+}
+
+.music-ambient-header {
+  display: none;
+  z-index: 0;
+}
+
+.music-ambient-header .music-wash {
+  display: none;
+}
+
+.music-ambient-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  background:
+    linear-gradient(90deg, var(--primary), var(--secondary)) top / 100% 2px no-repeat,
+    linear-gradient(
+      90deg,
+      var(--primary) 0%,
+      color-mix(in oklab, var(--primary) 50%, var(--secondary)) 52%,
+      var(--secondary) 100%
+    )
+    bottom / 100% 2px no-repeat;
+  opacity: var(--music-shimmer-opacity);
+  pointer-events: none;
+}
+
+.music-header-top-glow {
+  position: absolute;
+  top: -9px;
+  left: -2%;
+  width: 104%;
+  height: 9px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  mask-image: linear-gradient(to top, rgb(0 0 0 / 75%), transparent);
+  opacity: var(--music-divider-opacity);
+  pointer-events: none;
+}
+
+.music-ambient-header::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: -2%;
+  width: 104%;
+  height: 9px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 75%), transparent);
+  opacity: var(--music-divider-opacity);
+}
+
+.music-activation {
+  opacity: 0;
+}
+
+.music-ambient-header .music-activation {
+  display: none;
+}
+
+.music-ambient-dock {
+  inset: -7px -9px -8px;
+  z-index: 0;
+  border-radius: 999px;
+}
+
+.music-ambient-dock .music-wash {
+  filter: blur(8px);
+}
+
+.music-ambient-dock .music-wash-cyan {
+  background: radial-gradient(ellipse 46% 92% at 5% 72%, var(--primary), transparent 78%);
+  opacity: var(--music-dock-cyan-opacity);
+}
+
+.music-ambient-dock .music-wash-violet {
+  background: radial-gradient(ellipse 46% 92% at 95% 72%, var(--secondary), transparent 78%);
+  opacity: var(--music-dock-violet-opacity);
+}
+
+.music-ambient-dock .music-activation {
+  inset: 2px;
+  border-radius: inherit;
+  background: linear-gradient(100deg, var(--primary), var(--secondary));
+  filter: blur(14px);
+}
+
+.music-ambient-dock[data-music-start] .music-activation {
+  animation-name: music-dock-start;
+  animation-duration: 1000ms;
+}
+
+@keyframes music-dock-start {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  25% {
+    opacity: 0.34;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2, 1.6);
+  }
+}
+
+@media (min-width: 768px) {
+  .music-ambient-header {
+    display: block;
+  }
+  .music-ambient-dock {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-ambient {
+    transition: none;
+  }
+  .music-ambient[data-music-start] .music-activation {
+    animation: none;
+  }
+}

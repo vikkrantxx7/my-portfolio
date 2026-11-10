@@ -31,6 +31,8 @@ import { scrollToSection, usePrefersReducedMotion } from "@/shared/lib/use-prefe
 import { Button } from "@/shared/ui/button";
 import { useDockRipple } from "@/shared/ui/dock-ripple";
 import { DockPosition } from "@/shared/ui/dock-shell";
+import { MusicAmbient } from "@/shared/ui/music-ambient";
+import { ScrollProgress } from "@/shared/ui/scroll-progress";
 import { SectionNavigation } from "@/shared/ui/section-navigation";
 import { AvatarPreview } from "./avatar-preview";
 import { DockIgnition } from "./dock-ignition";
@@ -42,7 +44,6 @@ const siteNavTargets: EnergyTargetResolver = (id, nav) => {
   return element ? { element, kind: id ? "pill" : "avatar" } : null;
 };
 
-import { ScrollProgress } from "./scroll-progress";
 import { useActiveSection } from "./use-active-section";
 
 export const NAV_SECTIONS = [
@@ -99,7 +100,7 @@ export function SiteNav() {
     const items = [...menuRef.current.querySelectorAll<HTMLElement>("a,button")];
     if (toggleRef.current) items.push(toggleRef.current);
     const first = items[0];
-    const last = items[items.length - 1];
+    const last = items.at(-1);
     if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();
       last?.focus();
@@ -111,16 +112,17 @@ export function SiteNav() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 isolate border-b border-border bg-background/70 backdrop-blur-xl">
+        <MusicAmbient kind="header" />
         <nav
           ref={navRef}
           aria-label="Primary"
-          className="relative mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16"
+          className="relative z-10 mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-16"
         >
           <div className="flex items-center gap-3">
             <AvatarPreview />
-            <a
-              href="#top"
+            <button
+              type="button"
               onClick={go("top")}
               aria-label={profile.name}
               className="header-name flex shrink-0 flex-col gap-1 leading-tight whitespace-nowrap text-foreground"
@@ -139,7 +141,7 @@ export function SiteNav() {
               <span className="hidden font-mono text-[10px] font-normal uppercase tracking-[0.16em] text-muted-foreground min-[880px]:block">
                 {profile.title}
               </span>
-            </a>
+            </button>
           </div>
           <div className="flex items-center gap-5 lg:gap-6">
             <SectionNavigation items={NAV_SECTIONS} active={active} onSelect={go}>
@@ -173,10 +175,8 @@ export function SiteNav() {
             onClick={close}
           />
         )}
-        <div
-          onKeyDown={onMenuKey}
-          className="relative flex h-16 w-full max-w-sm items-center justify-center"
-        >
+        <div className="relative isolate flex h-16 w-full max-w-sm items-center justify-center">
+          {open && <MusicAmbient kind="dock" />}
           {open && (
             <motion.div
               id="mobile-menu"
@@ -184,6 +184,7 @@ export function SiteNav() {
               role="dialog"
               aria-modal="true"
               aria-label="Menu"
+              onKeyDown={onMenuKey}
               initial={
                 reduce ? false : { clipPath: "inset(0 50% 0 50% round 999px)", opacity: 0.4 }
               }
@@ -252,6 +253,7 @@ export function SiteNav() {
             animate={{ y: open ? -64 : 0 }}
             transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 340, damping: 30 }}
           >
+            {!open && <MusicAmbient kind="dock" />}
             <Button
               variant="ghost"
               ref={toggleRef}
@@ -259,6 +261,7 @@ export function SiteNav() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
+              onKeyDown={onMenuKey}
               onClick={() => (open ? close() : setOpen(true))}
               {...ripple}
               className={cn(
@@ -296,9 +299,9 @@ function DockInner({
   label,
   active,
 }: {
-  icon: LucideIcon;
-  label: string;
-  active?: boolean | undefined;
+  readonly icon: LucideIcon;
+  readonly label: string;
+  readonly active?: boolean | undefined;
 }) {
   return (
     <>
@@ -323,10 +326,10 @@ function BlogLink({
   children,
   onPointerDown,
 }: {
-  hasRouter: boolean;
-  className: string;
-  children: ReactNode;
-  onPointerDown?: (event: PointerEvent<HTMLElement>) => void;
+  readonly hasRouter: boolean;
+  readonly className: string;
+  readonly children: ReactNode;
+  readonly onPointerDown?: (event: PointerEvent<HTMLElement>) => void;
 }) {
   if (!hasRouter)
     return (

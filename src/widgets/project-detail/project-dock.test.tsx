@@ -45,7 +45,9 @@ describe("ProjectDock", () => {
     await renderWithRouter(() => <ProjectDock projects={list} slug="b" />);
     const dock = await screen.findByRole("navigation", { name: /project controls/i });
     expect(dock).toHaveClass("pointer-events-none");
-    expect(dock.firstElementChild).toHaveClass("pointer-events-auto");
+    expect(screen.getByRole("link", { name: /all work/i }).closest("div.rounded-full")).toHaveClass(
+      "pointer-events-auto",
+    );
   });
 
   it("removes the tap delay on its controls", async () => {
