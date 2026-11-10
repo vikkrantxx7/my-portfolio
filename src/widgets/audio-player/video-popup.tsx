@@ -1,17 +1,19 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { X } from "lucide-react";
+import * as React from "react";
 import { useEffect, useRef } from "react";
 import type { AudioEngine } from "@/features/audio-player/audio-engine";
 import { attachAnalyser, bandEnergy, damp } from "@/features/audio-player/video-analyser";
+import { VideoControls } from "./video-controls";
 
 interface Props {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  anchorRef: React.RefObject<HTMLElement | null>;
-  engine: () => AudioEngine | null;
-  videoUrl: string;
-  posterUrl: string;
-  title: string;
+  readonly open: boolean;
+  readonly onOpenChange: (open: boolean) => void;
+  readonly anchorRef: React.RefObject<HTMLElement | null>;
+  readonly engine: () => AudioEngine | null;
+  readonly videoUrl: string;
+  readonly posterUrl: string;
+  readonly title: string;
 }
 
 /**
@@ -32,6 +34,24 @@ export function VideoPopup({
   const mounted = useRef(false);
   if (open) mounted.current = true;
 
+  useEffect(() => {
+    if (!open) return;
+    const previous = [document.documentElement, document.body].map((element) => ({
+      element,
+      overflow: element.style.getPropertyValue("overflow"),
+      priority: element.style.getPropertyPriority("overflow"),
+    }));
+    for (const { element } of previous) {
+      element.style.setProperty("overflow", "hidden", "important");
+    }
+    return () => {
+      for (const { element, overflow, priority } of previous) {
+        if (overflow) element.style.setProperty("overflow", overflow, priority);
+        else element.style.removeProperty("overflow");
+      }
+    };
+  }, [open]);
+
   // Handoff: opening pauses the song and starts the video inside the gesture.
   useEffect(() => {
     const v = videoRef.current;
@@ -47,10 +67,10 @@ export function VideoPopup({
     attachAnalyser(v, ctx);
     void (async () => {
       try {
-        if (ctx && ctx.state === "suspended") await ctx.resume();
+        if (ctx?.state === "suspended") await ctx.resume();
         await v.play();
       } catch {
-        // Autoplay refused: native controls stay ready for a manual start.
+        // Autoplay refused: custom controls stay ready for a manual start.
       }
     })();
   }, [open, engine, videoUrl]);
@@ -122,6 +142,15 @@ export function VideoPopup({
   return (
     <PopoverPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <PopoverPrimitive.Anchor virtualRef={anchorRef as React.RefObject<HTMLElement>} />
+      {open && (
+        <PopoverPrimitive.Portal>
+          <div
+            aria-hidden
+            data-testid="video-backdrop"
+            className="fixed inset-0 z-60 bg-background/60 backdrop-blur-md animate-in fade-in-0"
+          />
+        </PopoverPrimitive.Portal>
+      )}
       <PopoverPrimitive.Portal forceMount>
         <PopoverPrimitive.Content
           forceMount
@@ -135,21 +164,27 @@ export function VideoPopup({
             const t = e.target as Element | null;
             if (t?.closest?.("[data-testid='audio-player']")) e.preventDefault();
           }}
-          className="video-popup z-[70] data-[state=closed]:pointer-events-none data-[state=closed]:invisible data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+          className="video-popup z-70 data-[state=closed]:pointer-events-none data-[state=closed]:invisible data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
           style={mounted.current ? undefined : { display: "none" }}
         >
-          <div ref={frameRef} data-testid="video-frame" className="video-frame relative">
+          <div
+            ref={frameRef}
+            data-testid="video-frame"
+            className="video-frame gradient-frame relative"
+          >
             <video
               ref={videoRef}
               data-testid="music-video"
               poster={posterUrl}
-              controls
+              controlsList="nodownload"
+              onContextMenu={(e) => e.preventDefault()}
               playsInline
               preload="metadata"
-              className="video-el block aspect-square w-full rounded-[1.25rem] bg-background"
+              className="video-el block aspect-square w-full rounded-4xl bg-background"
             >
               <track kind="captions" />
             </video>
+            <VideoControls open={open} videoRef={videoRef} frameRef={frameRef} />
             <PopoverPrimitive.Close
               aria-label="Close video"
               className="video-close absolute top-3 right-3 grid size-9 cursor-pointer place-items-center rounded-full"

@@ -19,3 +19,6 @@ is `src/routes/__root.tsx`.
 | `__root.tsx`             | app shell — wraps every page; preserve `<Outlet />`     |
 
 `routeTree.gen.ts` is auto-generated. Don't edit it by hand.
+
+Co-located tests (`*.test.ts`, `*.test.tsx`) are ignored by route generation via
+`routeFileIgnorePattern` in `vite.config.ts`, so they may live beside routes.
