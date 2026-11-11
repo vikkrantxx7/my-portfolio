@@ -229,7 +229,6 @@
       0 0 26px color-mix(in oklab, currentColor 18%, transparent),
       0 0 48px color-mix(in oklab, currentColor 8%, transparent);
   }
-
 }
 
 @utility text-gradient-accent {
@@ -253,4 +252,3 @@
     scroll-behavior: auto;
   }
 }
-
