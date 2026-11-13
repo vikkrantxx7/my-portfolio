@@ -1,9 +1,9 @@
 {
   "Home": {
     "sourceFiles": [
-      { "path": "README.md", "hash": "771899127598114" }
+      { "path": "README.md", "hash": "known" }
     ],
-    "templateHash": "initial",
-    "generatedAt": "2026-11-10T12:00:00Z"
+    "templateHash": "known",
+    "generatedAt": "2026-11-13T12:00:00Z"
   }
 }

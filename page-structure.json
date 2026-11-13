@@ -1,9 +1,12 @@
 {
   "pages": [
     { "title": "Home", "slug": "Home" },
-    { "title": "Architecture", "slug": "Architecture" },
-    { "title": "Configuration", "slug": "Configuration" },
-    { "title": "Contributing", "slug": "Contributing" },
+    { "title": "Technical Architecture", "slug": "Technical-Architecture", "children": [
+        { "title": "Content Pipeline", "slug": "Content-Pipeline", "children": [
+            { "title": "Data Validation", "slug": "Data-Validation" }
+        ]}
+    ]},
+    { "title": "Functional Guide", "slug": "Functional-Guide" },
     { "title": "For Agents", "slug": "For-Agents" }
   ]
 }
