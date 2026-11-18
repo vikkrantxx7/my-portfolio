@@ -1,16 +1,7 @@
 {
   "Home": {
-    "sourceFiles": [
-      { "path": "README.md", "hash": "5157" }
-    ],
-    "templateHash": "initial",
-    "generatedAt": "2026-11-15T00:00:00Z"
-  },
-  "Architecture": {
-    "sourceFiles": [
-      { "path": "docs/technical-guide.md", "hash": "15921" }
-    ],
-    "templateHash": "initial",
-    "generatedAt": "2026-11-15T00:00:00Z"
+    "sourceFiles": [{ "path": "README.md", "hash": "n/a" }],
+    "templateHash": "n/a",
+    "generatedAt": "2026-11-18T00:00:00Z"
   }
 }

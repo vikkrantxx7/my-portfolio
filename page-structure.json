@@ -1,12 +1,3 @@
 {
-  "pages": [
-    { "title": "Home", "slug": "Home" },
-    { "title": "Technical Architecture", "slug": "Technical-Architecture", "children": [
-        { "title": "Content Pipeline", "slug": "Content-Pipeline", "children": [
-            { "title": "Data Validation", "slug": "Data-Validation" }
-        ]}
-    ]},
-    { "title": "Functional Guide", "slug": "Functional-Guide" },
-    { "title": "For Agents", "slug": "For-Agents" }
-  ]
+  "pages": ["Home", "Architecture", "Features", "Getting-Started", "For-Agents"]
 }
